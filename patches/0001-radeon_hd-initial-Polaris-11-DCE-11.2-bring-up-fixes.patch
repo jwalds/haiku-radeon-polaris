@@ -1,4 +1,4 @@
-From 4857aa0f66c5d33f780e460f7cd8d06e2281bd7f Mon Sep 17 00:00:00 2001
+From e367a6d00909faf7dd3e6bda9513b6af32fa0444 Mon Sep 17 00:00:00 2001
 From: Claude <noreply@anthropic.com>
 Date: Fri, 25 Sep 2026 12:14:48 +0200
 Subject: [PATCH] radeon_hd: initial Polaris 11 (DCE 11.2) bring-up fixes
@@ -15,15 +15,15 @@ Subject: [PATCH] radeon_hd: initial Polaris 11 (DCE 11.2) bring-up fixes
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
 Claude-Session: https://claude.ai/code/session_01NqrEBcidivS5BSWVfbLqvu
 ---
- .../private/graphics/radeon_hd/radeon_hd.h    |  4 +--
- headers/private/graphics/radeon_hd/vol_reg.h  | 12 +++++++++
- src/add-ons/accelerants/radeon_hd/display.cpp | 27 ++++++++++++++-----
- .../drivers/graphics/radeon_hd/driver.cpp     | 20 +++++++-------
- .../drivers/graphics/radeon_hd/radeon_hd.cpp  |  9 +++++--
- 5 files changed, 52 insertions(+), 20 deletions(-)
+ .../private/graphics/radeon_hd/radeon_hd.h    |  4 +-
+ headers/private/graphics/radeon_hd/vol_reg.h  | 10 +++++
+ src/add-ons/accelerants/radeon_hd/display.cpp | 42 ++++++++++++++++---
+ .../drivers/graphics/radeon_hd/driver.cpp     | 20 +++++----
+ .../drivers/graphics/radeon_hd/radeon_hd.cpp  |  9 +++-
+ 5 files changed, 66 insertions(+), 19 deletions(-)
 
 diff --git a/headers/private/graphics/radeon_hd/radeon_hd.h b/headers/private/graphics/radeon_hd/radeon_hd.h
-index 4da051a82f..84b06ab493 100644
+index 4da051a82f..a53907158d 100644
 --- a/headers/private/graphics/radeon_hd/radeon_hd.h
 +++ b/headers/private/graphics/radeon_hd/radeon_hd.h
 @@ -183,8 +183,8 @@ static const char radeon_chip_name[][MAX_NAME_LENGTH] = {
@@ -41,88 +41,93 @@ index 4da051a82f..84b06ab493 100644
  #define OLD_CONFIG_APER_SIZE			0x0108	// <r600
  #define CONFIG_MEMSIZE					0x5428	// r600>
 -#define CONFIG_MEMSIZE_TAHITI			0x03de	// tahiti>
-+#define CONFIG_MEMSIZE_TAHITI			0x03de	// FIXME: unaligned, unverified (Vega+?)
++#define CONFIG_MEMSIZE_TAHITI			0x03de	// TODO: Vega+? unverified
  
  
  #endif	/* RADEON_HD_H */
 diff --git a/headers/private/graphics/radeon_hd/vol_reg.h b/headers/private/graphics/radeon_hd/vol_reg.h
-index d1d1221ad8..2e50d0567e 100644
+index d1d1221ad8..e694284810 100644
 --- a/headers/private/graphics/radeon_hd/vol_reg.h
 +++ b/headers/private/graphics/radeon_hd/vol_reg.h
-@@ -27,6 +27,18 @@
+@@ -27,6 +27,16 @@
  #ifndef DCE_10_0_D_H
  #define DCE_10_0_D_H
  
-+// DCE 10.x / 11.x (Tonga, Fiji, Carrizo, Stoney, Polaris) byte offsets.
-+// Source: Linux amdgpu vid.h / dce_11_2_d.h (dword index * 4).
-+// The per-CRTC stride changed from Evergreen's 0xc00 to 0x800.
-+#define DCE10_CRTC0_REGISTER_OFFSET		((0x1b9c - 0x1b9c) * 4)
-+#define DCE10_CRTC1_REGISTER_OFFSET		((0x1d9c - 0x1b9c) * 4)
-+#define DCE10_CRTC2_REGISTER_OFFSET		((0x1f9c - 0x1b9c) * 4)
-+#define DCE10_CRTC3_REGISTER_OFFSET		((0x419c - 0x1b9c) * 4)
-+#define DCE10_CRTC4_REGISTER_OFFSET		((0x439c - 0x1b9c) * 4)
-+#define DCE10_CRTC5_REGISTER_OFFSET		((0x459c - 0x1b9c) * 4)
-+// LB_DESKTOP_HEIGHT moved (Evergreen 0x6b04)
-+#define DCE10_LB_DESKTOP_HEIGHT			(0x1ac3 * 4)
++// DCE 10.x, 11.x CRTC register offsets (byte addresses)
++#define VOL_CRTC0_REGISTER_OFFSET		(0x6e70 - 0x6e70)
++#define VOL_CRTC1_REGISTER_OFFSET		(0x7670 - 0x6e70)
++#define VOL_CRTC2_REGISTER_OFFSET		(0x7e70 - 0x6e70)
++#define VOL_CRTC3_REGISTER_OFFSET		(0x10670 - 0x6e70)
++#define VOL_CRTC4_REGISTER_OFFSET		(0x10e70 - 0x6e70)
++#define VOL_CRTC5_REGISTER_OFFSET		(0x11670 - 0x6e70)
++
++#define VOL_LB_DESKTOP_HEIGHT			0x6b0c
 +
  #define VOL_mmDC_GPIO_HPD_A                                                         0x488d
  
  #endif /* DCE_10_0_D_H */
 diff --git a/src/add-ons/accelerants/radeon_hd/display.cpp b/src/add-ons/accelerants/radeon_hd/display.cpp
-index 3d83804aab..a8f28a83d3 100644
+index 3d83804aab..f3e7f1680a 100644
 --- a/src/add-ons/accelerants/radeon_hd/display.cpp
 +++ b/src/add-ons/accelerants/radeon_hd/display.cpp
-@@ -46,8 +46,14 @@ init_registers(register_info* regs, uint8 crtcID)
- 	radeon_shared_info &info = *gInfo->shared_info;
- 
- 	if (info.chipsetID >= RADEON_CEDAR) {
--		// Evergreen
-+		// Evergreen .. DCE 11
- 		uint32 offset = 0;
-+		const bool dce10 = info.dceMajor == 10 || info.dceMajor == 11;
-+		static const uint32 kDCE10Offsets[] = {
-+			DCE10_CRTC0_REGISTER_OFFSET, DCE10_CRTC1_REGISTER_OFFSET,
-+			DCE10_CRTC2_REGISTER_OFFSET, DCE10_CRTC3_REGISTER_OFFSET,
-+			DCE10_CRTC4_REGISTER_OFFSET, DCE10_CRTC5_REGISTER_OFFSET
-+		};
- 
- 		switch (crtcID) {
- 			case 0:
-@@ -80,6 +86,9 @@ init_registers(register_info* regs, uint8 crtcID)
+@@ -80,6 +80,30 @@ init_registers(register_info* regs, uint8 crtcID)
  				return B_ERROR;
  		}
  
-+		if (dce10)
-+			offset = kDCE10Offsets[crtcID];
++		if (info.dceMajor == 10 || info.dceMajor == 11) {
++			// DCE 10.x, 11.x have a smaller CRTC register stride
++			switch (crtcID) {
++				case 0:
++					offset = VOL_CRTC0_REGISTER_OFFSET;
++					break;
++				case 1:
++					offset = VOL_CRTC1_REGISTER_OFFSET;
++					break;
++				case 2:
++					offset = VOL_CRTC2_REGISTER_OFFSET;
++					break;
++				case 3:
++					offset = VOL_CRTC3_REGISTER_OFFSET;
++					break;
++				case 4:
++					offset = VOL_CRTC4_REGISTER_OFFSET;
++					break;
++				case 5:
++					offset = VOL_CRTC5_REGISTER_OFFSET;
++					break;
++			}
++		}
 +
  		regs->crtcOffset = offset;
  
  		regs->grphEnable = EVERGREEN_GRPH_ENABLE + offset;
-@@ -104,7 +113,8 @@ init_registers(register_info* regs, uint8 crtcID)
+@@ -104,7 +128,10 @@ init_registers(register_info* regs, uint8 crtcID)
  		regs->grphYStart = EVERGREEN_GRPH_Y_START + offset;
  		regs->grphXEnd = EVERGREEN_GRPH_X_END + offset;
  		regs->grphYEnd = EVERGREEN_GRPH_Y_END + offset;
 -		regs->modeDesktopHeight = EVERGREEN_DESKTOP_HEIGHT + offset;
-+		regs->modeDesktopHeight = (dce10 ? DCE10_LB_DESKTOP_HEIGHT
-+			: EVERGREEN_DESKTOP_HEIGHT) + offset;
++		if (info.dceMajor == 10 || info.dceMajor == 11)
++			regs->modeDesktopHeight = VOL_LB_DESKTOP_HEIGHT + offset;
++		else
++			regs->modeDesktopHeight = EVERGREEN_DESKTOP_HEIGHT + offset;
  		regs->modeDataFormat = EVERGREEN_DATA_FORMAT + offset;
  		regs->viewportStart = EVERGREEN_VIEWPORT_START + offset;
  		regs->viewportSize = EVERGREEN_VIEWPORT_SIZE + offset;
-@@ -608,8 +618,11 @@ display_dce45_crtc_load_lut(uint8 crtcID)
+@@ -608,8 +635,11 @@ display_dce45_crtc_load_lut(uint8 crtcID)
  				| NI_INPUT_CSC_OVL_MODE(NI_INPUT_CSC_BYPASS));
  		Write32(OUT, NI_PRESCALE_GRPH_CONTROL + regs->crtcOffset,
  			NI_GRPH_PRESCALE_BYPASS);
 -		Write32(OUT, NI_PRESCALE_OVL_CONTROL + regs->crtcOffset,
 -			NI_OVL_PRESCALE_BYPASS);
 +		if (info.dceMajor < 11) {
-+			// removed on DCE 11.x
++			// No overlay prescale on DCE 11.x
 +			Write32(OUT, NI_PRESCALE_OVL_CONTROL + regs->crtcOffset,
 +				NI_OVL_PRESCALE_BYPASS);
 +		}
  		Write32(OUT, NI_INPUT_GAMMA_CONTROL + regs->crtcOffset,
  			NI_GRPH_INPUT_GAMMA_MODE(NI_INPUT_GAMMA_USE_LUT) |
  			NI_OVL_INPUT_GAMMA_MODE(NI_INPUT_GAMMA_USE_LUT));
-@@ -625,10 +638,10 @@ display_dce45_crtc_load_lut(uint8 crtcID)
+@@ -625,10 +655,10 @@ display_dce45_crtc_load_lut(uint8 crtcID)
  	Write32(OUT, EVERGREEN_DC_LUT_WHITE_OFFSET_GREEN + regs->crtcOffset, 0xffff);
  	Write32(OUT, EVERGREEN_DC_LUT_WHITE_OFFSET_RED + regs->crtcOffset, 0xffff);
  
@@ -197,5 +202,5 @@ index f99811a1e4..9cdc2fc283 100644
  		switch (info.chipsetID) {
  			default:
 -- 
-2.43.0
+2.34.1
 

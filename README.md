@@ -32,6 +32,11 @@ a separate, much larger effort and should not be bolted onto the accelerant.
 - `docs/` – notes, register findings, test logs.
 - `captures/` – Linux reference dumps (tarballs).
 
+## Coding style
+
+All driver code follows the existing radeon_hd conventions — see
+`docs/coding-style.md`.
+
 ## Working layout (minibook `Documents\haiku_gfx`)
 
 ```
