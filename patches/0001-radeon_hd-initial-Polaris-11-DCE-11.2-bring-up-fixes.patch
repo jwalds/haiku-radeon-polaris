@@ -1,0 +1,201 @@
+From 4857aa0f66c5d33f780e460f7cd8d06e2281bd7f Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Fri, 25 Sep 2026 12:14:48 +0200
+Subject: [PATCH] radeon_hd: initial Polaris 11 (DCE 11.2) bring-up fixes
+
+* Fix chip name table order (Polaris 10/11 names were swapped).
+* Read VRAM size from CONFIG_MEMSIZE (0x5428) on Tahiti..Polaris,
+  matching Linux; 0x03de is unaligned and kept only for Vega+.
+* Use DCE 10/11 per-CRTC register stride (0x800) and the moved
+  LB_DESKTOP_HEIGHT register.
+* LUT RW_MODE/WRITE_EN_MASK/RW_INDEX are per-CRTC.
+* Skip PRESCALE_OVL_CONTROL on DCE 11 (register removed).
+* Enable Polaris 11 PCI IDs (RX 460/560) for testing.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01NqrEBcidivS5BSWVfbLqvu
+---
+ .../private/graphics/radeon_hd/radeon_hd.h    |  4 +--
+ headers/private/graphics/radeon_hd/vol_reg.h  | 12 +++++++++
+ src/add-ons/accelerants/radeon_hd/display.cpp | 27 ++++++++++++++-----
+ .../drivers/graphics/radeon_hd/driver.cpp     | 20 +++++++-------
+ .../drivers/graphics/radeon_hd/radeon_hd.cpp  |  9 +++++--
+ 5 files changed, 52 insertions(+), 20 deletions(-)
+
+diff --git a/headers/private/graphics/radeon_hd/radeon_hd.h b/headers/private/graphics/radeon_hd/radeon_hd.h
+index 4da051a82f..84b06ab493 100644
+--- a/headers/private/graphics/radeon_hd/radeon_hd.h
++++ b/headers/private/graphics/radeon_hd/radeon_hd.h
+@@ -183,8 +183,8 @@ static const char radeon_chip_name[][MAX_NAME_LENGTH] = {
+ 	"Fiji",
+ 	"Carrizo",
+ 	"Stoney Ridge",
+-	"Polaris 11",
+ 	"Polaris 10",
++	"Polaris 11",
+ 	"Polaris 12",
+ 	"Vega Mobile",
+ 	"Vega 10",
+@@ -291,7 +291,7 @@ struct radeon_free_graphics_memory {
+ #define R6XX_CONFIG_APER_SIZE			0x5430	// r600>
+ #define OLD_CONFIG_APER_SIZE			0x0108	// <r600
+ #define CONFIG_MEMSIZE					0x5428	// r600>
+-#define CONFIG_MEMSIZE_TAHITI			0x03de	// tahiti>
++#define CONFIG_MEMSIZE_TAHITI			0x03de	// FIXME: unaligned, unverified (Vega+?)
+ 
+ 
+ #endif	/* RADEON_HD_H */
+diff --git a/headers/private/graphics/radeon_hd/vol_reg.h b/headers/private/graphics/radeon_hd/vol_reg.h
+index d1d1221ad8..2e50d0567e 100644
+--- a/headers/private/graphics/radeon_hd/vol_reg.h
++++ b/headers/private/graphics/radeon_hd/vol_reg.h
+@@ -27,6 +27,18 @@
+ #ifndef DCE_10_0_D_H
+ #define DCE_10_0_D_H
+ 
++// DCE 10.x / 11.x (Tonga, Fiji, Carrizo, Stoney, Polaris) byte offsets.
++// Source: Linux amdgpu vid.h / dce_11_2_d.h (dword index * 4).
++// The per-CRTC stride changed from Evergreen's 0xc00 to 0x800.
++#define DCE10_CRTC0_REGISTER_OFFSET		((0x1b9c - 0x1b9c) * 4)
++#define DCE10_CRTC1_REGISTER_OFFSET		((0x1d9c - 0x1b9c) * 4)
++#define DCE10_CRTC2_REGISTER_OFFSET		((0x1f9c - 0x1b9c) * 4)
++#define DCE10_CRTC3_REGISTER_OFFSET		((0x419c - 0x1b9c) * 4)
++#define DCE10_CRTC4_REGISTER_OFFSET		((0x439c - 0x1b9c) * 4)
++#define DCE10_CRTC5_REGISTER_OFFSET		((0x459c - 0x1b9c) * 4)
++// LB_DESKTOP_HEIGHT moved (Evergreen 0x6b04)
++#define DCE10_LB_DESKTOP_HEIGHT			(0x1ac3 * 4)
++
+ #define VOL_mmDC_GPIO_HPD_A                                                         0x488d
+ 
+ #endif /* DCE_10_0_D_H */
+diff --git a/src/add-ons/accelerants/radeon_hd/display.cpp b/src/add-ons/accelerants/radeon_hd/display.cpp
+index 3d83804aab..a8f28a83d3 100644
+--- a/src/add-ons/accelerants/radeon_hd/display.cpp
++++ b/src/add-ons/accelerants/radeon_hd/display.cpp
+@@ -46,8 +46,14 @@ init_registers(register_info* regs, uint8 crtcID)
+ 	radeon_shared_info &info = *gInfo->shared_info;
+ 
+ 	if (info.chipsetID >= RADEON_CEDAR) {
+-		// Evergreen
++		// Evergreen .. DCE 11
+ 		uint32 offset = 0;
++		const bool dce10 = info.dceMajor == 10 || info.dceMajor == 11;
++		static const uint32 kDCE10Offsets[] = {
++			DCE10_CRTC0_REGISTER_OFFSET, DCE10_CRTC1_REGISTER_OFFSET,
++			DCE10_CRTC2_REGISTER_OFFSET, DCE10_CRTC3_REGISTER_OFFSET,
++			DCE10_CRTC4_REGISTER_OFFSET, DCE10_CRTC5_REGISTER_OFFSET
++		};
+ 
+ 		switch (crtcID) {
+ 			case 0:
+@@ -80,6 +86,9 @@ init_registers(register_info* regs, uint8 crtcID)
+ 				return B_ERROR;
+ 		}
+ 
++		if (dce10)
++			offset = kDCE10Offsets[crtcID];
++
+ 		regs->crtcOffset = offset;
+ 
+ 		regs->grphEnable = EVERGREEN_GRPH_ENABLE + offset;
+@@ -104,7 +113,8 @@ init_registers(register_info* regs, uint8 crtcID)
+ 		regs->grphYStart = EVERGREEN_GRPH_Y_START + offset;
+ 		regs->grphXEnd = EVERGREEN_GRPH_X_END + offset;
+ 		regs->grphYEnd = EVERGREEN_GRPH_Y_END + offset;
+-		regs->modeDesktopHeight = EVERGREEN_DESKTOP_HEIGHT + offset;
++		regs->modeDesktopHeight = (dce10 ? DCE10_LB_DESKTOP_HEIGHT
++			: EVERGREEN_DESKTOP_HEIGHT) + offset;
+ 		regs->modeDataFormat = EVERGREEN_DATA_FORMAT + offset;
+ 		regs->viewportStart = EVERGREEN_VIEWPORT_START + offset;
+ 		regs->viewportSize = EVERGREEN_VIEWPORT_SIZE + offset;
+@@ -608,8 +618,11 @@ display_dce45_crtc_load_lut(uint8 crtcID)
+ 				| NI_INPUT_CSC_OVL_MODE(NI_INPUT_CSC_BYPASS));
+ 		Write32(OUT, NI_PRESCALE_GRPH_CONTROL + regs->crtcOffset,
+ 			NI_GRPH_PRESCALE_BYPASS);
+-		Write32(OUT, NI_PRESCALE_OVL_CONTROL + regs->crtcOffset,
+-			NI_OVL_PRESCALE_BYPASS);
++		if (info.dceMajor < 11) {
++			// removed on DCE 11.x
++			Write32(OUT, NI_PRESCALE_OVL_CONTROL + regs->crtcOffset,
++				NI_OVL_PRESCALE_BYPASS);
++		}
+ 		Write32(OUT, NI_INPUT_GAMMA_CONTROL + regs->crtcOffset,
+ 			NI_GRPH_INPUT_GAMMA_MODE(NI_INPUT_GAMMA_USE_LUT) |
+ 			NI_OVL_INPUT_GAMMA_MODE(NI_INPUT_GAMMA_USE_LUT));
+@@ -625,10 +638,10 @@ display_dce45_crtc_load_lut(uint8 crtcID)
+ 	Write32(OUT, EVERGREEN_DC_LUT_WHITE_OFFSET_GREEN + regs->crtcOffset, 0xffff);
+ 	Write32(OUT, EVERGREEN_DC_LUT_WHITE_OFFSET_RED + regs->crtcOffset, 0xffff);
+ 
+-	Write32(OUT, EVERGREEN_DC_LUT_RW_MODE, 0);
+-	Write32(OUT, EVERGREEN_DC_LUT_WRITE_EN_MASK, 0x00000007);
++	Write32(OUT, EVERGREEN_DC_LUT_RW_MODE + regs->crtcOffset, 0);
++	Write32(OUT, EVERGREEN_DC_LUT_WRITE_EN_MASK + regs->crtcOffset, 0x00000007);
+ 
+-	Write32(OUT, EVERGREEN_DC_LUT_RW_INDEX, 0);
++	Write32(OUT, EVERGREEN_DC_LUT_RW_INDEX + regs->crtcOffset, 0);
+ 	for (int i = 0; i < 256; i++) {
+ 		Write32(OUT, EVERGREEN_DC_LUT_30_COLOR + regs->crtcOffset,
+ 			(r[i] << 20) | (g[i] << 10) | (b[i] << 0));
+diff --git a/src/add-ons/kernel/drivers/graphics/radeon_hd/driver.cpp b/src/add-ons/kernel/drivers/graphics/radeon_hd/driver.cpp
+index bcf827e594..b258671d96 100644
+--- a/src/add-ons/kernel/drivers/graphics/radeon_hd/driver.cpp
++++ b/src/add-ons/kernel/drivers/graphics/radeon_hd/driver.cpp
+@@ -503,6 +503,17 @@ const struct supported_device {
+ 
+ 	// WARN: DCE versions below here get sketchy
+ 
++	// Polaris 11 (RX 460/560, WX 4100): DCE 11.2
++	// Re-enabled for bring-up; the rest of VI+ remains disabled below.
++	{0x67e0, 11, 2, RADEON_POLARIS11, CHIP_STD, "Radeon Pro WX 4170"},
++	{0x67e3, 11, 2, RADEON_POLARIS11, CHIP_STD, "Radeon Pro WX 4100"},
++	{0x67e8, 11, 2, RADEON_POLARIS11, CHIP_STD, "Radeon Pro WX 4130"},
++	{0x67eb, 11, 2, RADEON_POLARIS11, CHIP_STD, "Radeon Pro V5300X"},
++	{0x67ef, 11, 2, RADEON_POLARIS11, CHIP_STD, "Radeon RX 460"},
++	{0x67ff, 11, 2, RADEON_POLARIS11, CHIP_STD, "Radeon RX 560"},
++	{0x67e1, 11, 2, RADEON_POLARIS11, CHIP_STD, "Radeon Polaris 11"},
++	{0x67e7, 11, 2, RADEON_POLARIS11, CHIP_STD, "Radeon Polaris 11"},
++	{0x67e9, 11, 2, RADEON_POLARIS11, CHIP_STD, "Radeon Polaris 11"},
+ #if 0 /* disabled for R1/beta5 */
+ 	// Introduced: 2014
+ 	// Codename: Volcanic Islands
+@@ -552,15 +563,6 @@ const struct supported_device {
+ 	{0x67d0, 11, 2, RADEON_POLARIS10, CHIP_STD, "Radeon Pro V7300X"},
+ 	{0x67df, 11, 2, RADEON_POLARIS10, CHIP_STD, "Radeon RX 470/480/570/580/590"},
+ 	// Polaris 11
+-	{0x67e0, 11, 2, RADEON_POLARIS11, CHIP_STD, "Radeon Pro WX 4170"},
+-	{0x67e3, 11, 2, RADEON_POLARIS11, CHIP_STD, "Radeon Pro WX 4100"},
+-	{0x67e8, 11, 2, RADEON_POLARIS11, CHIP_STD, "Radeon Pro WX 4130"},
+-	{0x67eb, 11, 2, RADEON_POLARIS11, CHIP_STD, "Radeon Pro V5300X"},
+-	{0x67ef, 11, 2, RADEON_POLARIS11, CHIP_STD, "Radeon RX 460"},
+-	{0x67ff, 11, 2, RADEON_POLARIS11, CHIP_STD, "Radeon RX 560"},
+-	{0x67e1, 11, 2, RADEON_POLARIS11, CHIP_STD, "Radeon Polaris 11"},
+-	{0x67e7, 11, 2, RADEON_POLARIS11, CHIP_STD, "Radeon Polaris 11"},
+-	{0x67e9, 11, 2, RADEON_POLARIS11, CHIP_STD, "Radeon Polaris 11"},
+ 	// Polaris 12
+ 	{0x6980, 11, 2, RADEON_POLARIS12, CHIP_STD, "Radeon Polaris 12"},
+ 	{0x6981, 11, 2, RADEON_POLARIS12, CHIP_STD, "Radeon Pro WX 3200"},
+diff --git a/src/add-ons/kernel/drivers/graphics/radeon_hd/radeon_hd.cpp b/src/add-ons/kernel/drivers/graphics/radeon_hd/radeon_hd.cpp
+index f99811a1e4..9cdc2fc283 100644
+--- a/src/add-ons/kernel/drivers/graphics/radeon_hd/radeon_hd.cpp
++++ b/src/add-ons/kernel/drivers/graphics/radeon_hd/radeon_hd.cpp
+@@ -707,10 +707,15 @@ radeon_hd_init(radeon_info &info)
+ 	mmioMapper.Detach();
+ 
+ 	// *** Populate frame buffer information
+-	if (info.chipsetID >= RADEON_TAHITI) {
+-		// Tahiti+ has memory stored in MB
++	if (info.chipsetID >= RADEON_VEGAM) {
++		// TODO: Vega+ (SOC15) register location unverified
+ 		info.shared_info->graphics_memory_size
+ 			= read32(info.registers + CONFIG_MEMSIZE_TAHITI) * 1024;
++	} else if (info.chipsetID >= RADEON_TAHITI) {
++		// Tahiti through Polaris: CONFIG_MEMSIZE (0x5428) holds MB
++		// (Linux: si.c, gmc_v7_0.c, gmc_v8_0.c)
++		info.shared_info->graphics_memory_size
++			= read32(info.registers + CONFIG_MEMSIZE) * 1024;
+ 	} else if (info.chipsetID >= RADEON_CEDAR) {
+ 		switch (info.chipsetID) {
+ 			default:
+-- 
+2.43.0
+
