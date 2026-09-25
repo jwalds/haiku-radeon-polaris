@@ -1,0 +1,4 @@
+* text=auto eol=lf
+*.rom binary
+*.bin binary
+*.tar.gz binary
