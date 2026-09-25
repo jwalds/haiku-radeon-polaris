@@ -32,6 +32,15 @@ a separate, much larger effort and should not be bolted onto the accelerant.
 - `docs/` – notes, register findings, test logs.
 - `captures/` – Linux reference dumps (tarballs).
 
-## Test machine workflow
+## Working layout (minibook `Documents\haiku_gfx`)
 
-See `docs/haiku-dev-workflow.md`.
+```
+haiku_gfx/
+  haiku-radeon-polaris/   this repo (docs, tools, patches)  -> GitHub
+  haiku/                  sparse Haiku checkout, branch radeon_hd-polaris (edit here)
+  .keys/                  SSH keys (never committed)
+```
+
+Edit in `haiku/`, commit, then `tools/export-patches.sh` to refresh
+`patches/`, and `tools/sync-to-haiku.sh` to push both trees to the Haiku box
+for building/testing. See `docs/haiku-dev-workflow.md`.

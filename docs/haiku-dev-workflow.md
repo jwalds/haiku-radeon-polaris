@@ -2,15 +2,22 @@
 
 The RX 560 box (`192.168.137.55`) is both build host and test target.
 
-## One-time setup (on the Haiku box)
+Source of truth is the minibook folder `haiku_gfx/`; the Haiku box holds full
+clones that we push to.
+
+## Sync (from the minibook)
 
 ```
-cd ~ && git clone https://github.com/haiku/haiku.git
-git clone https://github.com/haiku/buildtools.git    # jam
-cd haiku && git checkout $(cat ~/haiku-radeon-polaris/patches/BASE_COMMIT)
-git checkout -b radeon_hd-polaris
-git am ~/haiku-radeon-polaris/patches/*.patch
-mkdir generated && cd generated && ../configure      # native build, system gcc
+haiku-radeon-polaris/tools/sync-to-haiku.sh      # default user@192.168.137.55
+```
+
+First run clones `haiku` and `buildtools` on the box and allows pushes into
+the checked-out branch; later runs just push `radeon_hd-polaris` and `main`.
+
+## One-time build setup (on the Haiku box)
+
+```
+cd ~/haiku && mkdir -p generated && cd generated && ../configure   # native build, system gcc
 ```
 
 ## Build just the driver + accelerant
