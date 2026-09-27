@@ -1,0 +1,102 @@
+From 43b73dea8e107f5848b783c686bf07857019bc6b Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
+Date: Sun, 27 Sep 2026 20:48:18 +0000
+Subject: [PATCH 6/6] radeon_hd: fix DCE 11.2 pixel clock programming
+
+* SetPixelClock v7 takes the clock in 100Hz units, not 10kHz; the
+  PLL was programmed to 1/100 of the requested pixel clock.
+* On DCE 11.2 each PHY has its own PLL: use ATOM_COMBOPHY_PLLx for
+  TMDS and ATOM_DP_DTO for DisplayPort, like Linux dce_v11_0.
+* Skip AdjustDisplayPll, divider calculation and spread spectrum on
+  DCE 11.2; SetPixelClock v7 does this itself.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01NqrEBcidivS5BSWVfbLqvu
+---
+ src/add-ons/accelerants/radeon_hd/display.cpp |  5 +++
+ src/add-ons/accelerants/radeon_hd/pll.cpp     | 38 ++++++++++++++++---
+ 2 files changed, 38 insertions(+), 5 deletions(-)
+
+diff --git a/src/add-ons/accelerants/radeon_hd/display.cpp b/src/add-ons/accelerants/radeon_hd/display.cpp
+index b5c747b480..8edadbe7db 100644
+--- a/src/add-ons/accelerants/radeon_hd/display.cpp
++++ b/src/add-ons/accelerants/radeon_hd/display.cpp
+@@ -1068,6 +1068,11 @@ display_crtc_ss(pll_info* pll, int command)
+ 	TRACE("%s\n", __func__);
+ 	radeon_shared_info &info = *gInfo->shared_info;
+ 
++	if (info.dceMajor == 11 && info.dceMinor == 2) {
++		// SetPixelClock v7 programs spread spectrum on DCE 11.2
++		return;
++	}
++
+ 	if (command == ATOM_ENABLE) {
+ 		if (pll->ssPercentage == 0) {
+ 			TRACE("%s: ssPercentage 0, ignoring SS request\n", __func__);
+diff --git a/src/add-ons/accelerants/radeon_hd/pll.cpp b/src/add-ons/accelerants/radeon_hd/pll.cpp
+index dc266f429d..3259a9d439 100644
+--- a/src/add-ons/accelerants/radeon_hd/pll.cpp
++++ b/src/add-ons/accelerants/radeon_hd/pll.cpp
+@@ -796,10 +796,13 @@ pll_set(display_mode* mode, uint8 crtcID)
+ 
+ 	pll_setup_flags(pll, crtcID);
+ 		// set up any special flags
+-	pll_adjust(pll, mode, crtcID);
+-		// get any needed clock adjustments, set reference/post dividers
+-	pll_compute(pll);
+-		// compute dividers and spread spectrum
++	if (info.dceMajor != 11 || info.dceMinor != 2) {
++		// DCE 11.2 SetPixelClock calculates the dividers itself
++		pll_adjust(pll, mode, crtcID);
++			// get any needed clock adjustments, set reference/post dividers
++		pll_compute(pll);
++			// compute dividers and spread spectrum
++	}
+ 
+ 	uint8 tableMajor;
+ 	uint8 tableMinor;
+@@ -938,8 +941,10 @@ pll_set(display_mode* mode, uint8 crtcID)
+ 			args.v6.ucPpll = pll->id;
+ 			break;
+ 		case 7:
++			// 100Hz units, SetPixelClock v7 calculates the dividers and
++			// spread spectrum itself, so pass the unadjusted mode clock
+ 			args.v7.ulPixelClock
+-				= B_HOST_TO_LENDIAN_INT32(pll->pixelClock / 10);
++				= B_HOST_TO_LENDIAN_INT32(mode->timing.pixel_clock * 10);
+ 			args.v7.ucMiscInfo = 0;
+ 			if (gConnector[connectorIndex]->type == VIDEO_CONNECTOR_DVID
+ 				&& pll->pixelClock > 165000) {
+@@ -1261,6 +1266,29 @@ pll_pick(uint32 connectorIndex)
+ 
+ 	pll->id = ATOM_PPLL_INVALID;
+ 
++	// DCE 11.2, each PHY has its own PLL
++	if (info.dceMajor == 11 && info.dceMinor == 2) {
++		if (connector_is_dp(connectorIndex)) {
++			pll->id = ATOM_DP_DTO;
++			return B_OK;
++		}
++		switch (gConnector[connectorIndex]->encoder.objectID) {
++			case ENCODER_OBJECT_ID_INTERNAL_UNIPHY:
++				pll->id = linkB ? ATOM_COMBOPHY_PLL1 : ATOM_COMBOPHY_PLL0;
++				break;
++			case ENCODER_OBJECT_ID_INTERNAL_UNIPHY1:
++				pll->id = linkB ? ATOM_COMBOPHY_PLL3 : ATOM_COMBOPHY_PLL2;
++				break;
++			case ENCODER_OBJECT_ID_INTERNAL_UNIPHY2:
++				pll->id = linkB ? ATOM_COMBOPHY_PLL5 : ATOM_COMBOPHY_PLL4;
++				break;
++			default:
++				ERROR("%s: invalid encoder for DCE 11.2 PLL\n", __func__);
++				return B_ERROR;
++		}
++		return B_OK;
++	}
++
+ 	// DCE 6.1 APU, UNIPHYA requires PLL2
+ 	if (gConnector[connectorIndex]->encoder.objectID
+ 		== ENCODER_OBJECT_ID_INTERNAL_UNIPHY && !linkB) {
+-- 
+2.34.1
+
