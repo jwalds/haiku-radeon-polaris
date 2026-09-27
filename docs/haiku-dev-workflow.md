@@ -1,5 +1,9 @@
 # Development workflow on the Haiku test machine
 
+**Rule: Claude never reboots the Haiku machine.** Claude installs with
+`tools/haiku-install.sh --no-reboot` and then asks Jonathan to reboot; he
+also re-establishes the network after each boot.
+
 The RX 560 box (`192.168.137.55`) is both build host and test target.
 
 Source of truth is the minibook folder `haiku_gfx/`; the Haiku box holds full
@@ -43,7 +47,8 @@ radeon_hd wins on the next rescan ("devfs: reload driver" in syslog).
 Build commands over SSH must run in a login shell (`bash -lc`), otherwise
 `LIBRARY_PATH` is unset and the host `package` tool fails to find libbsd.
 
-then reboots. `tools/haiku-install.sh --remove` restores the stock setup.
+Always use `--no-reboot` (see rule above). `tools/haiku-install.sh --remove`
+restores the stock setup.
 
 ## If the screen stays black
 
