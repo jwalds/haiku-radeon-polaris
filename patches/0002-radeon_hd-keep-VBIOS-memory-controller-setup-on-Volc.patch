@@ -1,0 +1,72 @@
+From f597a53550943713c69c00336bee2d7d076d0145 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
+Date: Sun, 27 Sep 2026 19:20:21 +0000
+Subject: [PATCH 2/2] radeon_hd: keep VBIOS memory controller setup on Volcanic
+ Islands+
+
+* Polaris VBIOS places VRAM at 0xF400000000 (MC_VM_FB_LOCATION
+  0xf4fff400); read it like Linux gmc_v8 instead of assuming 0.
+* Don't reprogram the memory controller on VI+: the Avivo CRTC
+  registers used by radeon_gpu_mc_halt/resume map onto CSC and
+  matrix registers of CRTC0 on DCE 11.
+* GRPH_PRIMARY/SECONDARY_SURFACE_ADDRESS_HIGH is 8 bits wide.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01NqrEBcidivS5BSWVfbLqvu
+---
+ src/add-ons/accelerants/radeon_hd/display.cpp |  6 +++---
+ src/add-ons/accelerants/radeon_hd/gpu.cpp     | 11 ++++++++++-
+ 2 files changed, 13 insertions(+), 4 deletions(-)
+
+diff --git a/src/add-ons/accelerants/radeon_hd/display.cpp b/src/add-ons/accelerants/radeon_hd/display.cpp
+index f3e7f1680a..df66ca6642 100644
+--- a/src/add-ons/accelerants/radeon_hd/display.cpp
++++ b/src/add-ons/accelerants/radeon_hd/display.cpp
+@@ -837,12 +837,12 @@ display_crtc_fb_set(uint8 crtcID, display_mode* mode)
+ 
+ 	if (info.chipsetID >= RADEON_RV770) {
+ 		TRACE("%s: Set SurfaceAddress High: 0x%" B_PRIX32 "\n",
+-			__func__, (fbAddress >> 32) & 0xf);
++			__func__, (fbAddress >> 32) & 0xff);
+ 
+ 		Write32(OUT, regs->grphPrimarySurfaceAddrHigh,
+-			(fbAddress >> 32) & 0xf);
++			(fbAddress >> 32) & 0xff);
+ 		Write32(OUT, regs->grphSecondarySurfaceAddrHigh,
+-			(fbAddress >> 32) & 0xf);
++			(fbAddress >> 32) & 0xff);
+ 	}
+ 
+ 	TRACE("%s: Set SurfaceAddress: 0x%" B_PRIX64 "\n",
+diff --git a/src/add-ons/accelerants/radeon_hd/gpu.cpp b/src/add-ons/accelerants/radeon_hd/gpu.cpp
+index 4c3f03ac74..e81e9c282a 100644
+--- a/src/add-ons/accelerants/radeon_hd/gpu.cpp
++++ b/src/add-ons/accelerants/radeon_hd/gpu.cpp
+@@ -564,7 +564,9 @@ radeon_gpu_mc_init()
+ 	// This is the card internal location.
+ 	uint64 vramBase = 0;
+ 
+-	if ((info.chipsetFlags & CHIP_IGP) != 0) {
++	if ((info.chipsetFlags & CHIP_IGP) != 0
++		|| info.chipsetID >= RADEON_TOPAZ) {
++		// Volcanic Islands+ keep the VRAM location set by the VBIOS
+ 		vramBase = Read32(OUT, fbVMLocationReg) & 0xFFFF;
+ 		vramBase <<= 24;
+ 	}
+@@ -591,6 +593,13 @@ radeon_gpu_mc_setup()
+ 	TRACE("%s: vramStart: 0x%" B_PRIX64 ", vramEnd: 0x%" B_PRIX64 "\n",
+ 		__func__, gInfo->fb.vramStart, gInfo->fb.vramEnd);
+ 
++	if (info.chipsetID >= RADEON_TOPAZ) {
++		// TODO: The Avivo registers used by radeon_gpu_mc_halt and
++		// radeon_gpu_mc_resume are not valid on DCE 10+, leave the memory
++		// controller as the VBIOS programmed it.
++		return B_OK;
++	}
++
+ 	if (info.chipsetID >= RADEON_CAYMAN)
+ 		return radeon_gpu_mc_setup_evergreen();	// also for ni
+ 	else if (info.chipsetID >= RADEON_CEDAR)
+-- 
+2.34.1
+

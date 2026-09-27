@@ -19,12 +19,15 @@ BASE=$(cat "$ROOT/haiku-radeon-polaris/patches/BASE_COMMIT")
 $SSH "set -e
 cd ~
 if [ ! -d haiku/.git ]; then
-	git clone https://github.com/haiku/haiku.git haiku
+	if [ -d haiku-build/haiku/.git ]; then
+		# reuse the existing local clone's objects (hardlinked, independent)
+		git clone -q haiku-build/haiku haiku
+		git -C haiku remote set-url origin https://github.com/haiku/haiku.git
+	else
+		git clone https://github.com/haiku/haiku.git haiku
+	fi
 fi
-if [ ! -d buildtools/.git ]; then
-	git clone --depth 1 https://github.com/haiku/buildtools.git buildtools
-fi
-cd haiku; git cat-file -e $BASE^{commit} || git fetch origin
+cd haiku; git cat-file -e $BASE^{commit} 2>/dev/null || git fetch -q origin
 git config receive.denyCurrentBranch updateInstead
 cd ~
 if [ ! -d haiku-radeon-polaris/.git ]; then
