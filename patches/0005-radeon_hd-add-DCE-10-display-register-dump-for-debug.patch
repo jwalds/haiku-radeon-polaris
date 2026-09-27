@@ -1,0 +1,106 @@
+From 4592901fb2d9db493eb5f9dd364d1bd8eb4329d4 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
+Date: Sun, 27 Sep 2026 20:31:27 +0000
+Subject: [PATCH 5/5] radeon_hd: add DCE 10+ display register dump for
+ debugging
+
+Dumps non-zero display registers before and after the mode set in the
+same format as the Linux amdgpu captures.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01NqrEBcidivS5BSWVfbLqvu
+---
+ .../accelerants/radeon_hd/accelerant.cpp      |  1 +
+ src/add-ons/accelerants/radeon_hd/display.cpp | 38 +++++++++++++++++++
+ src/add-ons/accelerants/radeon_hd/display.h   |  1 +
+ src/add-ons/accelerants/radeon_hd/mode.cpp    |  1 +
+ 4 files changed, 41 insertions(+)
+
+diff --git a/src/add-ons/accelerants/radeon_hd/accelerant.cpp b/src/add-ons/accelerants/radeon_hd/accelerant.cpp
+index 0cd1df72ca..e70cfd8fd6 100644
+--- a/src/add-ons/accelerants/radeon_hd/accelerant.cpp
++++ b/src/add-ons/accelerants/radeon_hd/accelerant.cpp
+@@ -257,6 +257,7 @@ radeon_init_accelerant(int device)
+ 
+ 	// print found displays
+ 	debug_displays();
++	debug_display_registers("vbios state");
+ 
+ 	// create initial list of video modes
+ 	status = create_mode_list();
+diff --git a/src/add-ons/accelerants/radeon_hd/display.cpp b/src/add-ons/accelerants/radeon_hd/display.cpp
+index df66ca6642..b5c747b480 100644
+--- a/src/add-ons/accelerants/radeon_hd/display.cpp
++++ b/src/add-ons/accelerants/radeon_hd/display.cpp
+@@ -454,6 +454,44 @@ debug_displays()
+ }
+ 
+ 
++/*! Dump the non-zero display registers of DCE 10+ in the same
++	"dword-index value" format as the Linux amdgpu captures, so the two
++	can be compared directly.
++*/
++void
++debug_display_registers(const char* stage)
++{
++	radeon_shared_info &info = *gInfo->shared_info;
++	if (info.dceMajor < 10)
++		return;
++
++	// dword index ranges, matching tools/linux-capture.sh
++	static const uint32 kRanges[][2] = {
++		{0x00c0, 0x0100},	// VGA
++		{0x0800, 0x0820},	// MC_VM
++		{0x0b00, 0x0b10},	// HDP
++		{0x1500, 0x1540},	// BIF
++		{0x1a00, 0x1c00},	// CRTC0 pipe
++		{0x4800, 0x5200},	// DIG, HPD, AUX, PHY
++		{0x0100, 0x0200},	// DCCG, PLL
++		{0x0300, 0x0400}	// DMIF, DCFE
++	};
++
++	TRACE("%s: begin %s\n", __func__, stage);
++	for (uint32 range = 0; range < B_COUNT_OF(kRanges); range++) {
++		for (uint32 index = kRanges[range][0]; index < kRanges[range][1];
++				index++) {
++			uint32 value = Read32(OUT, index * 4);
++			if (value != 0) {
++				TRACE("regdump 0x%04" B_PRIx32 " 0x%08" B_PRIx32 "\n",
++					index, value);
++			}
++		}
++	}
++	TRACE("%s: end %s\n", __func__, stage);
++}
++
++
+ uint32
+ display_get_encoder_mode(uint32 connectorIndex)
+ {
+diff --git a/src/add-ons/accelerants/radeon_hd/display.h b/src/add-ons/accelerants/radeon_hd/display.h
+index 5676bbdb58..fb77ae5f25 100644
+--- a/src/add-ons/accelerants/radeon_hd/display.h
++++ b/src/add-ons/accelerants/radeon_hd/display.h
+@@ -19,6 +19,7 @@ status_t init_registers(register_info* reg, uint8 crtid);
+ status_t detect_crt_ranges(uint32 crtid);
+ status_t detect_displays();
+ void debug_displays();
++void debug_display_registers(const char* stage);
+ 
+ uint32 display_get_encoder_mode(uint32 connectorIndex);
+ void display_crtc_ss(pll_info* pll, int command);
+diff --git a/src/add-ons/accelerants/radeon_hd/mode.cpp b/src/add-ons/accelerants/radeon_hd/mode.cpp
+index 664e3fe9d3..efc7a97ef1 100644
+--- a/src/add-ons/accelerants/radeon_hd/mode.cpp
++++ b/src/add-ons/accelerants/radeon_hd/mode.cpp
+@@ -236,6 +236,7 @@ radeon_set_display_mode(display_mode* mode)
+ 
+ 	#ifdef TRACE_MODE
+ 	// for debugging
++	debug_display_registers("after mode set");
+ 	debug_dp_info();
+ 
+ 	TRACE("D1CRTC_STATUS        Value: 0x%X\n",
+-- 
+2.34.1
+
