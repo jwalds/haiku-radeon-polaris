@@ -1,0 +1,3597 @@
+options = 0
+No APM available.
+smp: using ACPI to detect MP configuration
+smp: local apic address is 0xfee00000
+smp: found local APIC with id 0
+smp: found local APIC with id 2
+smp: found local APIC with id 4
+smp: found local APIC with id 6
+smp: found io APIC with id 2 and address 0xfec00000
+VESA version = 3.0, capabilities 1
+OEM string: AMD ATOMBIOS
+ 0x110: 640 x 480 x 16 (a = 187, mem = 6, phy = e0000000, p = 1, b = 1)
+	mask: r: 5 10 g: 5 5 b: 5 0 dcmi: 0
+ 0x111: 640 x 480 x 16 (a = 187, mem = 6, phy = e0000000, p = 1, b = 1)
+	mask: r: 5 11 g: 6 5 b: 5 0 dcmi: 0
+ 0x113: 800 x 600 x 16 (a = 187, mem = 6, phy = e0000000, p = 1, b = 1)
+	mask: r: 5 10 g: 5 5 b: 5 0 dcmi: 0
+ 0x114: 800 x 600 x 16 (a = 187, mem = 6, phy = e0000000, p = 1, b = 1)
+	mask: r: 5 11 g: 6 5 b: 5 0 dcmi: 0
+ 0x116: 1024 x 768 x 16 (a = 187, mem = 6, phy = e0000000, p = 1, b = 1)
+	mask: r: 5 10 g: 5 5 b: 5 0 dcmi: 0
+ 0x117: 1024 x 768 x 16 (a = 187, mem = 6, phy = e0000000, p = 1, b = 1)
+	mask: r: 5 11 g: 6 5 b: 5 0 dcmi: 0
+ 0x119: 1280 x 1024 x 16 (a = 187, mem = 6, phy = e0000000, p = 1, b = 1)
+	mask: r: 5 10 g: 5 5 b: 5 0 dcmi: 0
+ 0x11a: 1280 x 1024 x 16 (a = 187, mem = 6, phy = e0000000, p = 1, b = 1)
+	mask: r: 5 11 g: 6 5 b: 5 0 dcmi: 0
+ 0x165: 1280 x 960 x 16 (a = 187, mem = 6, phy = e0000000, p = 1, b = 1)
+	mask: r: 5 11 g: 6 5 b: 5 0 dcmi: 0
+ 0x166: 1280 x 960 x 32 (a = 187, mem = 6, phy = e0000000, p = 1, b = 1)
+	mask: r: 8 16 g: 8 8 b: 8 0 dcmi: 0
+ 0x121: 640 x 480 x 32 (a = 187, mem = 6, phy = e0000000, p = 1, b = 1)
+	mask: r: 8 16 g: 8 8 b: 8 0 dcmi: 0
+ 0x122: 800 x 600 x 32 (a = 187, mem = 6, phy = e0000000, p = 1, b = 1)
+	mask: r: 8 16 g: 8 8 b: 8 0 dcmi: 0
+ 0x123: 1024 x 768 x 32 (a = 187, mem = 6, phy = e0000000, p = 1, b = 1)
+	mask: r: 8 16 g: 8 8 b: 8 0 dcmi: 0
+ 0x124: 1280 x 1024 x 32 (a = 187, mem = 6, phy = e0000000, p = 1, b = 1)
+	mask: r: 8 16 g: 8 8 b: 8 0 dcmi: 0
+ 0x145: 1400 x 1050 x 16 (a = 186, mem = 6, phy = e0000000, p = 1, b = 1)
+	mask: r: 5 11 g: 6 5 b: 5 0 dcmi: 0
+ 0x146: 1400 x 1050 x 32 (a = 186, mem = 6, phy = e0000000, p = 1, b = 1)
+	mask: r: 8 16 g: 8 8 b: 8 0 dcmi: 0
+ 0x175: 1600 x 1200 x 16 (a = 186, mem = 6, phy = e0000000, p = 1, b = 1)
+	mask: r: 5 11 g: 6 5 b: 5 0 dcmi: 0
+ 0x176: 1600 x 1200 x 32 (a = 186, mem = 6, phy = e0000000, p = 1, b = 1)
+	mask: r: 8 16 g: 8 8 b: 8 0 dcmi: 0
+ 0x1a5: 1920 x 1080 x 16 (a = 186, mem = 6, phy = e0000000, p = 1, b = 1)
+	mask: r: 5 11 g: 6 5 b: 5 0 dcmi: 0
+ 0x1a6: 1920 x 1080 x 32 (a = 186, mem = 6, phy = e0000000, p = 1, b = 1)
+	mask: r: 8 16 g: 8 8 b: 8 0 dcmi: 0
+ 0x1a0: 1920 x 1200 x 16 (a = 186, mem = 6, phy = e0000000, p = 1, b = 1)
+	mask: r: 5 11 g: 6 5 b: 5 0 dcmi: 0
+ 0x1a1: 1920 x 1200 x 32 (a = 186, mem = 6, phy = e0000000, p = 1, b = 1)
+	mask: r: 8 16 g: 8 8 b: 8 0 dcmi: 0
+ 0x1a2: 1920 x 1440 x 16 (a = 186, mem = 6, phy = e0000000, p = 1, b = 1)
+	mask: r: 5 11 g: 6 5 b: 5 0 dcmi: 0
+ 0x1a3: 1920 x 1440 x 32 (a = 186, mem = 6, phy = e0000000, p = 1, b = 1)
+	mask: r: 8 16 g: 8 8 b: 8 0 dcmi: 0
+ 0x1d2: 2560 x 1440 x 16 (a = 186, mem = 6, phy = e0000000, p = 1, b = 1)
+	mask: r: 5 11 g: 6 5 b: 5 0 dcmi: 0
+ 0x1d4: 2560 x 1440 x 32 (a = 186, mem = 6, phy = e0000000, p = 1, b = 1)
+	mask: r: 8 16 g: 8 8 b: 8 0 dcmi: 0
+Using mode 0x123
+VESA compatible graphics!
+EDID1: 4f
+EDID2: ebx 102
+EDID3: 4f
+EDID info:
+  EDID version: 1.3
+  Vendor: DUS Product ID: 0x2700
+  Serial #: 1
+  Produced in week/year: 36/2018
+  Type: Digital
+  Size: 60 cm x 33 cm
+  Gamma=2.2
+  Red (X,Y)=(0.644,0.328)
+  Green (X,Y)=(0.296,0.62)
+  Blue (X,Y)=(0.147,0.057)
+  White (X,Y)=(0.312,0.328)
+Supported Future Video Modes:
+1280x720@60Hz (id=49281)
+1280x960@60Hz (id=16513)
+1280x1024@60Hz (id=32897)
+1600x1200@60Hz (id=16553)
+1920x1080@60Hz (id=49361)
+1920x1080@75Hz (id=53201)
+Supported VESA Video Modes:
+720x400@70Hz
+640x480@60Hz
+640x480@75Hz
+800x600@60Hz
+800x600@75Hz
+1024x768@60Hz
+1024x768@70Hz
+1024x768@75Hz
+1280x1024@75Hz
+Additional Video Mode (2560x1440@59Hz):
+clock=241.5 MHz
+h: (2560, 2608, 2640, 2720)
+v: (1440, 1443, 1448, 1481)
+size: 59.7 cm x 33.6 cm
+border: 0 cm x 0 cm
+Additional Video Mode (2560x1440@74Hz):
+clock=329.79 MHz
+h: (2560, 2608, 2640, 2920)
+v: (1440, 1442, 1447, 1506)
+size: 59.7 cm x 33.6 cm
+border: 0 cm x 0 cm
+Monitor Name: D27QO
+Horizontal frequency range = 30..113 kHz
+Vertical frequency range = 56..76 Hz
+Maximum pixel clock = 340 MHz
+Extension blocks: 1
+Welcome to the Haiku boot loader!
+Haiku revision: hrev60147
+number of drives: 1
+add_partitions_for(0x001012f8, mountFS = no)
+add_partitions_for(fd = 0, mountFS = no)
+0x00101460 Partition::Partition
+0x00101460 Partition::Scan()
+check for partitioning_system: GUID Partition Map
+EFI header: EFI PART
+EFI revision: 10000
+header size: 92
+header CRC: 745398a6
+absolute block: 1
+alternate block: 1465149167
+first usable block: 34
+last usable block: 1465149134
+disk GUID: 28c1216e-7db9-f84d-b022-a2cf212b4001
+entries block: 2
+entry size:  128
+entry count: 128
+entries CRC: 2f45f20
+EFI header: EFI PART
+EFI revision: 10000
+header size: 92
+header CRC: e8530e15
+absolute block: 1465149167
+alternate block: 1
+first usable block: 34
+last usable block: 1465149134
+disk GUID: 28c1216e-7db9-f84d-b022-a2cf212b4001
+entries block: 1465149135
+entry size:  128
+entry count: 128
+entries CRC: 2f45f20
+[  0] partition type: c12a7328-f81f-11d2-ba4b-00a0c93ec93b
+      unique id: 316dc1ef-63cc-9442-995e-d85e882b3d77
+      start block: 40
+      end block: 204839
+      size: 99.999 MB
+      attributes: 0
+      name: ESP
+[  1] partition type: 42465331-3ba3-10f1-802a-4861696b7521
+      unique id: 176148cc-9e3e-7245-92c5-5ba14613e3ba
+      start block: 204840
+      end block: 1465147431
+      size: 715303.999 MB
+      attributes: 0
+      name: Haiku
+  priority: 959
+check for partitioning_system: Intel Partition Map
+intel: Found GPT signature, ignoring.
+check for partitioning_system: Intel Extended Partition
+efi_gpt_scan_partition(cookie = 0x00101510)
+0x001055e8 Partition::Partition
+0x00101460 Partition::AddChild 0x001055e8
+0x001055e8 Partition::SetParent 0x00101460
+new child partition!
+0x001056a8 Partition::Partition
+0x00101460 Partition::AddChild 0x001056a8
+0x001056a8 Partition::SetParent 0x00101460
+new child partition!
+0x00101460 Partition::Scan(): scan child 0x001055e8 (start = 20480, size = 104857600, parent = 0x00101460)!
+0x001055e8 Partition::Scan()
+check for partitioning_system: GUID Partition Map
+check for partitioning_system: Intel Partition Map
+check for partitioning_system: Intel Extended Partition
+0x00101460 Partition::Scan(): scan child 0x001056a8 (start = 104878080, size = 750050607104, parent = 0x00101460)!
+0x001056a8 Partition::Scan()
+check for partitioning_system: GUID Partition Map
+check for partitioning_system: Intel Partition Map
+check for partitioning_system: Intel Extended Partition
+0x00101460 Partition::~Partition
+0x001055e8 Partition::SetParent 0x00000000
+0x001056a8 Partition::SetParent 0x00000000
+boot partition offset: 104878080
+0x001056a8 Partition::_Mount check for file_system: BFS Filesystem
+PackageVolumeInfo::SetTo()
+load kernel kernel_x86_64...
+video mode: 1280x1024x32
+ucode_load: system/non-packaged/data/firmware/intel-ucode/06-2a-07
+ucode_load: couldn't find microcode
+smp: found 4 cpus
+smp: apic_phys = 0xfee00000
+smp: ioapic_phys = 0xfec00000
+smp: apic (mapped) = 0x81e34000
+GDT at 0x5fe80
+phys memory ranges:
+    base 0x0000000000100000, length 0x00000000dea8e000
+    base 0x00000000df409000, length 0x00000000003f7000
+    base 0x0000000100000000, length 0x000000011f000000
+allocated phys memory ranges:
+    base 0x0000000000100000, length 0x0000000000181000
+    base 0x0000000000800000, length 0x0000000000b0d000
+    base 0x0000000003f00000, length 0x0000000000100000
+allocated virt memory ranges:
+    base 0xffffffff80000000, length 0x0000000001ec2000
+maximum boot loader heap usage: 815440, currently used: 586408
+kernel args ranges:
+    base 0xffffffff81109000, length 0x0000000000080000
+    base 0xffffffff816d6000, length 0x0000000000080000
+    base 0xffffffff81ba4000, length 0x0000000000080000
+    base 0xffffffff81e41000, length 0x0000000000080000
+kernel entry at 0xffffffff8006b200
+Welcome to kernel debugger output!
+Haiku revision: hrev60147, debug level: 2
+CPU: no microcode provided
+CPU: TSC frequency calibrated via PIT: 1427006
+CPU 0: type 0 family 6 extended_family 0 model 10 extended_model 2 stepping 7, string 'GenuineIntel'
+CPU 0: vendor 'Intel' model name 'Intel(R) Core(TM) i5-2320 CPU @ 3.00GHz'
+CPU 0: apic id 0, package 0, core 0, smt 0
+CPU 0: cache sharing: L1 id 0, L2 id 0, L3 id 0
+CPU 0: features: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clfsh ds acpi mmx fxsr sse sse2 ss htt tm pbe sse3 pclmulqdq dtes64 monitor dscpl vmx est tm2 ssse3 cx16 xtpr pdcm pcid sse4_1 sse4_2 popcnt tscdeadline aes xsave avx syscall nx long dts itb arat pln ecmd ptm aperfmperf epb constant_tsc xsaveopt 
+CPU 0: patch_level 0x26
+using PAT for memory type configuration
+PAT MSR on CPU 0 before init: 0x7040600070406
+PAT MSR on CPU 0 after init: 0x7040100070406
+reserve_io_interrupt_vectors: reserved 16 vectors starting from 0
+kernel malloc: using slab_heap
+mark_page_range_in_use(0x0, 0x100): start page is before free list
+mark_page_range_in_use(0x0, 0xa0): start page is before free list
+Welcome to syslog debug output!
+Haiku revision: hrev60147
+arch_altcodepatch_replace found 2 altcodepatches for tag 3
+arch_altcodepatch_replace found 5 altcodepatches for tag 4
+arch_altcodepatch_replace found 4 altcodepatches for tag 5
+enable XSAVE 0x7 832
+CPU 2: type 0 family 6 extended_family 0 model 10 extended_model 2 stepping 7, string 'GenuineIntel'
+CPU 3: type 0 family 6 extended_family 0 model 10 extended_model 2 stepping 7, string 'GenuineIntel'
+CPU 1: type 0 family 6 extended_family 0 model 10 extended_model 2 stepping 7, string 'GenuineIntel'
+CPU 3: vendor 'Intel' model name 'Intel(R) Core(TM) i5-2320 CPU @ 3.00GHz'
+CPU 2: vendor 'Intel' model name 'Intel(R) Core(TM) i5-2320 CPU @ 3.00GHz'
+CPU 1: vendor 'Intel' model name 'Intel(R) Core(TM) i5-2320 CPU @ 3.00GHz'
+CPU 3: apic id 6, package 0, core 3, smt 0
+CPU 2: apic id 4, package 0, core 2, smt 0
+CPU 3: cache sharing: L1 id 6, L2 id 6, L3 id 0
+CPU 1: apic id 2, package 0, core 1, smt 0
+CPU 3: patch_level 0x26
+CPU 2: cache sharing: L1 id 4, L2 id 4, L3 id 0
+CPU 1: cache sharing: L1 id 2, L2 id 2, L3 id 0
+CPU 2: patch_level 0x26
+CPU 1: patch_level 0x26
+PAT MSR on CPU 1 before init: 0x7040600070406
+PAT MSR on CPU 3 before init: 0x7040600070406
+PAT MSR on CPU 2 before init: 0x7040600070406
+PAT MSR on CPU 1 after init: 0x7040100070406
+PAT MSR on CPU 3 after init: 0x7040100070406
+PAT MSR on CPU 2 after init: 0x7040100070406
+reserve_io_interrupt_vectors: reserved 3 vectors starting from 221
+APIC timer frequency: 100326888
+reserve_io_interrupt_vectors: reserved 1 vectors starting from 219
+arch_init_timer: using APIC timer.
+allocate_commpage_entry(2, 16) -> 0x0000000000000200
+scheduler_init: found 4 logical cpus and 3 cache levels
+scheduler switches: single core: false, cpu load tracking: false, core load tracking: true
+scheduler: switching to low latency mode
+msi support enabled
+PCI: pci_module_init
+ACPI: RSDP 0x00000000000F0450 000024 (v02 ALASKA)
+ACPI: XSDT 0x00000000DF395070 00005C (v01 ALASKA A M I    01072009 AMI  00010013)
+ACPI: FACP 0x00000000DF39F918 0000F4 (v04 ALASKA A M I    01072009 AMI  00010013)
+ACPI: DSDT 0x00000000DF395168 00A7B0 (v02 ALASKA A M I    00000015 INTL 20051117)
+ACPI: FACS 0x00000000DF3BFF80 000040
+ACPI: APIC 0x00000000DF39FA10 000072 (v03 ALASKA A M I    01072009 AMI  00010013)
+ACPI: MCFG 0x00000000DF39FA88 00003C (v01 ALASKA A M I    01072009 MSFT 00000097)
+ACPI: HPET 0x00000000DF39FAC8 000038 (v01 ALASKA A M I    01072009 AMI. 00000005)
+ACPI: SSDT 0x00000000DF39FB00 00036D (v01 SataRe SataTabl 00001000 INTL 20091112)
+ACPI: SSDT 0x00000000DF39FE70 0009AA (v01 PmRef  Cpu0Ist  00003000 INTL 20051117)
+ACPI: SSDT 0x00000000DF3A0820 000A92 (v01 PmRef  CpuPm    00003000 INTL 20051117)
+smbios_scan
+found System Information at 0xffffffff82224042
+found vendor 1 product 2
+smbios_scan found vendor System manufacturer product System Product Name
+ACPI: Forced DSDT copy: length 0x0A7B0 copied locally, original unmapped
+ACPI: 4 ACPI AML tables successfully acquired and loaded
+ACPI: Enabled 10 GPEs in block 00 to 3F
+found io-apic with address 0xfec00000, global interrupt base 0, apic-id 2
+mapping io-apic 0 at physical address 0xfec00000
+io-apic 0 has range 0-23, 24 entries, version 0x00170020, apic-id 2
+setting ACPI interrupt model to APIC
+found interrupt override for bus 0, source irq 0, global irq 2, flags 0x00000000
+found interrupt override for bus 0, source irq 9, global irq 9, flags 0x0000000d
+free_io_interrupt_vectors: freeing 16 vectors starting from 0
+reserve_io_interrupt_vectors: reserved 24 vectors starting from 0
+using io-apics for interrupt routing
+slab memory manager: created area 0xffffffff80801000 (225)
+allocate_commpage_entry(3, 69) -> 0x0000000000000210
+slab memory manager: created area 0xffffffff8e001000 (226)
+publish device: node 0xffffffff82150820, path acpi/namespace, module bus_managers/acpi/namespace/device_v1
+publish device: node 0xffffffff82150820, path acpi/call, module bus_managers/acpi/call/device_v1
+registering power button
+publish device: node 0xffffffff82151900, path power/embedded_controller/0, module drivers/power/acpi_embedded_controller/device_v1
+EC: can't evaluate _GPE General system error
+driver drivers/power/acpi_embedded_controller/driver_v1 init failed: Device not accessible
+initialize PCI controller from ACPI
+PCI: range from ACPI [0(1),3e(1)] with length 3f
+PCI: range from ACPI [0(1),cf7(1)] with length cf8
+PCI: range from ACPI [d00(1),ffff(1)] with length f300
+PCI: range from ACPI [a0000(1),bffff(1)] with length 20000
+PCI: range from ACPI [c0000(1),c3fff(1)] with length 0
+PCI: Fixup invalid length from ACPI!
+PCI: range from ACPI [c4000(1),c7fff(1)] with length 0
+PCI: Fixup invalid length from ACPI!
+PCI: range from ACPI [c8000(1),cbfff(1)] with length 0
+PCI: Fixup invalid length from ACPI!
+PCI: range from ACPI [cc000(1),cffff(1)] with length 0
+PCI: Fixup invalid length from ACPI!
+PCI: range from ACPI [d0000(1),d3fff(1)] with length 4000
+PCI: range from ACPI [d4000(1),d7fff(1)] with length 4000
+PCI: range from ACPI [d8000(1),dbfff(1)] with length 4000
+PCI: range from ACPI [dc000(1),dffff(1)] with length 4000
+PCI: range from ACPI [e0000(1),e3fff(1)] with length 4000
+PCI: range from ACPI [e4000(1),e7fff(1)] with length 4000
+PCI: range from ACPI [e8000(1),ebfff(1)] with length 0
+PCI: Fixup invalid length from ACPI!
+PCI: range from ACPI [ec000(1),effff(1)] with length 0
+PCI: Fixup invalid length from ACPI!
+PCI: range from ACPI [f0000(1),fffff(1)] with length 0
+PCI: Fixup invalid length from ACPI!
+PCI: range from ACPI [e0000000(1),feafffff(1)] with length 1eb00000
+PCI: range from ACPI [10000(1),1ffff(1)] with length 0
+PCI: Fixup invalid length from ACPI!
+PCI: mechanism addr: f8000000, seg: 0, start: 0, end: 3f
+PCI: FixupDevices: checking bus 1 behind 8086:0101
+PCI: FixupDevices: checking bus 2 behind 8086:1c10
+PCI: FixupDevices: checking bus 3 behind 8086:1c1a
+PCI: FixupDevices: checking bus 4 behind 8086:1c1c
+PCI: FixupDevices: checking bus 5 behind 8086:244e
+PCI: FixupDevices: checking bus 6 behind 1b21:1080
+PCI: dom 0, bus 0, dev  1, func 0, changed PCI bridge control from 0x0018 to 0x001b
+PCI: dom 0, bus 0, dev 28, func 0, changed PCI bridge control from 0x0010 to 0x0013
+PCI: dom 0, bus 0, dev 28, func 5, changed PCI bridge control from 0x0010 to 0x0013
+PCI: dom 0, bus 0, dev 28, func 6, changed PCI bridge control from 0x0010 to 0x0013
+PCI: dom 0, bus 0, dev 28, func 7, changed PCI bridge control from 0x0010 to 0x0013
+PCI: dom 0, bus 5, dev  0, func 0, changed PCI bridge control from 0x0010 to 0x0833
+IRQ routing table with 16 entries
+address 0x1fffff; pin 1; GSI 19; pci 0:31 pin 2 func mask 4; bios irq: 3; gsi 19; config 0x03
+address 0x1fffff; pin 2; GSI 18; pci 0:31 pin 3 func mask 8; bios irq: 11; gsi 18; config 0x03
+address 0x1dffff; pin 0; GSI 23; pci 0:29 pin 1 func mask 1; bios irq: 10; gsi 23; config 0x03
+address 0x1bffff; pin 0; GSI 22; pci 0:27 pin 1 func mask 1; bios irq: 5; gsi 22; config 0x03
+address 0x1cffff; pin 0; GSI 16; pci 0:28 pin 1 func mask 1; bios irq: 11; gsi 16; config 0x03
+address 0x1cffff; pin 1; GSI 17; pci 0:28 pin 2 func mask 20; bios irq: 10; gsi 17; config 0x03
+address 0x1cffff; pin 2; GSI 18; pci 0:28 pin 3 func mask 40; bios irq: 11; gsi 18; config 0x03
+address 0x1cffff; pin 3; GSI 19; pci 0:28 pin 4 func mask 80; bios irq: 3; gsi 19; config 0x03
+address 0x1ffff; pin 0; GSI 16; pci 0:1 pin 1 func mask 1; bios irq: 11; gsi 16; config 0x03
+address 0x1affff; pin 0; GSI 23; pci 0:26 pin 1 func mask 1; bios irq: 10; gsi 23; config 0x03
+address 0x16ffff; pin 0; GSI 21; pci 0:22 pin 1 func mask 1; bios irq: 5; gsi 21; config 0x03
+address 0xffff; pin 0; GSI 17; pci 3:0 pin 1 func mask 1; bios irq: 10; gsi 17; config 0x03
+address 0xffff; pin 0; GSI 18; pci 4:0 pin 1 func mask 1; bios irq: 11; gsi 18; config 0x03
+address 0xffff; pin 0; GSI 16; pci 1:0 pin 1 func mask 1; bios irq: 11; gsi 16; config 0x03
+address 0xffff; pin 1; GSI 17; pci 1:0 pin 2 func mask 2; bios irq: 10; gsi 17; config 0x03
+address 0xffff; pin 0; GSI 19; pci 5:0 pin 1 func mask 1; bios irq: 3; gsi 19; config 0x03
+PCI: [dom 0, bus  0] bus   0, device  0, function  0: vendor 8086, device 0100, revision 09
+PCI:   class_base 06, class_function 00, class_api 00
+PCI:   vendor 8086: Intel Corporation
+PCI:   device 0100: 2nd Generation Core Processor Family DRAM Controller (P8P67/P8H67 Series Motherboard)
+PCI:   info: Bridge (Host bridge)
+PCI:   line_size 00, latency 00, header_type 00, BIST 00
+PCI:   ROM base host 00000000, pci 00000000, size 00000000
+PCI:   cardbus_CIS 00000000, subsystem_id 844d, subsystem_vendor_id 1043
+PCI:   interrupt_line 00, interrupt_pin 00, min_grant 00, max_latency 00
+PCI:   base reg 0: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 1: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 2: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 3: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 4: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 5: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   Capabilities: vendspec
+PCI: [dom 0, bus  0] bus   0, device  1, function  0: vendor 8086, device 0101, revision 09
+PCI:   class_base 06, class_function 04, class_api 00
+PCI:   vendor 8086: Intel Corporation
+PCI:   device 0101: Xeon E3-1200/2nd Generation Core Processor Family PCI Express Root Port
+PCI:   info: Bridge (PCI bridge, Normal decode)
+PCI:   line_size 10, latency 00, header_type 81, BIST 00
+PCI:   subsystem_id 0000, subsystem_vendor_id 0088
+PCI:   primary_bus 00, secondary_bus 01, subordinate_bus 01, secondary_latency 00
+PCI:   I/O window e000-efff
+PCI:   memory window f7e00000-f7efffff
+PCI:   prefetchable memory window 00000000e0000000-00000000f01fffff
+PCI:   bridge_control 001b, secondary_status 2000
+PCI:   interrupt_line 10, interrupt_pin 01
+PCI:   ROM base host 00000000, pci 00000000, size ??
+PCI:   base reg 0: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 1: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   Capabilities: subvendor, PM, MSI, PCIe
+PCI:   Extended capabilities: Virtual Channel, Root Complex Link Declaration
+PCI: [dom 0, bus  1] bus   1, device  0, function  0: vendor 1002, device 67ef, revision cf
+PCI:   class_base 03, class_function 00, class_api 00
+PCI:   vendor 1002: Advanced Micro Devices, Inc. [AMD/ATI]
+PCI:   device 67ef: Baffin [Radeon RX 460/560D / Pro 450/455/460/555/555X/560/560X]
+PCI:   info: Display controller (VGA compatible controller, VGA controller)
+PCI:   line_size 10, latency 00, header_type 80, BIST 00
+PCI:   ROM base host f7e40000, pci f7e40000, size 00020000
+PCI:   cardbus_CIS 00000000, subsystem_id 3000, subsystem_vendor_id 1787
+PCI:   interrupt_line 10, interrupt_pin 01, min_grant 00, max_latency 00
+PCI:   base reg 0: host 00000000e0000000, pci 00000000e0000000, size 10000000, flags 0c 00
+PCI:   base reg 2: host 00000000f0000000, pci 00000000f0000000, size 00200000, flags 0c 00
+PCI:   base reg 4: host 0000e000, pci 0000e000, size 00000100, flags 01
+PCI:   base reg 5: host f7e00000, pci f7e00000, size 00040000, flags 00
+PCI:   Capabilities: vendspec, PM, PCIe, MSI
+PCI:   Extended capabilities: Vendor Unique, Advanced Error Reporting, Resizable Bar, Secondary PCIe, Address Translation Services, Page Request, Process Address Space Id, Latency Tolerance Reporting, Alternative Routing Id Interpretation, L1 Power Management Substates
+PCI: [dom 0, bus  1] bus   1, device  0, function  1: vendor 1002, device aae0, revision 00
+PCI:   class_base 04, class_function 03, class_api 00
+PCI:   vendor 1002: Advanced Micro Devices, Inc. [AMD/ATI]
+PCI:   device aae0: Baffin HDMI/DP Audio [Radeon RX 550 640SP / RX 560/560X]
+PCI:   info: Multimedia controller (Audio device)
+PCI:   line_size 10, latency 00, header_type 80, BIST 00
+PCI:   ROM base host 00000000, pci 00000000, size 00000000
+PCI:   cardbus_CIS 00000000, subsystem_id aae0, subsystem_vendor_id 1787
+PCI:   interrupt_line 11, interrupt_pin 02, min_grant 00, max_latency 00
+PCI:   base reg 0: host 00000000f7e60000, pci 00000000f7e60000, size 00004000, flags 04 00
+PCI:   base reg 2: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 3: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 4: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 5: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   Capabilities: vendspec, PM, PCIe, MSI
+PCI:   Extended capabilities: Vendor Unique, Advanced Error Reporting, Alternative Routing Id Interpretation
+PCI: [dom 0, bus  0] bus   0, device 22, function  0: vendor 8086, device 1c3a, revision 04
+PCI:   class_base 07, class_function 80, class_api 00
+PCI:   vendor 8086: Intel Corporation
+PCI:   device 1c3a: 6 Series/C200 Series Chipset Family MEI Controller #1 (P8 series motherboard)
+PCI:   info: Communication controller
+PCI:   line_size 00, latency 00, header_type 80, BIST 00
+PCI:   ROM base host 00000000, pci 00000000, size 00000000
+PCI:   cardbus_CIS 00000000, subsystem_id 844d, subsystem_vendor_id 1043
+PCI:   interrupt_line 15, interrupt_pin 01, min_grant 00, max_latency 00
+PCI:   base reg 0: host 00000000f7f0b000, pci 00000000f7f0b000, size 00000010, flags 04 00
+PCI:   base reg 2: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 3: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 4: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 5: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   Capabilities: PM, MSI
+PCI: [dom 0, bus  0] bus   0, device 26, function  0: vendor 8086, device 1c2d, revision 05
+PCI:   class_base 0c, class_function 03, class_api 20
+PCI:   vendor 8086: Intel Corporation
+PCI:   device 1c2d: 6 Series/C200 Series Chipset Family USB Enhanced Host Controller #2 (P8 series motherboard)
+PCI:   info: Serial bus controller (USB controller, EHCI)
+PCI:   line_size 00, latency 00, header_type 00, BIST 00
+PCI:   ROM base host 00000000, pci 00000000, size 00000000
+PCI:   cardbus_CIS 00000000, subsystem_id 844d, subsystem_vendor_id 1043
+PCI:   interrupt_line 17, interrupt_pin 01, min_grant 00, max_latency 00
+PCI:   base reg 0: host f7f08000, pci f7f08000, size 00000400, flags 00
+PCI:   base reg 1: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 2: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 3: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 4: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 5: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   Capabilities: PM, DebugPort, AdvancedFeatures
+PCI: [dom 0, bus  0] bus   0, device 27, function  0: vendor 8086, device 1c20, revision 05
+PCI:   class_base 04, class_function 03, class_api 00
+PCI:   vendor 8086: Intel Corporation
+PCI:   device 1c20: 6 Series/C200 Series Chipset Family High Definition Audio Controller
+PCI:   info: Multimedia controller (Audio device)
+PCI:   line_size 10, latency 00, header_type 00, BIST 00
+PCI:   ROM base host 00000000, pci 00000000, size 00000000
+PCI:   cardbus_CIS 00000000, subsystem_id 8444, subsystem_vendor_id 1043
+PCI:   interrupt_line 16, interrupt_pin 01, min_grant 00, max_latency 00
+PCI:   base reg 0: host 00000000f7f00000, pci 00000000f7f00000, size 00004000, flags 04 00
+PCI:   base reg 2: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 3: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 4: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 5: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   Capabilities: PM, MSI, PCIe
+PCI:   Extended capabilities: Virtual Channel, Root Complex Link Declaration
+PCI: [dom 0, bus  0] bus   0, device 28, function  0: vendor 8086, device 1c10, revision b5
+PCI:   class_base 06, class_function 04, class_api 00
+PCI:   vendor 8086: Intel Corporation
+PCI:   device 1c10: 6 Series/C200 Series Chipset Family PCI Express Root Port 1
+PCI:   info: Bridge (PCI bridge, Normal decode)
+PCI:   line_size 10, latency 00, header_type 81, BIST 00
+PCI:   subsystem_id 0000, subsystem_vendor_id 0040
+PCI:   primary_bus 00, secondary_bus 02, subordinate_bus 02, secondary_latency 00
+PCI:   I/O window f000-0fff
+PCI:   memory window fff00000-000fffff
+PCI:   prefetchable memory window 00000000fff00000-00000000000fffff
+PCI:   bridge_control 0013, secondary_status 2000
+PCI:   interrupt_line 10, interrupt_pin 01
+PCI:   ROM base host 00000000, pci 00000000, size ??
+PCI:   base reg 0: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 1: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   Capabilities: PCIe, MSI, subvendor, PM
+PCI:   Extended capabilities: (empty list)
+PCI: [dom 0, bus  0] bus   0, device 28, function  5: vendor 8086, device 1c1a, revision b5
+PCI:   class_base 06, class_function 04, class_api 00
+PCI:   vendor 8086: Intel Corporation
+PCI:   device 1c1a: 6 Series/C200 Series Chipset Family PCI Express Root Port 6
+PCI:   info: Bridge (PCI bridge, Normal decode)
+PCI:   line_size 10, latency 00, header_type 81, BIST 00
+PCI:   subsystem_id 0000, subsystem_vendor_id 0040
+PCI:   primary_bus 00, secondary_bus 03, subordinate_bus 03, secondary_latency 00
+PCI:   I/O window f000-0fff
+PCI:   memory window f7d00000-f7dfffff
+PCI:   prefetchable memory window 00000000fff00000-00000000000fffff
+PCI:   bridge_control 0013, secondary_status 0000
+PCI:   interrupt_line 11, interrupt_pin 02
+PCI:   ROM base host 00000000, pci 00000000, size ??
+PCI:   base reg 0: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 1: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   Capabilities: PCIe, MSI, subvendor, PM
+PCI:   Extended capabilities: (empty list)
+PCI: [dom 0, bus  3] bus   3, device  0, function  0: vendor 1b21, device 1042, revision 00
+PCI:   class_base 0c, class_function 03, class_api 30
+PCI:   vendor 1b21: ASMedia Technology Inc.
+PCI:   device 1042: ASM1042 SuperSpeed USB Host Controller (P8B WS Motherboard)
+PCI:   info: Serial bus controller (USB controller, XHCI)
+PCI:   line_size 10, latency 00, header_type 00, BIST 00
+PCI:   ROM base host 00000000, pci 00000000, size 00000000
+PCI:   cardbus_CIS 00000000, subsystem_id 8488, subsystem_vendor_id 1043
+PCI:   interrupt_line 11, interrupt_pin 01, min_grant 00, max_latency 00
+PCI:   base reg 0: host 00000000f7d00000, pci 00000000f7d00000, size 00008000, flags 04 00
+PCI:   base reg 2: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 3: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 4: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 5: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   Capabilities: MSI, MSI-X, PM, PCIe
+PCI:   Extended capabilities: Virtual Channel
+PCI: [dom 0, bus  0] bus   0, device 28, function  6: vendor 8086, device 1c1c, revision b5
+PCI:   class_base 06, class_function 04, class_api 00
+PCI:   vendor 8086: Intel Corporation
+PCI:   device 1c1c: 6 Series/C200 Series Chipset Family PCI Express Root Port 7
+PCI:   info: Bridge (PCI bridge, Normal decode)
+PCI:   line_size 10, latency 00, header_type 81, BIST 00
+PCI:   subsystem_id 0000, subsystem_vendor_id 0040
+PCI:   primary_bus 00, secondary_bus 04, subordinate_bus 04, secondary_latency 00
+PCI:   I/O window d000-dfff
+PCI:   memory window fff00000-000fffff
+PCI:   prefetchable memory window 00000000f0300000-00000000f03fffff
+PCI:   bridge_control 0013, secondary_status 0000
+PCI:   interrupt_line 12, interrupt_pin 03
+PCI:   ROM base host 00000000, pci 00000000, size ??
+PCI:   base reg 0: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 1: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   Capabilities: PCIe, MSI, subvendor, PM
+PCI:   Extended capabilities: (empty list)
+PCI: [dom 0, bus  4] bus   4, device  0, function  0: vendor 10ec, device 8168, revision 06
+PCI:   class_base 02, class_function 00, class_api 00
+PCI:   vendor 10ec: Realtek Semiconductor Co., Ltd.
+PCI:   device 8168: RTL8111/8168/8211/8411 PCI Express Gigabit Ethernet Controller (P8P67 and other motherboards)
+PCI:   info: Network controller (Ethernet controller)
+PCI:   line_size 10, latency 00, header_type 00, BIST 00
+PCI:   ROM base host 00000000, pci 00000000, size 00000000
+PCI:   cardbus_CIS 00000000, subsystem_id 8432, subsystem_vendor_id 1043
+PCI:   interrupt_line 12, interrupt_pin 01, min_grant 00, max_latency 00
+PCI:   base reg 0: host 0000d000, pci 0000d000, size 00000100, flags 01
+PCI:   base reg 1: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 2: host 00000000f0304000, pci 00000000f0304000, size 00001000, flags 0c 00
+PCI:   base reg 4: host 00000000f0300000, pci 00000000f0300000, size 00004000, flags 0c 00
+PCI:   Capabilities: PM, MSI, PCIe, MSI-X, VPD
+PCI:   Extended capabilities: Advanced Error Reporting, Virtual Channel, Serial Number
+PCI: [dom 0, bus  0] bus   0, device 28, function  7: vendor 8086, device 244e, revision b5
+PCI:   class_base 06, class_function 04, class_api 01
+PCI:   vendor 8086: Intel Corporation
+PCI:   device 244e: 82801 PCI Bridge
+PCI:   info: Bridge (PCI bridge, Subtractive decode)
+PCI:   line_size 10, latency 00, header_type 81, BIST 00
+PCI:   subsystem_id 0000, subsystem_vendor_id 0040
+PCI:   primary_bus 00, secondary_bus 05, subordinate_bus 06, secondary_latency 00
+PCI:   I/O window f000-0fff
+PCI:   memory window fff00000-000fffff
+PCI:   prefetchable memory window 00000000fff00000-00000000000fffff
+PCI:   bridge_control 0013, secondary_status 2000
+PCI:   interrupt_line 13, interrupt_pin 04
+PCI:   ROM base host 00000000, pci 00000000, size ??
+PCI:   base reg 0: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 1: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   Capabilities: PCIe, MSI, subvendor, PM
+PCI:   Extended capabilities: (empty list)
+PCI: [dom 0, bus  5] bus   5, device  0, function  0: vendor 1b21, device 1080, revision 01
+PCI:   class_base 06, class_function 04, class_api 01
+PCI:   vendor 1b21: ASMedia Technology Inc.
+PCI:   device 1080: ASM1083/1085 PCIe to PCI Bridge
+PCI:   info: Bridge (PCI bridge, Subtractive decode)
+PCI:   line_size 10, latency 00, header_type 01, BIST 00
+PCI:   subsystem_id 0000, subsystem_vendor_id 00c0
+PCI:   primary_bus 05, secondary_bus 06, subordinate_bus 06, secondary_latency 20
+PCI:   I/O window fff000-0fff
+PCI:   memory window fff00000-000fffff
+PCI:   prefetchable memory window 00000000fff00000-00000000000fffff
+PCI:   bridge_control 0833, secondary_status 2020
+PCI:   interrupt_line 13, interrupt_pin 01
+PCI:   ROM base host 00000000, pci 00000000, size ??
+PCI:   base reg 0: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 1: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   Capabilities: subvendor
+PCI: [dom 0, bus  0] bus   0, device 29, function  0: vendor 8086, device 1c26, revision 05
+PCI:   class_base 0c, class_function 03, class_api 20
+PCI:   vendor 8086: Intel Corporation
+PCI:   device 1c26: 6 Series/C200 Series Chipset Family USB Enhanced Host Controller #1 (P8 series motherboard)
+PCI:   info: Serial bus controller (USB controller, EHCI)
+PCI:   line_size 00, latency 00, header_type 00, BIST 00
+PCI:   ROM base host 00000000, pci 00000000, size 00000000
+PCI:   cardbus_CIS 00000000, subsystem_id 844d, subsystem_vendor_id 1043
+PCI:   interrupt_line 17, interrupt_pin 01, min_grant 00, max_latency 00
+PCI:   base reg 0: host f7f07000, pci f7f07000, size 00000400, flags 00
+PCI:   base reg 1: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 2: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 3: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 4: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 5: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   Capabilities: PM, DebugPort, AdvancedFeatures
+PCI: [dom 0, bus  0] bus   0, device 31, function  0: vendor 8086, device 1c44, revision 05
+PCI:   class_base 06, class_function 01, class_api 00
+PCI:   vendor 8086: Intel Corporation
+PCI:   device 1c44: Z68 Express Chipset LPC Controller
+PCI:   info: Bridge (ISA bridge)
+PCI:   line_size 00, latency 00, header_type 80, BIST 00
+PCI:   ROM base host 00000000, pci 00000000, size 00000000
+PCI:   cardbus_CIS 00000000, subsystem_id 844d, subsystem_vendor_id 1043
+PCI:   interrupt_line 00, interrupt_pin 00, min_grant 00, max_latency 00
+PCI:   base reg 0: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 1: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 2: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 3: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 4: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 5: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   Capabilities: vendspec
+PCI: [dom 0, bus  0] bus   0, device 31, function  2: vendor 8086, device 1c02, revision 05
+PCI:   class_base 01, class_function 06, class_api 01
+PCI:   vendor 8086: Intel Corporation
+PCI:   device 1c02: 6 Series/C200 Series Chipset Family 6 port Desktop SATA AHCI Controller (P8 series motherboard)
+PCI:   info: Mass storage controller (SATA controller, AHCI 1.0)
+PCI:   line_size 00, latency 00, header_type 00, BIST 00
+PCI:   ROM base host 00000000, pci 00000000, size 00000000
+PCI:   cardbus_CIS 00000000, subsystem_id 844d, subsystem_vendor_id 1043
+PCI:   interrupt_line 13, interrupt_pin 02, min_grant 00, max_latency 00
+PCI:   base reg 0: host 0000f070, pci 0000f070, size 00000008, flags 01
+PCI:   base reg 1: host 0000f060, pci 0000f060, size 00000004, flags 01
+PCI:   base reg 2: host 0000f050, pci 0000f050, size 00000008, flags 01
+PCI:   base reg 3: host 0000f040, pci 0000f040, size 00000004, flags 01
+PCI:   base reg 4: host 0000f020, pci 0000f020, size 00000020, flags 01
+PCI:   base reg 5: host f7f06000, pci f7f06000, size 00000800, flags 00
+PCI:   Capabilities: MSI, PM, SATA, AdvancedFeatures
+PCI: [dom 0, bus  0] bus   0, device 31, function  3: vendor 8086, device 1c22, revision 05
+PCI:   class_base 0c, class_function 05, class_api 00
+PCI:   vendor 8086: Intel Corporation
+PCI:   device 1c22: 6 Series/C200 Series Chipset Family SMBus Controller (P8 series motherboard)
+PCI:   info: Serial bus controller (SMBus)
+PCI:   line_size 00, latency 00, header_type 00, BIST 00
+PCI:   ROM base host 00000000, pci 00000000, size 00000000
+PCI:   cardbus_CIS 00000000, subsystem_id 844d, subsystem_vendor_id 1043
+PCI:   interrupt_line 12, interrupt_pin 03, min_grant 00, max_latency 00
+PCI:   base reg 0: host 00000000f7f05000, pci 00000000f7f05000, size 00000100, flags 04 00
+PCI:   base reg 2: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 3: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   base reg 4: host 0000f000, pci 0000f000, size 00000020, flags 01
+PCI:   base reg 5: host 00000000, pci 00000000, size 00000000, flags 00
+PCI:   Capabilities: (not supported)
+usb ehci -1: the host controller is bios owned, claiming ownership
+usb ehci -1: controller is still bios owned, waiting
+usb ehci -1: successfully took ownership of the host controller
+sitd entry size 128, itd entry size 128
+usb ehci -1: successfully started the controller
+usb hub 2: port 0: new device connected
+usb xhci -1: interface version: 0x0096
+usb xhci -1: structural parameters: 1:0x04000820 2:0x000017f1 3:0x00000000
+usb xhci -1: capability parameters: 0x0200f180
+allocate_io_interrupt_vectors: allocated 1 vectors starting from 24
+msi_allocate_vectors: allocated 1 vectors starting from 24
+msi enabled: 0x0087
+usb xhci -1: using message signaled interrupts
+usb xhci -1: starting XHCI host controller
+usb xhci -1: successfully started the controller
+usb hub 13: port 2: new device connected
+usb hub 18: port 0: new device connected
+usb hub 18: port 1: new device connected
+usb hub 18: port 2: new device connected
+usb hub 23: port 1: new device connected
+usb ehci -1: the host controller is bios owned, claiming ownership
+usb ehci -1: controller is still bios owned, waiting
+usb ehci -1: successfully took ownership of the host controller
+sitd entry size 128, itd entry size 128
+usb ehci -1: successfully started the controller
+usb hub 13: port 0: new device connected
+usb xhci 1: transfer error on slot 6 endpoint 1: Stall
+usb error xhci 1: error while getting the hub descriptor: Device stalled
+usb hub 55: port 0: new device connected
+get_boot_partitions(): boot volume message:
+KMessage: buffer: 0xffffffff81c1d7f8 (size/capacity: 347/347), flags: 0xa
+  field: "booted from image" (BOOL): false
+  field: "partition offset"  (LLNG): 104878080 (0x6405000)
+  field: "packaged"          (BOOL): true
+  field: "boot method"       (LONG): 0 (0x0)
+  field: "boot drive number" (LLNG): 128 (0x80)
+  field: "disk identifier"   (RAWT): data at 0xffffffff81c1d904, 79 bytes
+get_boot_partitions(): boot method type: 0
+ahci: generic AHCI controller found! vendor 0x8086, device 0x1c02
+ahci: ahci_register_device
+ahci: ahci_init_driver
+ahci: ahci_sim_init_bus
+ahci: ahci_sim_init_bus: pciDevice 0xffffffff826c1200
+ahci: AHCIController::Init 0:31:2 vendor 8086, device 1c02
+ahci: PCI SATA capability found at offset 0xa8
+ahci: satacr0 = 0x0010b012, satacr1 = 0x00000048
+ahci: pcicmd old 0x0007
+ahci: pcicmd new 0x0006
+allocate_io_interrupt_vectors: allocated 1 vectors starting from 25
+msi_allocate_vectors: allocated 1 vectors starting from 25
+msi enabled: 0x0001
+ahci: using MSI vector 25
+ahci: registers at 0xf7f06000, size 0x800
+ahci: mapping physical address 0xf7f06000 with 2048 bytes for AHCI HBA regs
+ahci: physical = 0xf7f06000, virtual = 0xffffffff8df8a000, offset = 0, phyadr = 0xf7f06000, mapadr = 0xffffffff8df8a000, size = 4096, area = 0x00000111
+ahci: cap: Interface Speed Support: generation 3
+ahci: cap: Number of Command Slots: 32 (raw 0x1f)
+ahci: cap: Number of Ports: 6 (raw 0x5)
+ahci: cap: Supports Port Multiplier: no
+ahci: cap: Supports External SATA: no
+ahci: cap: Enclosure Management Supported: yes
+ahci: cap: FIS-based Switching Control: no
+ahci: cap: Supports Command List Override: yes
+ahci: cap: Supports Staggered Spin-up: no
+ahci: cap: Supports Mechanical Presence Switch: no
+ahci: cap: Supports 64-bit Addressing: yes
+ahci: cap: Supports Native Command Queuing: yes
+ahci: cap: Supports SNotification Register: no
+ahci: cap: Supports Command List Override: yes
+ahci: cap: Supports AHCI mode only: no
+ahci: cap2: DevSleep Entrance from Slumber Only: no
+ahci: cap2: Supports Aggressive Device Sleep Management: no
+ahci: cap2: Supports Device Sleep: no
+ahci: cap2: Automatic Partial to Slumber Transitions: yes
+ahci: cap2: NVMHCI Present: no
+ahci: cap2: BIOS/OS Handoff: no
+ahci: ghc: AHCI Enable: yes
+ahci: Ports Implemented Mask: 0x000004 Number of Available Ports: 1
+ahci: AHCI Version 0001.03.00 Interrupt 25
+ahci: allocating 4096 bytes for AHCI port 2
+ahci: area = 274, size = 4096, virt = 0xffffffff8df8b000, phy = 0x254a000
+ahci: Probe: port 2 link speed 3.0Gb/s
+ahci: cookie = 0xffffffff8254d780
+ahci: ahci_path_inquiry, cookie 0xffffffff8254d780
+ahci: ahci_path_inquiry, cookie 0xffffffff8254d780
+ahci: ahci_scan_bus, cookie 0xffffffff8254d780
+ahci: sg_memcpy phyAddr 0x664060, size 96
+ahci: ahci_get_restrictions, cookie 0xffffffff8254d780
+publish device: node 0xffffffff82157da0, path disk/scsi/0/2/0/raw, module drivers/disk/scsi/scsi_disk/device_v1
+ahci: sg_memcpy phyAddr 0x664180, size 32
+periph_check_capacity: TRIM: Setting trim support to disabled
+DMAResource@0xffffffff82157e40: low/high 0/100000000, max segment count 32, align 2, boundary 65536, max transfer 130560, max segment size 33554432
+ahci: sg_memcpy phyAddr 0x664340, size 32
+periph_check_capacity: TRIM: Setting trim support to disabled
+ahci: ahci_ioctl, cookie 0xffffffff8254d780
+intel: Found GPT signature, ignoring.
+EFI header: EFI PART
+EFI revision: 10000
+header size: 92
+header CRC: 745398a6
+absolute block: 1
+alternate block: 1465149167
+first usable block: 34
+last usable block: 1465149134
+disk GUID: 28c1216e-7db9-f84d-b022-a2cf212b4001
+entries block: 2
+entry size:  128
+entry count: 128
+entries CRC: 2f45f20
+EFI header: EFI PART
+EFI revision: 10000
+header size: 92
+header CRC: e8530e15
+absolute block: 1465149167
+alternate block: 1
+first usable block: 34
+last usable block: 1465149134
+disk GUID: 28c1216e-7db9-f84d-b022-a2cf212b4001
+entries block: 1465149135
+entry size:  128
+entry count: 128
+entries CRC: 2f45f20
+[  0] partition type: c12a7328-f81f-11d2-ba4b-00a0c93ec93b
+      unique id: 316dc1ef-63cc-9442-995e-d85e882b3d77
+      start block: 40
+      end block: 204839
+      size: 99.999 MB
+      attributes: 0
+      name: ESP
+[  1] partition type: 42465331-3ba3-10f1-802a-4861696b7521
+      unique id: 176148cc-9e3e-7245-92c5-5ba14613e3ba
+      start block: 204840
+      end block: 1465147431
+      size: 715303.999 MB
+      attributes: 0
+      name: Haiku
+identify(0, 0xffffffff826c7690)
+raw_command: 
+SCSI -- is_sg_list_dma_safe: S/G-entry above high address @100514800
+ahci: AHCIPort::ScsiExecuteRequest port 2 unsupported request opcode 0x43
+efi_gpt_scan_partition(cookie = 0xffffffff820a0380)
+identify(0, 0xffffffff826c7720)
+raw_command: 
+SCSI -- is_sg_list_dma_safe: S/G-entry above high address @100515000
+ahci: AHCIPort::ScsiExecuteRequest port 2 unsupported request opcode 0x43
+identify(0, 0xffffffff826c75a0)
+raw_command: 
+SCSI -- is_sg_list_dma_safe: S/G-entry above high address @100513800
+ahci: AHCIPort::ScsiExecuteRequest port 2 unsupported request opcode 0x43
+device 0: /dev/disk/scsi/0/2/0/raw
+  media status:      No error
+  device flags:      2
+  offset:            0
+  size:              750156374016 (715404.867 MB)
+  content size:      750156374016
+  block size:        512
+  physical block size: 4096
+  child count:       2
+  index:             -1
+  status:            0
+  flags:             5
+  volume:            -1
+  disk system:       partitioning_systems/efi_gpt/v1
+  name:              ST750LM0 22 HN-M750MBB
+  content name:      <NULL>
+  type:              <NULL>
+  content type:      GUID Partition Map
+  params:            <NULL>
+  content params:    <NULL>
+  partition 1: /dev/disk/scsi/0/2/0/0
+    offset:            20480
+    size:              104857600 (100 MB)
+    content size:      104857600
+    block size:        512
+    physical block size: 4096
+    child count:       0
+    index:             0
+    status:            0
+    flags:             2
+    volume:            -1
+    disk system:       file_systems/fat/v1
+    name:              ESP
+    content name:      esp
+    type:              EFI system data
+    content type:      FAT32 File System
+    params:            <NULL>
+    content params:    <NULL>
+  partition 2: /dev/disk/scsi/0/2/0/1
+    offset:            104878080
+    size:              750050607104 (715304 MB)
+    content size:      750050607104
+    block size:        2048
+    physical block size: 4096
+    child count:       0
+    index:             1
+    status:            0
+    flags:             2
+    volume:            -1
+    disk system:       file_systems/bfs/v1
+    name:              Haiku
+    content name:      Haiku
+    type:              Be File System
+    content type:      Be File System
+    params:            <NULL>
+    content params:    <NULL>
+Identified boot partition by partition offset.
+ahci: sg_memcpy phyAddr 0x664480, size 32
+periph_check_capacity: TRIM: Setting trim support to disabled
+ahci: sg_memcpy phyAddr 0x664400, size 32
+periph_check_capacity: TRIM: Setting trim support to disabled
+bfs: mounted "Haiku" (root node at 524288, device = /dev/disk/scsi/0/2/0/1)
+Mounted boot partition: /dev/disk/scsi/0/2/0/1
+unknown: [5062060:    19] Adding packages from "/boot/system/packages"
+slab memory manager: created area 0xffffffff93801000 (328)
+slab memory manager: created area 0xffffffff94001000 (329)
+slab memory manager: created area 0xffffffff94801000 (331)
+slab memory manager: created area 0xffffffff95001000 (332)
+unknown: [17216498:    19] StringPool usage:
+unknown: [17216501:    19]   total unique strings:       39804,   757447 bytes, overhead: 636864 bytes + 524288 bytes
+unknown: [17216503:    19]   total strings with dups:   214483,  3011288 bytes
+unknown: [17216504:    19]   unshared strings:            1890
+unknown: [17216505:    19]   bytes saved:              1092689
+unknown: [17252480:    19] Adding packages from "/boot/home/config/packages"
+unknown: [17252766:    19] Failed to open packages activation file: No such file or directory
+unknown: [17252767:    19] Loading packages from activation file failed. Loading all packages in packages directory.
+unknown: [17255155:    19] StringPool usage:
+unknown: [17255156:    19]   total unique strings:       39804,   757447 bytes, overhead: 636864 bytes + 524288 bytes
+unknown: [17255158:    19]   total strings with dups:   214494,  3011353 bytes
+unknown: [17255159:    19]   unshared strings:            1887
+unknown: [17255160:    19]   bytes saved:              1092754
+module_init_post_boot_device() failed to normalize path of module image 0xffffffff821fc0c0, "fat"
+module: Search for file_cache/launch_speedup/v1 failed.
+publish device: node 0xffffffff8e606fe8, path disk/virtual/ram/control, module drivers/disk/virtual/ram_disk/control/device_v1
+usb_modeswitch: init_hardware()
+usb_modeswitch: init_driver()
+usb_modeswitch: trying module bus_managers/usb/v3.1
+usb_modeswitch: publish_devices()
+usb_modeswitch: uninit_driver()
+loaded driver /boot/system/add-ons/kernel/drivers/dev/usb_modeswitch
+loaded driver /boot/system/add-ons/kernel/drivers/dev/pty
+loaded driver /boot/system/add-ons/kernel/drivers/dev/null
+loaded driver /boot/system/add-ons/kernel/drivers/dev/dprintf
+con_init: trying module console/frame_buffer/v1
+loaded driver /boot/system/add-ons/kernel/drivers/dev/console
+identify(4, 0xffffffff9497f708)
+raw_command: 
+ahci: AHCIPort::ScsiExecuteRequest port 2 unsupported request opcode 0x43
+mtrr: [cpu 2] MTRRs are enabled
+mtrr: [cpu 2] default type is 0 uncacheable
+mtrr: [cpu 2] fixed range MTRRs are enabled
+mtrr: [cpu 2] 0: base: 0x0; length: 0x200000000; type: 6 write-back
+mtrr: [cpu 2] 1: base: 0x200000000; length: 0x10000000; type: 6 write-back
+mtrr: [cpu 2] 2: base: 0x210000000; length: 0x8000000; type: 6 write-back
+mtrr: [cpu 2] 3: base: 0x218000000; length: 0x4000000; type: 6 write-back
+mtrr: [cpu 2] 4: base: 0x21c000000; length: 0x2000000; type: 6 write-back
+mtrr: [cpu 2] 5: base: 0x21e000000; length: 0x1000000; type: 6 write-back
+mtrr: [cpu 2] 6: base: 0xe0000000; length: 0x20000000; type: 0 uncacheable
+ignoring MTRRs due to PAT support
+allocate_commpage_entry(4, 16) -> 0x0000000000000258
+using Intel P-States: min 16, max 30, boost 33
+found cpufreq module: power/cpufreq/intel_pstates/v1
+scheduler switches: single core: false, cpu load tracking: true, core load tracking: true
+using x86 C-States: C0, C1, C2, C3
+found cpuidle module: power/cpuidle/x86_cstates/v1
+ignoring MTRRs due to PAT support
+kernel debugger extension "debugger/run_on_exit/v1": loaded
+kernel debugger extension "debugger/usb_keyboard/v1": loaded
+kernel debugger extension "debugger/invalidate_on_exit/v1": loaded
+kernel debugger extension "debugger/hangman/v1": loaded
+kernel debugger extension "debugger/disasm/v1": loaded
+publish device: node 0xffffffff8e60cee8, path random, module bus_managers/random/device_v1
+publish device: node 0xffffffff8e60cee8, path urandom, module bus_managers/random/device_v1
+publish device: node 0xffffffff8e60d208, path power/button/power_fixed, module drivers/power/acpi_button/device_v1
+publish device: node 0xffffffff8e60d3e8, path power/acpi_battery/0, module drivers/power/acpi_battery/device_v1
+publish device: node 0xffffffff8e60d5c8, path power/acpi_battery/1, module drivers/power/acpi_battery/device_v1
+publish device: node 0xffffffff8e60d708, path power/acpi_battery/2, module drivers/power/acpi_battery/device_v1
+publish device: node 0xffffffff8e60d848, path power/button/power, module drivers/power/acpi_button/device_v1
+publish device: node 0xffffffff8e60d988, path power/acpi_thermal/0, module drivers/power/acpi_thermal/device_v1
+publish device: node 0xffffffff8e60db68, path power/acpi_thermal/1, module drivers/power/acpi_thermal/device_v1
+slab memory manager: created area 0xffffffff95801000 (8951)
+Test: and [file_exists [/system/bin/FirstBootPrompt], or [not [file_exists [/boot/home/config/settings/Locale settings]], readonly ]] -> 0
+slab memory manager: created area 0xffffffff96001000 (9445)
+package_daemon: [20584115:    51] root at "/boot" (device: 3, node: 524288) registered
+package_daemon: [20584333:    51] volume at "/boot/system" registered
+package_daemon: [20584399:    51] volume at "/boot/home/config" registered
+bt: bluetooth_std_ops: Connection Thread error
+register_domain(10, bluetooth)
+register_domain(9, unix)
+register_domain(5, internet6)
+register_domain(1, internet)
+unregister_domain(0xffffffff94d42780, 10, bluetooth)
+unregister_domain(0xffffffff94d42800, 9, unix)
+unregister_domain(0xffffffff94d42a80, 1, internet)
+unregister_domain(0xffffffff94d42980, 5, internet6)
+register_domain(5, internet6)
+unregister_domain(0xffffffff9475e580, 5, internet6)
+register_domain(1, internet)
+register_domain(4, link)
+unregister_domain(0xffffffff9475e700, 1, internet)
+unregister_domain(0xffffffff94d42b00, 4, link)
+register_domain(10, bluetooth)
+register_domain(9, unix)
+register_domain(5, internet6)
+register_domain(1, internet)
+unregister_domain(0xffffffff94d42c80, 10, bluetooth)
+unregister_domain(0xffffffff94d42d00, 9, unix)
+unregister_domain(0xffffffff94d42e00, 1, internet)
+unregister_domain(0xffffffff94d42d80, 5, internet6)
+register_domain(5, internet6)
+unregister_domain(0xffffffff94d42f00, 5, internet6)
+register_domain(1, internet)
+unregister_domain(0xffffffff94d43000, 1, internet)
+loaded driver /boot/system/add-ons/kernel/drivers/dev/net/usb_rndis
+[33musb_davicom:[0m00.23.024:init_driver::ver.0.9.5
+loaded driver /boot/system/add-ons/kernel/drivers/dev/net/usb_davicom
+etherpci: init_driver init_driver: etherpci not found
+pci_reserve_device(4, 0, 0, rtl81xx)
+[rtl81xx] (re) bus_alloc_resource(3, [24], 0x0, 0xffffffffffffffff, 0x1,0x2)
+[rtl81xx] (re) MSI count : 1
+[rtl81xx] (re) MSI-X count : 4
+[rtl81xx] (re) bus_alloc_resource(3, [32], 0x0, 0xffffffffffffffff, 0x1,0x2)
+allocate_io_interrupt_vectors: allocated 1 vectors starting from 26
+msi_allocate_vectors: allocated 1 vectors starting from 26
+msix configured for 1 vectors
+[rtl81xx] (re) Using 1 MSI-X message
+[rtl81xx] (re) bus_alloc_resource(1, [1], 0x0, 0xffffffffffffffff, 0x1,0x2)
+[rtl81xx] (re) Chip rev. 0x2c800000
+[rtl81xx] (re) MAC rev. 0x00100000
+if_initname(0xffffffff9524c000, re, 2)
+[rtl81xx] rtl81xx: /dev/net/rtl81xx/0
+[rtl81xx] (miibus) found device driver: rgephy
+[rtl81xx] () OUI 0x00e04c, model 0x0011, rev. 5
+[rtl81xx] ()  none, 10baseT, 10baseT-FDX, 100baseTX, 100baseTX-FDX, 1000baseT, 1000baseT-master, 1000baseT-FDX, 1000baseT-FDX-master, auto
+if_attach 0xffffffff821c7af0
+msi-x enabled: 0x8003
+rtl81xx: init_driver(0xffffffff81709c70)
+loaded driver /boot/system/add-ons/kernel/drivers/dev/net/rtl81xx
+register_domain(10, bluetooth)
+register_domain(9, unix)
+register_domain(5, internet6)
+register_domain(1, internet)
+unregister_domain(0xffffffff94d46a00, 10, bluetooth)
+unregister_domain(0xffffffff94d46a80, 9, unix)
+unregister_domain(0xffffffff94d46b80, 1, internet)
+unregister_domain(0xffffffff94d46b00, 5, internet6)
+register_domain(5, internet6)
+unregister_domain(0xffffffff94d46c80, 5, internet6)
+register_domain(1, internet)
+unregister_domain(0xffffffff94d46d00, 1, internet)
+register_domain(10, bluetooth)
+register_domain(9, unix)
+register_domain(5, internet6)
+register_domain(1, internet)
+unregister_domain(0xffffffff94d46e00, 10, bluetooth)
+unregister_domain(0xffffffff94d46e80, 9, unix)
+unregister_domain(0xffffffff94d46f80, 1, internet)
+unregister_domain(0xffffffff94d46f00, 5, internet6)
+register_domain(5, internet6)
+unregister_domain(0xffffffff94d42b80, 5, internet6)
+register_domain(1, internet)
+[net/rtl81xx/0] compat_open(0x2)
+/dev/net/rtl81xx/0: link down, media 0x22 quality 1000 speed 0
+radeon_hd: init_hardware
+register_domain(5, internet6)
+radeon_hd: init_driver
+radeon_hd: init_driver: GPU(0) Radeon RX 460, revision = 0xcf
+radeon_hd: publish_devices
+radeon_hd: find_device
+loaded driver /boot/home/config/non-packaged/add-ons/kernel/drivers/dev/graphics/radeon_hd
+intel_extreme: [24418657] CALLED status_t init_hardware()
+S3: init_hardware() - no supported devices
+loaded driver /boot/system/add-ons/kernel/drivers/dev/graphics/radeon_hd
+Radeon - init_hardware: Version: 5.1.6.0
+Radeon - Radeon_CardDetect: no supported devices found
+nvidia: CALLED init_hardware
+nvidia: init_hardware: no supported device found
+loaded driver /boot/system/add-ons/kernel/drivers/dev/graphics/intel_extreme
+devfs: "intel_810" api_version missing
+i810: init_hardware() - no supported devices
+ati: init_hardware() - no supported devices
+vesa: init_hardware()
+vesa: init_driver()
+vesa: publish_devices()
+vesa: find_device()
+loaded driver /boot/system/add-ons/kernel/drivers/dev/graphics/vesa
+framebuffer: init_hardware()
+radeon_hd: device_open: open(name = graphics/radeon_hd_010000)
+radeon_hd: card(0): radeon_hd_init: called
+radeon_hd: radeon_hd_init: card(0): Radeon Polaris 11 1002:67EF
+radeon_hd: radeon_hd_init: shrinking frame buffer to PCI bar...
+radeon_hd: radeon_hd_init: mapping a frame buffer of 256MB out of 4096MB video ram
+radeon_hd: framebuffer paddr: 0xe0000000
+assuming memory type 20000000 for overlapping 0xe0000000, 0x10000000 area 12495 from existing 0xe0000000, 0x500000 area 133
+radeon_hd: frambuffer vaddr: 0xffffffff96800000
+radeon_hd: frambuffer size: 0x10000000
+radeon_hd: card(0): radeon_hd_getbios: called
+radeon_hd: mapAtomBIOSACPI: seeking AtomBIOS from ACPI
+radeon_hd: radeon_hd_getbios: AtomBIOS not found using active method 0 at 0x0
+radeon_hd: mapAtomBIOS: seeking AtomBIOS @ 0xE0000000 [size: 0x40000]
+assuming memory type 20000000 for overlapping 0xe0000000, 0x40000 area 12496 from existing 0xe0000000, 0x500000 area 133
+radeon_hd: mapAtomBIOS: BIOS signature incorrect @ 0xE0000000 (0)
+radeon_hd: radeon_hd_getbios: AtomBIOS not found using active method 1 at 0xE0000000
+radeon_hd: radeon_hd_getbios: PCI ROM decode enabled
+radeon_hd: mapAtomBIOS: seeking AtomBIOS @ 0xF7E40000 [size: 0x20000]
+devfs: reload driver "intel_extreme" (3, 13488250)
+intel_extreme: CALLED status_t init_hardware()
+radeon_hd: mapAtomBIOS: AtomBIOS verified and locked (118272)
+radeon_hd: radeon_hd_getbios: AtomBIOS found using active method 2 at 0xF7E40000
+radeon_hd: card(0): radeon_hd_init found VESA EDID information.
+radeon_hd: card(0): radeon_hd_init completed successfully!
+radeon_hd: card(0): GPU thermal status: 0C
+radeon_hd: device_ioctl: accelerant: radeon_hd.accelerant
+radeon_hd: radeon_init_accelerant enter
+radeon_hd: radeon_dump_bios: Dumping AtomBIOS as ATOM_DEBUG is set...
+radeon_hd: radeon_dump_bios: AtomBIOS dumped to /boot/system/cache/tmp/radeon_hd_bios_1002_67ef_0.bin
+radeon_hd: radeon_init_bios: AtomBIOS is already posted
+radeon_hd: radeon_gpu_probe: table 2.2
+radeon_hd: gpio_general_populate: general GPIO @ 0, valid: true, hwPin: 0x1
+radeon_hd: gpio_general_populate: general GPIO @ 1, valid: true, hwPin: 0x2
+radeon_hd: gpio_general_populate: general GPIO @ 2, valid: true, hwPin: 0x3
+radeon_hd: gpio_general_populate: general GPIO @ 3, valid: true, hwPin: 0x4
+radeon_hd: gpio_general_populate: general GPIO @ 4, valid: true, hwPin: 0x5
+radeon_hd: gpio_general_populate: general GPIO @ 5, valid: true, hwPin: 0x6
+radeon_hd: gpio_i2c_populate: i2c GPIO @ 6, valid: true, hwPin: 0x90
+radeon_hd: gpio_i2c_populate: i2c GPIO @ 7, valid: true, hwPin: 0x91
+radeon_hd: gpio_i2c_populate: i2c GPIO @ 8, valid: true, hwPin: 0x92
+radeon_hd: gpio_i2c_populate: i2c GPIO @ 9, valid: true, hwPin: 0x93
+radeon_hd: gpio_i2c_populate: i2c GPIO @ 10, valid: true, hwPin: 0x94
+radeon_hd: gpio_i2c_populate: i2c GPIO @ 11, valid: true, hwPin: 0x95
+radeon_hd: gpio_i2c_populate: i2c GPIO @ 12, valid: true, hwPin: 0x96
+radeon_hd: gpio_i2c_populate: i2c GPIO @ 13, valid: true, hwPin: 0x97
+radeon_hd: connector_probe: found 3 potential display paths.
+radeon_hd: pll_limit_probe: table 2.2
+radeon_hd: pll_limit_probe: referenceFreq: 100000; pllOutMin: 2970000;  pllOutMax: 6000000; pllInMin: 25000;pllInMax: 100000
+radeon_hd: pll_limit_probe: table 2.2
+radeon_hd: pll_limit_probe: referenceFreq: 100000; pllOutMin: 2970000;  pllOutMax: 6000000; pllInMin: 25000;pllInMax: 100000
+radeon_hd: pll_limit_probe: table 2.2
+radeon_hd: pll_limit_probe: referenceFreq: 100000; pllOutMin: 2970000;  pllOutMax: 6000000; pllInMin: 25000;pllInMax: 100000
+radeon_hd: Currently detected connectors=============
+radeon_hd: Connector #0)
+radeon_hd:  + connector:          DisplayPort
+radeon_hd:  + i2c gpio table id:  6
+radeon_hd:    - gpio hw pin:      0x90
+radeon_hd:    - gpio valid:       true
+radeon_hd:    - i2c valid:        true
+radeon_hd:  + hpd gpio table id:  4
+radeon_hd:    - gpio hw pin:      0x5
+radeon_hd:    - gpio valid:       true
+radeon_hd:  + router gpio table id: 0
+radeon_hd:  + router (ddc):       false
+radeon_hd:  + router (c/d):       false
+radeon_hd:  + encoder:            TMDS
+radeon_hd:    - id:               32
+radeon_hd:    - type:             Internal Kaleidoscope UNIPHY1
+radeon_hd:    - capabilities:     0x0
+radeon_hd:    - enumeration:      1
+radeon_hd:    - is bridge:        false
+radeon_hd:    + external encoder: none
+radeon_hd:  + flags:
+radeon_hd:    * device DFP1 support
+radeon_hd: Connector #1)
+radeon_hd:  + connector:          HDMI A
+radeon_hd:  + i2c gpio table id:  9
+radeon_hd:    - gpio hw pin:      0x93
+radeon_hd:    - gpio valid:       true
+radeon_hd:    - i2c valid:        true
+radeon_hd:  + hpd gpio table id:  2
+radeon_hd:    - gpio hw pin:      0x3
+radeon_hd:    - gpio valid:       true
+radeon_hd:  + router gpio table id: 0
+radeon_hd:  + router (ddc):       false
+radeon_hd:  + router (c/d):       false
+radeon_hd:  + encoder:            TMDS
+radeon_hd:    - id:               32
+radeon_hd:    - type:             Internal Kaleidoscope UNIPHY1
+radeon_hd:    - capabilities:     0x0
+radeon_hd:    - enumeration:      2
+radeon_hd:    - is bridge:        false
+radeon_hd:    + external encoder: none
+radeon_hd:  + flags:
+radeon_hd:    * device DFP2 support
+radeon_hd: Connector #2)
+radeon_hd:  + connector:          DVI-D (Digital Only)
+radeon_hd:  + i2c gpio table id:  10
+radeon_hd:    - gpio hw pin:      0x94
+radeon_hd:    - gpio valid:       true
+radeon_hd:    - i2c valid:        true
+radeon_hd:  + hpd gpio table id:  3
+radeon_hd:    - gpio hw pin:      0x4
+radeon_hd:    - gpio valid:       true
+radeon_hd:  + router gpio table id: 0
+radeon_hd:  + router (ddc):       false
+radeon_hd:  + router (c/d):       false
+radeon_hd:  + encoder:            TMDS
+radeon_hd:    - id:               30
+radeon_hd:    - type:             Internal Kaleidoscope UNIPHY
+radeon_hd:    - capabilities:     0x0
+radeon_hd:    - enumeration:      1
+radeon_hd:    - is bridge:        false
+radeon_hd:    + external encoder: none
+radeon_hd:  + flags:
+radeon_hd:    * device DFP3 support
+radeon_hd: ==========================================
+radeon_hd: encoder_init: called
+radeon_hd: transmitter_dig_setup: connector 0, pixelClock: 0
+radeon_hd: transmitter_dig_setup: table 1.6
+radeon_hd: encoder_pick_dig: connector 0
+radeon_hd: transmitter_dig_setup: connector 1, pixelClock: 0
+radeon_hd: transmitter_dig_setup: table 1.6
+radeon_hd: encoder_pick_dig: connector 1
+radeon_hd: transmitter_dig_setup: connector 2, pixelClock: 0
+radeon_hd: transmitter_dig_setup: table 1.6
+radeon_hd: encoder_pick_dig: connector 2
+radeon_hd: pll_set_dce: set external pll clock to 626100
+radeon_hd: pll_set_dce: table 2.1
+radeon_hd: pll_set_dce: set external pll clock to 0
+radeon_hd: pll_set_dce: Warning: default display clock is 0?
+radeon_hd: pll_set_dce: table 2.1
+radeon_hd: dp_setup_connectors
+radeon_hd: detect_displays: connector(0): Checking DP.
+radeon_hd: ddc2_dp_read_edid1
+radeon_hd: dp_aux_speak: dp_aux channel flags not zero!
+Last message repeated 6 times.
+radeon_hd: dp_aux_transaction: IO Error. 7 attempts
+radeon_hd: dp_aux_set_i2c_byte: aux_ch transaction failed!
+radeon_hd: dp_aux_speak: dp_aux channel flags not zero!
+Last message repeated 6 times.
+radeon_hd: dp_aux_transaction: IO Error. 7 attempts
+radeon_hd: dp_aux_set_i2c_byte: aux_ch transaction failed!
+radeon_hd: dp_aux_speak: dp_aux channel flags not zero!
+Last message repeated 6 times.
+radeon_hd: dp_aux_transaction: IO Error. 7 attempts
+radeon_hd: dp_aux_set_i2c_byte: aux_ch transaction failed!
+radeon_hd: dp_aux_speak: dp_aux channel flags not zero!
+Last message repeated 6 times.
+radeon_hd: dp_aux_transaction: IO Error. 7 attempts
+radeon_hd: dp_aux_set_i2c_byte: aux_ch transaction failed!
+radeon_hd: dp_aux_speak: dp_aux channel flags not zero!
+Last message repeated 6 times.
+radeon_hd: dp_aux_transaction: IO Error. 7 attempts
+radeon_hd: dp_aux_get_i2c_byte: aux_ch transaction failed!
+radeon_hd: dp_aux_speak: dp_aux channel flags not zero!
+Last message repeated 6 times.
+radeon_hd: dp_aux_transaction: IO Error. 7 attempts
+radeon_hd: dp_aux_get_i2c_byte: aux_ch transaction failed!
+radeon_hd: dp_aux_speak: dp_aux channel flags not zero!
+Last message repeated 6 times.
+radeon_hd: dp_aux_transaction: IO Error. 7 attempts
+radeon_hd: dp_aux_get_i2c_byte: aux_ch transaction failed!
+radeon_hd: dp_aux_speak: dp_aux channel flags not zero!
+Last message repeated 6 times.
+radeon_hd: dp_aux_transaction: IO Error. 7 attempts
+radeon_hd: dp_aux_set_i2c_byte: aux_ch transaction failed!
+radeon_hd: dp_aux_speak: dp_aux channel flags not zero!
+Last message repeated 6 times.
+radeon_hd: dp_aux_transaction: IO Error. 7 attempts
+radeon_hd: dp_aux_set_i2c_byte: aux_ch transaction failed!
+radeon_hd: dp_aux_speak: dp_aux channel flags not zero!
+Last message repeated 6 times.
+radeon_hd: dp_aux_transaction: IO Error. 7 attempts
+radeon_hd: dp_aux_get_i2c_byte: aux_ch transaction failed!
+radeon_hd: dp_aux_speak: dp_aux channel flags not zero!
+Last message repeated 6 times.
+radeon_hd: dp_aux_transaction: IO Error. 7 attempts
+radeon_hd: dp_aux_get_i2c_byte: aux_ch transaction failed!
+radeon_hd: ddc2_dp_read_edid1: error reading EDID data at index 0, result = 0x80000001
+radeon_hd: dp_aux_speak: dp_aux channel flags not zero!
+Last message repeated 6 times.
+radeon_hd: dp_aux_transaction: IO Error. 7 attempts
+radeon_hd: dp_aux_get_i2c_byte: aux_ch transaction failed!
+radeon_hd: detect_displays: connector(0): bit-banging ddc for EDID.
+DDC: ddc2_read: DDC information read failure
+Last message repeated 3 times.
+radeon_hd: detect_displays: connector(1): bit-banging ddc for EDID.
+package_daemon: [27108874:    73] The latest volume state is also the currently active one
+package_daemon: [27108998:    73] Volume::InitialVerify((nil), (nil))
+radeon_hd: connector_read_edid: found edid monitor on connector #1
+radeon_hd: detect_displays: connector(1): found EDID data.
+radeon_hd: init_registers, registers for ATI chipset Polaris 11 crt #0 loaded
+radeon_hd: detect_displays: connector(2): bit-banging ddc for EDID.
+DDC: ddc2_read: DDC information read failure
+Last message repeated 3 times.
+radeon_hd: Currently detected monitors===============
+radeon_hd: Display #0 attached = true
+radeon_hd:  + connector ID:   1
+radeon_hd:  + connector type: HDMI A
+radeon_hd:  + encoder type:   TMDS
+radeon_hd:  + limits: Vert Min/Max: 56/76
+radeon_hd:  + limits: Horz Min/Max: 30/113
+radeon_hd: Display #1 attached = false
+radeon_hd: ==========================================
+radeon_hd: debug_display_registers: begin vbios state
+radeon_hd: regdump 0x00c0 0x0201000f
+radeon_hd: regdump 0x00c1 0x00010000
+radeon_hd: regdump 0x00c2 0x00000101
+radeon_hd: regdump 0x00c3 0x00000002
+radeon_hd: regdump 0x00c7 0x22222222
+radeon_hd: regdump 0x00c9 0x000000f4
+radeon_hd: regdump 0x00ca 0x00000001
+radeon_hd: regdump 0x00d0 0x0000000f
+radeon_hd: regdump 0x00d4 0x00005218
+radeon_hd: regdump 0x00d5 0x00010000
+radeon_hd: regdump 0x00d7 0x0000031f
+radeon_hd: regdump 0x00ed 0x0000000b
+radeon_hd: regdump 0x00f0 0xe0000013
+radeon_hd: regdump 0x00f1 0x00ff0101
+radeon_hd: regdump 0x00f2 0x00002f40
+radeon_hd: regdump 0x00f3 0xff080067
+radeon_hd: regdump 0x00f5 0x0000000b
+radeon_hd: regdump 0x00f8 0x00000001
+radeon_hd: regdump 0x00f9 0x00000001
+radeon_hd: regdump 0x00fa 0x00000001
+radeon_hd: regdump 0x00fc 0x00000100
+radeon_hd: regdump 0x0800 0x00000003
+radeon_hd: regdump 0x0801 0x00432210
+radeon_hd: regdump 0x0802 0x00001032
+radeon_hd: regdump 0x0803 0x33344333
+radeon_hd: regdump 0x0804 0x33444433
+radeon_hd: regdump 0x0805 0x77300333
+radeon_hd: regdump 0x0806 0x00333333
+radeon_hd: regdump 0x0807 0x37773337
+radeon_hd: regdump 0x0808 0x03003330
+radeon_hd: regdump 0x0809 0xf4fff400
+radeon_hd: regdump 0x0819 0x00000503
+radeon_hd: regdump 0x081b 0x00000001
+radeon_hd: regdump 0x0b00 0x0f200029
+radeon_hd: regdump 0x0b01 0xf4000000
+radeon_hd: regdump 0x0b02 0x00020080
+radeon_hd: regdump 0x0b03 0x7ffffbff
+radeon_hd: regdump 0x0b08 0x00020080
+radeon_hd: regdump 0x0b09 0x7ffffbff
+radeon_hd: regdump 0x0b0e 0x00020080
+radeon_hd: regdump 0x0b0f 0x7ffffbff
+radeon_hd: regdump 0x1505 0x0000001a
+radeon_hd: regdump 0x1506 0x00000002
+radeon_hd: regdump 0x1507 0x00000006
+radeon_hd: regdump 0x1509 0x0000000d
+radeon_hd: regdump 0x150a 0x00001000
+radeon_hd: regdump 0x150b 0xe0000000
+radeon_hd: regdump 0x150c 0x00000100
+radeon_hd: regdump 0x150d 0x00040000
+radeon_hd: regdump 0x1514 0x00018003
+radeon_hd: regdump 0x1516 0x00040040
+radeon_hd: regdump 0x1517 0x4010e110
+radeon_hd: regdump 0x1518 0x00000001
+radeon_hd: regdump 0x151a 0x00000010
+radeon_hd: regdump 0x151f 0x000001ce
+radeon_hd: regdump 0x1523 0x00000b00
+radeon_hd: regdump 0x1524 0x00000003
+radeon_hd: regdump 0x1529 0x0000003f
+radeon_hd: regdump 0x152a 0x00000018
+radeon_hd: regdump 0x1536 0x0000000e
+radeon_hd: regdump 0x153e 0xffff0000
+radeon_hd: regdump 0x153f 0xffff0000
+radeon_hd: regdump 0x1a00 0x00000001
+radeon_hd: regdump 0x1a01 0x0a10800a
+radeon_hd: regdump 0x1a06 0x00000500
+radeon_hd: regdump 0x1a07 0x000000f4
+radeon_hd: regdump 0x1a08 0x000000f4
+radeon_hd: regdump 0x1a0d 0x00000500
+radeon_hd: regdump 0x1a0e 0x00000400
+radeon_hd: regdump 0x1a0f 0x00000012
+radeon_hd: regdump 0x1a12 0x00000020
+radeon_hd: regdump 0x1a16 0x00000001
+radeon_hd: regdump 0x1a1c 0x000000ff
+radeon_hd: regdump 0x1a1d 0x0000ffff
+radeon_hd: regdump 0x1a2d 0x00000010
+radeon_hd: regdump 0x1a2e 0x20000000
+radeon_hd: regdump 0x1a2f 0x20000000
+radeon_hd: regdump 0x1a30 0x20000000
+radeon_hd: regdump 0x1a36 0x00002000
+radeon_hd: regdump 0x1a38 0x20000000
+radeon_hd: regdump 0x1a3b 0x00002000
+radeon_hd: regdump 0x1a3d 0x00002000
+radeon_hd: regdump 0x1a3f 0x20000000
+radeon_hd: regdump 0x1a42 0x00002000
+radeon_hd: regdump 0x1a43 0x00002000
+radeon_hd: regdump 0x1a45 0x20000000
+radeon_hd: regdump 0x1a48 0x00002000
+radeon_hd: regdump 0x1a49 0x00002000
+radeon_hd: regdump 0x1a4b 0x20000000
+radeon_hd: regdump 0x1a4e 0x00002000
+radeon_hd: regdump 0x1a50 0x00000003
+radeon_hd: regdump 0x1a51 0x0000000a
+radeon_hd: regdump 0x1a52 0x00003fff
+radeon_hd: regdump 0x1a5a 0x00002000
+radeon_hd: regdump 0x1a5c 0x20000000
+radeon_hd: regdump 0x1a5f 0x00002000
+radeon_hd: regdump 0x1a66 0x04000010
+radeon_hd: regdump 0x1a6f 0x04000010
+radeon_hd: regdump 0x1a7b 0x00400000
+radeon_hd: regdump 0x1a7c 0x00401004
+radeon_hd: regdump 0x1a7d 0x00000001
+radeon_hd: regdump 0x1a7e 0x00000007
+radeon_hd: regdump 0x1a7f 0x00000002
+radeon_hd: regdump 0x1a84 0x0000ffff
+radeon_hd: regdump 0x1a85 0x0000ffff
+radeon_hd: regdump 0x1a86 0x0000ffff
+radeon_hd: regdump 0x1a8a 0x00004000
+radeon_hd: regdump 0x1a8c 0x00002220
+radeon_hd: regdump 0x1a8d 0x00400000
+radeon_hd: regdump 0x1a90 0x60002000
+radeon_hd: regdump 0x1a91 0x00000145
+radeon_hd: regdump 0x1a96 0x11111111
+radeon_hd: regdump 0x1a97 0x00000200
+radeon_hd: regdump 0x1a9c 0x00003fff
+radeon_hd: regdump 0x1a9d 0x00003fff
+radeon_hd: regdump 0x1a9f 0x00000010
+radeon_hd: regdump 0x1aa2 0x00018eaf
+radeon_hd: regdump 0x1aa3 0x00000007
+radeon_hd: regdump 0x1abc 0x00000002
+radeon_hd: regdump 0x1ac0 0x00001000
+radeon_hd: regdump 0x1ac1 0x000606b0
+radeon_hd: regdump 0x1ac2 0x000006b0
+radeon_hd: regdump 0x1ac6 0x0000025c
+radeon_hd: regdump 0x1acb 0x00000001
+radeon_hd: regdump 0x1acc 0x00c00002
+radeon_hd: regdump 0x1ad7 0xa0068002
+radeon_hd: regdump 0x1ad8 0x00200010
+radeon_hd: regdump 0x1ada 0x00110102
+radeon_hd: regdump 0x1ae2 0x00000002
+radeon_hd: regdump 0x1ae3 0x00000001
+radeon_hd: regdump 0x1aff 0x44444444
+radeon_hd: regdump 0x1b00 0x80020000
+radeon_hd: regdump 0x1b03 0x00000004
+radeon_hd: regdump 0x1b05 0x00000054
+radeon_hd: regdump 0x1b06 0x00000001
+radeon_hd: regdump 0x1b07 0x00000010
+package_daemon: [27143118:    73] Volume::InitialVerify(): volume at "/boot/system" is consistent
+package_daemon: [27144395:    73] Failed to open packages activation file /boot/home/config/packages/administrative/activated-packages: No such file or directory
+package_daemon: [27144411:    73] Failed to get activated packages info from activated packages file. Assuming all package files in package directory are activated.
+package_daemon: [27144420:    73] The latest volume state is also the currently active one
+package_daemon: [27144465:    73] Volume::InitialVerify(0x59a5c3f200, (nil))
+radeon_hd: regdump 0x1b2c 0x81818181
+radeon_hd: regdump 0x1b30 0x0000242b
+radeon_hd: regdump 0x1b31 0x04000800
+radeon_hd: regdump 0x1b33 0x00007fff
+radeon_hd: regdump 0x1b34 0x00000001
+radeon_hd: regdump 0x1b35 0x00000200
+radeon_hd: regdump 0x1b36 0x00000111
+radeon_hd: regdump 0x1b37 0x00000200
+radeon_hd: regdump 0x1b39 0x45454545
+radeon_hd: regdump 0x1b3a 0x00000011
+radeon_hd: regdump 0x1b41 0x0b282680
+radeon_hd: regdump 0x1b45 0x00000002
+radeon_hd: regdump 0x1b48 0x00000100
+radeon_hd: regdump 0x1b4a 0x01000000
+radeon_hd: regdump 0x1b4b 0x00000100
+radeon_hd: regdump 0x1b4d 0x01000000
+radeon_hd: regdump 0x1b4e 0x01000000
+radeon_hd: regdump 0x1b4f 0x80000000
+radeon_hd: regdump 0x1b53 0x00001010
+package_daemon: [27149693:    73] Volume::InitialVerify(): volume at "/boot/home/config" is consistent
+radeon_hd: regdump 0x1b5d 0x05000400
+radeon_hd: regdump 0x1b62 0x05000400
+radeon_hd: regdump 0x1b6c 0x55555555
+radeon_hd: regdump 0x1b6d 0xff0220ff
+radeon_hd: regdump 0x1b6f 0x00000010
+radeon_hd: regdump 0x1b73 0x80000000
+radeon_hd: regdump 0x1b76 0x46464646
+radeon_hd: regdump 0x1b78 0x00000010
+radeon_hd: regdump 0x1b7b 0x00020000
+radeon_hd: regdump 0x1b7d 0x00000040
+radeon_hd: regdump 0x1b80 0x00000697
+radeon_hd: regdump 0x1b81 0x01680668
+radeon_hd: regdump 0x1b82 0x00700000
+radeon_hd: regdump 0x1b86 0x00000004
+radeon_hd: regdump 0x1b87 0x00000429
+radeon_hd: regdump 0x1b8b 0x00000001
+radeon_hd: regdump 0x1b8c 0x00000001
+radeon_hd: regdump 0x1b8d 0x00290429
+radeon_hd: regdump 0x1b8e 0x00030000
+radeon_hd: regdump 0x1b93 0x06970429
+radeon_hd: regdump 0x1b9c 0x80410311
+radeon_hd: regdump 0x1ba3 0x00050002
+radeon_hd: regdump 0x1ba4 0x01c002ad
+radeon_hd: regdump 0x1ba5 0x000002ad
+radeon_hd: regdump 0x1ba6 0x00000713
+radeon_hd: regdump 0x1ba7 0x02b20713
+radeon_hd: regdump 0x1ba8 0x02e002b5
+radeon_hd: regdump 0x1bb3 0x00004007
+radeon_hd: regdump 0x1bb6 0x00010000
+radeon_hd: regdump 0x1bbe 0x00000002
+radeon_hd: regdump 0x1bc0 0x00000008
+radeon_hd: regdump 0x1bc2 0x00000001
+radeon_hd: regdump 0x1bc3 0x00010000
+radeon_hd: regdump 0x1bc4 0x00000001
+radeon_hd: regdump 0x1bc7 0x66666666
+radeon_hd: regdump 0x1bcf 0x00001000
+radeon_hd: regdump 0x1bd1 0x00001000
+radeon_hd: regdump 0x1bd3 0x00001000
+radeon_hd: regdump 0x1be7 0x00010001
+radeon_hd: regdump 0x1bec 0x83838383
+radeon_hd: regdump 0x1bee 0x00001300
+radeon_hd: regdump 0x1bf2 0x00000921
+radeon_hd: regdump 0x1bf4 0x00000099
+radeon_hd: regdump 0x1bf5 0x000000dd
+radeon_hd: regdump 0x1bf6 0x00000010
+radeon_hd: regdump 0x1bfa 0x01000040
+radeon_hd: regdump 0x1bfb 0x00ff00ff
+radeon_hd: regdump 0x1bfc 0x000700ff
+radeon_hd: regdump 0x4805 0x01100100
+radeon_hd: regdump 0x4806 0x03020100
+radeon_hd: regdump 0x4807 0x01100100
+radeon_hd: regdump 0x4808 0x03020100
+radeon_hd: regdump 0x4809 0x00000100
+radeon_hd: regdump 0x480a 0x00010203
+radeon_hd: regdump 0x480b 0x00000100
+radeon_hd: regdump 0x480c 0x10010203
+radeon_hd: regdump 0x480d 0x01100100
+radeon_hd: regdump 0x480e 0x03020100
+radeon_hd: regdump 0x480f 0x01100100
+radeon_hd: regdump 0x4810 0x03020100
+radeon_hd: regdump 0x4811 0x01100100
+radeon_hd: regdump 0x4812 0x03020100
+radeon_hd: regdump 0x4816 0x00033333
+radeon_hd: regdump 0x4818 0x0000c400
+radeon_hd: regdump 0x4819 0x00000013
+radeon_hd: regdump 0x481b 0x02000000
+radeon_hd: regdump 0x481c 0x00000014
+radeon_hd: regdump 0x481d 0x00010f9f
+radeon_hd: regdump 0x481f 0x0000007d
+radeon_hd: regdump 0x4822 0x00000001
+radeon_hd: regdump 0x4832 0x80808080
+radeon_hd: regdump 0x4837 0x000000e4
+radeon_hd: regdump 0x4838 0x0f000000
+radeon_hd: regdump 0x4839 0x0f000000
+radeon_hd: regdump 0x483a 0x0000000f
+radeon_hd: regdump 0x483b 0x0a0b0101
+radeon_hd: regdump 0x483c 0x04030001
+radeon_hd: regdump 0x483f 0x0f000000
+radeon_hd: regdump 0x4840 0x0f000000
+radeon_hd: regdump 0x4843 0x0f000000
+radeon_hd: regdump 0x4844 0x0f000000
+radeon_hd: regdump 0x4847 0x01100100
+radeon_hd: regdump 0x4848 0x01100100
+radeon_hd: regdump 0x4849 0x03020100
+radeon_hd: regdump 0x484a 0x03020100
+radeon_hd: regdump 0x4860 0x04444444
+radeon_hd: regdump 0x4868 0xcf400000
+radeon_hd: regdump 0x486c 0xcf404040
+radeon_hd: regdump 0x4870 0xcf404040
+radeon_hd: regdump 0x4874 0xcf400000
+radeon_hd: regdump 0x4877 0x00000101
+radeon_hd: regdump 0x4878 0xcf400000
+radeon_hd: regdump 0x487b 0x00000101
+radeon_hd: regdump 0x487c 0xcf404040
+radeon_hd: regdump 0x4880 0xcf400000
+radeon_hd: regdump 0x4882 0x00010000
+radeon_hd: regdump 0x4884 0x00004040
+radeon_hd: regdump 0x4887 0x00000101
+radeon_hd: regdump 0x4888 0x04040e04
+radeon_hd: regdump 0x488b 0x00000100
+radeon_hd: regdump 0x488c 0x44440448
+radeon_hd: regdump 0x488e 0x22220202
+radeon_hd: regdump 0x488f 0x00010000
+radeon_hd: regdump 0x4890 0x66404040
+radeon_hd: regdump 0x4894 0x47ac470f
+radeon_hd: regdump 0x4895 0x00472147
+radeon_hd: regdump 0x4897 0x00010001
+radeon_hd: regdump 0x4898 0x00000044
+radeon_hd: regdump 0x489a 0x00010000
+radeon_hd: regdump 0x489b 0x00000003
+radeon_hd: regdump 0x489c 0x0000004c
+radeon_hd: regdump 0x489d 0x31116070
+radeon_hd: regdump 0x48a0 0xffff0003
+radeon_hd: regdump 0x48a1 0x0007ffff
+radeon_hd: regdump 0x48aa 0x00008000
+radeon_hd: regdump 0x48ac 0x01021202
+radeon_hd: regdump 0x48b0 0x00015540
+radeon_hd: regdump 0x48b2 0x00000007
+radeon_hd: regdump 0x48c3 0x402a2a00
+radeon_hd: regdump 0x48c4 0x00000804
+radeon_hd: regdump 0x48c5 0x00000007
+radeon_hd: regdump 0x48c7 0x000000ff
+radeon_hd: regdump 0x48d1 0x000000f1
+radeon_hd: regdump 0x4963 0x402a2a00
+radeon_hd: regdump 0x4964 0x00000804
+radeon_hd: regdump 0x4965 0x00000007
+radeon_hd: regdump 0x4967 0x000000ff
+radeon_hd: regdump 0x4971 0x000000f1
+radeon_hd: regdump 0x4a01 0x00000100
+radeon_hd: regdump 0x4a03 0x00000063
+radeon_hd: regdump 0x4a04 0x00000060
+radeon_hd: regdump 0x4a05 0x00222222
+radeon_hd: regdump 0x4a09 0x00010001
+radeon_hd: regdump 0x4a0b 0x00000010
+radeon_hd: regdump 0x4a0c 0x00010000
+radeon_hd: regdump 0x4a13 0x00000004
+radeon_hd: regdump 0x4a21 0x02000000
+radeon_hd: regdump 0x4a24 0x291c3b04
+radeon_hd: regdump 0x4a25 0x84306189
+radeon_hd: regdump 0x4a26 0x49aa180c
+radeon_hd: regdump 0x4a27 0x60066800
+radeon_hd: regdump 0x4a28 0x9c382aba
+radeon_hd: regdump 0x4a29 0xaed68191
+radeon_hd: regdump 0x4a2a 0x755044d0
+radeon_hd: regdump 0x4a2b 0x80072499
+radeon_hd: regdump 0x4a2c 0x0d60917d
+radeon_hd: regdump 0x4a36 0x00000170
+radeon_hd: regdump 0x4a42 0x04000800
+radeon_hd: regdump 0x4a46 0x00000007
+radeon_hd: regdump 0x4a47 0x00010000
+radeon_hd: regdump 0x4a48 0x00000100
+radeon_hd: regdump 0x4a49 0x00000100
+radeon_hd: regdump 0x4a4a 0xff080084
+radeon_hd: regdump 0x4a4c 0x30000000
+radeon_hd: regdump 0x4a4e 0x00000002
+radeon_hd: regdump 0x4a50 0x30000000
+radeon_hd: regdump 0x4a56 0xf266a614
+radeon_hd: regdump 0x4a57 0x000000d6
+radeon_hd: regdump 0x4a64 0xf266a614
+radeon_hd: regdump 0x4a65 0x000000d6
+radeon_hd: regdump 0x4a6b 0x00000001
+radeon_hd: regdump 0x4a73 0x00000001
+radeon_hd: regdump 0x4a74 0x00aa0355
+radeon_hd: regdump 0x4a7b 0xbabababa
+radeon_hd: regdump 0x4a7d 0xbcbcbcbc
+radeon_hd: regdump 0x4a90 0x00010000
+radeon_hd: regdump 0x4aa4 0x00100200
+radeon_hd: regdump 0x4aa9 0x00002000
+radeon_hd: regdump 0x4aab 0x10002000
+radeon_hd: regdump 0x4aad 0x01000000
+radeon_hd: regdump 0x4ab5 0x00007f00
+radeon_hd: regdump 0x4ab6 0x0101ff10
+radeon_hd: regdump 0x4ab8 0x00ff0000
+radeon_hd: regdump 0x4ab9 0xffffffff
+radeon_hd: regdump 0x4abc 0x20020000
+radeon_hd: regdump 0x4ac0 0x0000531f
+radeon_hd: regdump 0x4ac7 0x00000200
+radeon_hd: regdump 0x4ac8 0x20000000
+radeon_hd: regdump 0x4ac9 0x00008000
+radeon_hd: regdump 0x4aca 0x00008000
+radeon_hd: regdump 0x4ace 0x00001100
+radeon_hd: regdump 0x4ad6 0x000203ff
+radeon_hd: regdump 0x4ad9 0xcccccccc
+radeon_hd: regdump 0x4adb 0xcfcfcfcf
+radeon_hd: regdump 0x4adc 0x00000005
+radeon_hd: regdump 0x4b01 0x00000100
+radeon_hd: regdump 0x4b03 0x00000063
+radeon_hd: regdump 0x4b04 0x00000060
+radeon_hd: regdump 0x4b05 0x00222222
+radeon_hd: regdump 0x4b09 0x00010001
+radeon_hd: regdump 0x4b0b 0x00000010
+radeon_hd: regdump 0x4b0c 0x00010000
+radeon_hd: regdump 0x4b13 0x00000004
+radeon_hd: regdump 0x4b21 0x02000000
+radeon_hd: regdump 0x4b24 0x50eb1b40
+radeon_hd: regdump 0x4b25 0xf6426c04
+radeon_hd: regdump 0x4b26 0x6ec7a930
+radeon_hd: regdump 0x4b27 0x38d6b2b6
+radeon_hd: regdump 0x4b28 0xa307030c
+radeon_hd: regdump 0x4b29 0x7b544894
+radeon_hd: regdump 0x4b2a 0xedc2c3f6
+radeon_hd: regdump 0x4b2b 0x9ba958a5
+radeon_hd: regdump 0x4b2c 0xa23e61a0
+radeon_hd: regdump 0x4b36 0x00000170
+radeon_hd: regdump 0x4b42 0x04000800
+radeon_hd: regdump 0x4b46 0x00000007
+radeon_hd: regdump 0x4b47 0x00010000
+radeon_hd: regdump 0x4b48 0x00000100
+radeon_hd: regdump 0x4b49 0x00000100
+radeon_hd: regdump 0x4b4a 0xff080084
+radeon_hd: regdump 0x4b4c 0x30000000
+radeon_hd: regdump 0x4b4e 0x00000002
+radeon_hd: regdump 0x4b50 0x30000000
+radeon_hd: regdump 0x4b56 0xf266a614
+radeon_hd: regdump 0x4b57 0x000000d6
+radeon_hd: regdump 0x4b64 0xf266a614
+radeon_hd: regdump 0x4b65 0x000000d6
+radeon_hd: regdump 0x4b6b 0x00000001
+radeon_hd: regdump 0x4b73 0x00000001
+radeon_hd: regdump 0x4b74 0x00aa0355
+radeon_hd: regdump 0x4b7b 0xbabababa
+radeon_hd: regdump 0x4b7d 0xbcbcbcbc
+radeon_hd: regdump 0x4b90 0x00010000
+radeon_hd: regdump 0x4ba4 0x00100200
+radeon_hd: regdump 0x4ba9 0x00002000
+radeon_hd: regdump 0x4bab 0x10002000
+radeon_hd: regdump 0x4bad 0x01000000
+radeon_hd: regdump 0x4bb5 0x00007f00
+radeon_hd: regdump 0x4bb6 0x0101ff10
+radeon_hd: regdump 0x4bb8 0x00ff0000
+radeon_hd: regdump 0x4bb9 0xffffffff
+radeon_hd: regdump 0x4bbc 0x20020000
+radeon_hd: regdump 0x4bc0 0x0000531f
+radeon_hd: regdump 0x4bc7 0x00000200
+radeon_hd: regdump 0x4bc8 0x20000000
+radeon_hd: regdump 0x4bc9 0x00008000
+radeon_hd: regdump 0x4bca 0x00008000
+radeon_hd: regdump 0x4bce 0x00001100
+radeon_hd: regdump 0x4bd6 0x000203ff
+radeon_hd: regdump 0x4bd9 0xcccccccc
+radeon_hd: regdump 0x4bdb 0xcfcfcfcf
+radeon_hd: regdump 0x4bdc 0x00000005
+radeon_hd: regdump 0x4c01 0x00000100
+radeon_hd: regdump 0x4c03 0x0000001f
+radeon_hd: regdump 0x4c04 0x00000060
+radeon_hd: regdump 0x4c05 0x00222222
+radeon_hd: regdump 0x4c09 0x00010001
+radeon_hd: regdump 0x4c0b 0x00000010
+radeon_hd: regdump 0x4c0c 0x00010000
+radeon_hd: regdump 0x4c13 0x00000004
+radeon_hd: regdump 0x4c21 0x02000000
+radeon_hd: regdump 0x4c24 0x0d2a5ca5
+radeon_hd: regdump 0x4c25 0x47d107eb
+radeon_hd: regdump 0x4c26 0xc076218c
+radeon_hd: regdump 0x4c27 0x7b8066c8
+radeon_hd: regdump 0x4c28 0x44b5d4c4
+radeon_hd: regdump 0x4c29 0x98d2e144
+radeon_hd: regdump 0x4c2a 0x04788111
+radeon_hd: regdump 0x4c2b 0x960a9900
+radeon_hd: regdump 0x4c2c 0x0c4e0042
+radeon_hd: regdump 0x4c36 0x00000170
+radeon_hd: regdump 0x4c42 0x04000800
+radeon_hd: regdump 0x4c46 0x00000007
+radeon_hd: regdump 0x4c47 0x40020000
+radeon_hd: regdump 0x4c48 0x00000100
+radeon_hd: regdump 0x4c49 0x00000100
+radeon_hd: regdump 0x4c4a 0xff080084
+radeon_hd: regdump 0x4c4c 0x30000000
+radeon_hd: regdump 0x4c4e 0x00000002
+radeon_hd: regdump 0x4c50 0x30000000
+radeon_hd: regdump 0x4c56 0xf266a614
+radeon_hd: regdump 0x4c57 0x000000d6
+radeon_hd: regdump 0x4c64 0xf266a614
+radeon_hd: regdump 0x4c65 0x000000d6
+radeon_hd: regdump 0x4c6b 0x00000001
+radeon_hd: regdump 0x4c72 0x00000001
+radeon_hd: regdump 0x4c73 0x00000001
+radeon_hd: regdump 0x4c74 0x00aa0355
+radeon_hd: regdump 0x4c7b 0xbabababa
+radeon_hd: regdump 0x4c7d 0xbcbcbcbc
+radeon_hd: regdump 0x4c90 0x00010000
+radeon_hd: regdump 0x4ca4 0x00100200
+radeon_hd: regdump 0x4ca9 0x00002000
+radeon_hd: regdump 0x4cab 0x10002000
+radeon_hd: regdump 0x4cad 0x01000000
+radeon_hd: regdump 0x4cb5 0x00007f00
+radeon_hd: regdump 0x4cb6 0x0101ff10
+radeon_hd: regdump 0x4cb8 0x00ff0000
+radeon_hd: regdump 0x4cb9 0xffffffff
+radeon_hd: regdump 0x4cbc 0x20020000
+radeon_hd: regdump 0x4cc0 0x0000531f
+radeon_hd: regdump 0x4cc7 0x00000200
+radeon_hd: regdump 0x4cc8 0x20000000
+radeon_hd: regdump 0x4cc9 0x00008000
+radeon_hd: regdump 0x4cca 0x00008000
+radeon_hd: regdump 0x4cce 0x00001100
+radeon_hd: regdump 0x4cd6 0x000203ff
+radeon_hd: regdump 0x4cd9 0xcccccccc
+radeon_hd: regdump 0x4cdb 0xcfcfcfcf
+radeon_hd: regdump 0x4cdc 0x00000005
+radeon_hd: regdump 0x4d00 0x01000000
+radeon_hd: regdump 0x4d01 0x00000100
+radeon_hd: regdump 0x4d03 0x0000001f
+radeon_hd: regdump 0x4d04 0x00000060
+radeon_hd: regdump 0x4d05 0x00222222
+radeon_hd: regdump 0x4d06 0x21c98800
+radeon_hd: regdump 0x4d09 0x00010001
+radeon_hd: regdump 0x4d0b 0x00000010
+radeon_hd: regdump 0x4d0c 0x00010000
+radeon_hd: regdump 0x4d13 0x00000004
+radeon_hd: regdump 0x4d21 0x02000000
+radeon_hd: regdump 0x4d24 0xec6a11c6
+radeon_hd: regdump 0x4d25 0x8f062e47
+radeon_hd: regdump 0x4d26 0x73e85d15
+radeon_hd: regdump 0x4d27 0x283c4610
+radeon_hd: regdump 0x4d28 0xb3e48e00
+radeon_hd: regdump 0x4d29 0x1320f64c
+radeon_hd: regdump 0x4d2a 0x194eb86c
+radeon_hd: regdump 0x4d2b 0xe9312c80
+radeon_hd: regdump 0x4d2c 0xd2d76296
+radeon_hd: regdump 0x4d36 0x00000170
+radeon_hd: regdump 0x4d42 0x04000800
+radeon_hd: regdump 0x4d46 0x00000007
+radeon_hd: regdump 0x4d47 0x20020800
+radeon_hd: regdump 0x4d48 0x00000101
+radeon_hd: regdump 0x4d49 0x00000100
+radeon_hd: regdump 0x4d4a 0xff080084
+radeon_hd: regdump 0x4d4c 0x30000300
+radeon_hd: regdump 0x4d4e 0x00000002
+radeon_hd: regdump 0x4d50 0x30000300
+radeon_hd: regdump 0x4d56 0xf266a614
+radeon_hd: regdump 0x4d57 0x000000d6
+radeon_hd: regdump 0x4d58 0xbb08d77d
+radeon_hd: regdump 0x4d59 0xd8853801
+radeon_hd: regdump 0x4d64 0xf266a614
+radeon_hd: regdump 0x4d65 0x000000d6
+radeon_hd: regdump 0x4d66 0x5372ff78
+radeon_hd: regdump 0x4d67 0x7b01e3d9
+radeon_hd: regdump 0x4d6b 0x00000001
+radeon_hd: regdump 0x4d72 0x00000001
+radeon_hd: regdump 0x4d73 0x00000001
+radeon_hd: regdump 0x4d74 0x00aa0355
+radeon_hd: regdump 0x4d79 0x0000010f
+radeon_hd: regdump 0x4d7b 0xbabababa
+radeon_hd: regdump 0x4d7d 0xbcbcbcbc
+radeon_hd: regdump 0x4d7e 0x00000100
+radeon_hd: regdump 0x4d90 0x00010000
+radeon_hd: regdump 0x4da4 0x00100200
+radeon_hd: regdump 0x4da9 0x00002000
+radeon_hd: regdump 0x4dab 0x10002000
+radeon_hd: regdump 0x4dad 0x01000000
+radeon_hd: regdump 0x4db5 0x00007f00
+radeon_hd: regdump 0x4db6 0x0101ff10
+radeon_hd: regdump 0x4db8 0x00ff0000
+radeon_hd: regdump 0x4db9 0xffffffff
+radeon_hd: regdump 0x4dbc 0x20020000
+radeon_hd: regdump 0x4dc0 0x0000531f
+radeon_hd: regdump 0x4dc7 0x00000200
+radeon_hd: regdump 0x4dc8 0x20000000
+radeon_hd: regdump 0x4dc9 0x00008000
+radeon_hd: regdump 0x4dca 0x00008000
+radeon_hd: regdump 0x4dce 0x00001100
+radeon_hd: regdump 0x4dd6 0x000203ff
+radeon_hd: regdump 0x4dd9 0xcccccccc
+radeon_hd: regdump 0x4ddb 0xcfcfcfcf
+radeon_hd: regdump 0x4ddc 0x00000005
+radeon_hd: regdump 0x4e01 0x00000100
+radeon_hd: regdump 0x4e03 0x00000063
+radeon_hd: regdump 0x4e04 0x00000060
+radeon_hd: regdump 0x4e05 0x00222222
+radeon_hd: regdump 0x4e09 0x00010001
+radeon_hd: regdump 0x4e0b 0x00000010
+radeon_hd: regdump 0x4e0c 0x00010000
+radeon_hd: regdump 0x4e13 0x00000004
+radeon_hd: regdump 0x4e21 0x02000000
+radeon_hd: regdump 0x4e24 0xc9e4c3c2
+radeon_hd: regdump 0x4e25 0x3124612a
+radeon_hd: regdump 0x4e26 0x3b396e6d
+radeon_hd: regdump 0x4e27 0x2a0b403b
+radeon_hd: regdump 0x4e28 0x00d59612
+radeon_hd: regdump 0x4e29 0x02023548
+radeon_hd: regdump 0x4e2a 0x04553182
+radeon_hd: regdump 0x4e2b 0xe64be80a
+radeon_hd: regdump 0x4e2c 0xc924b3d6
+radeon_hd: regdump 0x4e36 0x00000170
+radeon_hd: regdump 0x4e42 0x04000800
+radeon_hd: regdump 0x4e46 0x00000007
+radeon_hd: regdump 0x4e47 0x00010000
+radeon_hd: regdump 0x4e48 0x00000100
+radeon_hd: regdump 0x4e49 0x00000100
+radeon_hd: regdump 0x4e4a 0xff080084
+radeon_hd: regdump 0x4e4c 0x30000000
+radeon_hd: regdump 0x4e4e 0x00000002
+radeon_hd: regdump 0x4e50 0x30000000
+radeon_hd: regdump 0x4e56 0xf266a614
+radeon_hd: regdump 0x4e57 0x000000d6
+radeon_hd: regdump 0x4e64 0xf266a614
+radeon_hd: regdump 0x4e65 0x000000d6
+radeon_hd: regdump 0x4e6b 0x00000001
+radeon_hd: regdump 0x4e73 0x00000001
+radeon_hd: regdump 0x4e74 0x00aa0355
+radeon_hd: regdump 0x4e7b 0xbabababa
+radeon_hd: regdump 0x4e7d 0xbcbcbcbc
+radeon_hd: regdump 0x4e90 0x00010000
+radeon_hd: regdump 0x4ea4 0x00100200
+radeon_hd: regdump 0x4ea9 0x00002000
+radeon_hd: regdump 0x4eab 0x10002000
+radeon_hd: regdump 0x4ead 0x01000000
+radeon_hd: regdump 0x4eb5 0x00007f00
+radeon_hd: regdump 0x4eb6 0x0101ff10
+radeon_hd: regdump 0x4eb8 0x00ff0000
+radeon_hd: regdump 0x4eb9 0xffffffff
+radeon_hd: regdump 0x4ebc 0x20020000
+radeon_hd: regdump 0x4ec0 0x0000531f
+radeon_hd: regdump 0x4ec7 0x00000200
+radeon_hd: regdump 0x4ec8 0x20000000
+radeon_hd: regdump 0x4ec9 0x00008000
+radeon_hd: regdump 0x4eca 0x00008000
+radeon_hd: regdump 0x4ece 0x00001100
+radeon_hd: regdump 0x4ed6 0x000203ff
+radeon_hd: regdump 0x4ed9 0xcccccccc
+radeon_hd: regdump 0x4edb 0xcfcfcfcf
+radeon_hd: regdump 0x4edc 0x00000005
+/dev/net/rtl81xx/0: link up, media 0x900030 quality 1000 speed 1000000000
+register_domain(4, link)
+radeon_hd: regdump 0x0102 0x00000101
+radeon_hd: regdump 0x0103 0x00000101
+radeon_hd: regdump 0x0107 0x00000100
+radeon_hd: regdump 0x0108 0x00000200
+radeon_hd: regdump 0x0109 0x00000001
+radeon_hd: regdump 0x010b 0x00000200
+radeon_hd: regdump 0x010f 0x00000200
+radeon_hd: regdump 0x0110 0x00000003
+radeon_hd: regdump 0x0116 0x00989680
+radeon_hd: regdump 0x0117 0x00000600
+radeon_hd: regdump 0x011d 0x00000001
+radeon_hd: regdump 0x011e 0x0000010b
+radeon_hd: regdump 0x0124 0x18791717
+radeon_hd: regdump 0x0130 0x001186a0
+radeon_hd: regdump 0x0131 0x0811003c
+radeon_hd: regdump 0x0133 0xfffff800
+radeon_hd: regdump 0x0134 0x74ee00fd
+radeon_hd: regdump 0x0135 0x00000200
+radeon_hd: regdump 0x0136 0x00000200
+radeon_hd: regdump 0x0137 0x01600801
+radeon_hd: regdump 0x013b 0x00120264
+radeon_hd: regdump 0x013c 0x037f037f
+radeon_hd: regdump 0x013d 0x00000200
+radeon_hd: regdump 0x0140 0x00190000
+radeon_hd: regdump 0x0142 0x23c34600
+radeon_hd: regdump 0x0143 0x00000003
+radeon_hd: regdump 0x0144 0x0000c000
+radeon_hd: regdump 0x0146 0x23c34600
+radeon_hd: regdump 0x0148 0x0000c000
+radeon_hd: regdump 0x014a 0x23c34600
+radeon_hd: regdump 0x014c 0x0000c000
+radeon_hd: regdump 0x014e 0x23c34600
+radeon_hd: regdump 0x0150 0x0000c000
+radeon_hd: regdump 0x0152 0x23c34600
+radeon_hd: regdump 0x0156 0x23c34600
+radeon_hd: regdump 0x015c 0x0000000f
+radeon_hd: regdump 0x0161 0x00000100
+radeon_hd: regdump 0x0162 0x00000201
+radeon_hd: regdump 0x0163 0x00000301
+radeon_hd: regdump 0x0164 0x00000400
+radeon_hd: regdump 0x0165 0x00000500
+radeon_hd: regdump 0x0168 0x00070000
+radeon_hd: regdump 0x0169 0x00030000
+radeon_hd: regdump 0x016a 0x00030000
+radeon_hd: regdump 0x016b 0x00000030
+radeon_hd: regdump 0x016d 0x00000001
+radeon_hd: regdump 0x016f 0x00000001
+radeon_hd: regdump 0x0178 0x81818181
+radeon_hd: regdump 0x017d 0x99999999
+radeon_hd: regdump 0x017e 0x01ff01ff
+radeon_hd: regdump 0x0184 0x00080000
+radeon_hd: regdump 0x0185 0x53d42924
+radeon_hd: regdump 0x0186 0x00502904
+radeon_hd: regdump 0x018b 0x80000000
+radeon_hd: regdump 0x018c 0x80000000
+radeon_hd: regdump 0x018e 0x000000ae
+radeon_hd: regdump 0x018f 0x00000002
+radeon_hd: regdump 0x0191 0x7fffffff
+radeon_hd: regdump 0x0193 0x7fffffff
+radeon_hd: regdump 0x0194 0x7c7fffff
+radeon_hd: regdump 0x0195 0x00080000
+radeon_hd: regdump 0x0196 0x00402804
+radeon_hd: regdump 0x0197 0x7c37d7fb
+radeon_hd: regdump 0x01a7 0xaaaa5555
+radeon_hd: regdump 0x01a9 0xaaaa5555
+radeon_hd: regdump 0x01ab 0xaaaa5555
+radeon_hd: regdump 0x01ad 0xaaaa5555
+radeon_hd: regdump 0x01af 0xaaaa5555
+radeon_hd: regdump 0x01b1 0xaaaa5555
+radeon_hd: regdump 0x01b3 0xaaaa5555
+radeon_hd: regdump 0x01b5 0xaaaa5555
+radeon_hd: regdump 0x01b7 0x00000004
+radeon_hd: regdump 0x01b8 0x00000002
+radeon_hd: regdump 0x0302 0x31313131
+radeon_hd: regdump 0x0304 0x0000031f
+radeon_hd: regdump 0x0305 0x000003ff
+radeon_hd: regdump 0x0306 0x000003ff
+radeon_hd: regdump 0x0307 0x000003ff
+radeon_hd: regdump 0x0308 0x000003ff
+radeon_hd: regdump 0x0309 0x000003ff
+radeon_hd: regdump 0x030a 0x000003ff
+radeon_hd: regdump 0x030b 0x00001000
+radeon_hd: regdump 0x030c 0x10009000
+radeon_hd: regdump 0x030d 0x00002020
+radeon_hd: regdump 0x030f 0x30303030
+radeon_hd: regdump 0x0312 0x00000001
+radeon_hd: regdump 0x0314 0x20000800
+radeon_hd: regdump 0x0315 0xa0001000
+radeon_hd: regdump 0x0317 0x00001a00
+radeon_hd: regdump 0x0318 0x000ad6b5
+radeon_hd: regdump 0x031f 0x33333333
+radeon_hd: regdump 0x0321 0x00000011
+radeon_hd: regdump 0x0322 0x00000010
+radeon_hd: regdump 0x0323 0x00000010
+radeon_hd: regdump 0x0324 0x00000010
+radeon_hd: regdump 0x0325 0x00000010
+radeon_hd: regdump 0x0327 0x00000010
+radeon_hd: regdump 0x032c 0x000003ff
+radeon_hd: regdump 0x032d 0x000003ff
+radeon_hd: regdump 0x0330 0x000120ff
+radeon_hd: regdump 0x033b 0x0000003f
+radeon_hd: regdump 0x0360 0x81818181
+radeon_hd: regdump 0x036c 0x81818181
+radeon_hd: regdump 0x0392 0x000000bf
+radeon_hd: regdump 0x0394 0x20000040
+radeon_hd: regdump 0x03a5 0xffffffff
+radeon_hd: regdump 0x03a6 0x81017250
+radeon_hd: regdump 0x03a9 0x00000001
+radeon_hd: regdump 0x03ad 0x00000001
+radeon_hd: regdump 0x03b1 0x0001ffff
+radeon_hd: regdump 0x03b2 0xffffffff
+radeon_hd: regdump 0x03b3 0x00001008
+radeon_hd: regdump 0x03b4 0x00001008
+radeon_hd: regdump 0x03b5 0x00001008
+radeon_hd: regdump 0x03b6 0x00001008
+radeon_hd: regdump 0x03b7 0x00001008
+radeon_hd: regdump 0x03b8 0x00001008
+radeon_hd: regdump 0x03b9 0x00001008
+radeon_hd: regdump 0x03ba 0x00001008
+radeon_hd: regdump 0x03c6 0x00001000
+radeon_hd: regdump 0x03c9 0xe2199b28
+radeon_hd: regdump 0x03e1 0x00200040
+radeon_hd: regdump 0x03e2 0x50000000
+radeon_hd: regdump 0x03e4 0x00008200
+radeon_hd: regdump 0x03eb 0xdadadada
+radeon_hd: regdump 0x03ec 0x00007000
+radeon_hd: regdump 0x03f3 0xffff00f0
+radeon_hd: regdump 0x03f7 0x00000200
+radeon_hd: regdump 0x03f8 0x007f8007
+radeon_hd: regdump 0x03fc 0x00000200
+radeon_hd: regdump 0x03fd 0xdadadadb
+radeon_hd: debug_display_registers: end vbios state
+radeon_hd: radeon_gpu_mc_setup: vramStart: 0xF400000000, vramEnd: 0xF40FFFFFFF
+radeon_hd: radeon_gpu_ring_setup called
+radeon_hd: RingQueue: Requested 1048576 bytes for GFX RingQueue.
+radeon_hd: RingQueue: Allocating 1048576 bytes for GFX RingQueue.
+radeon_hd: radeon_gpu_ring_boot called
+radeon_hd: radeon_gpu_ring_boot: TODO
+radeon_hd: radeon_init_accelerant done
+radeon_hd: radeon_get_edid_info
+radeon_hd: radeon_get_preferred_mode
+radeon_hd: radeon_get_edid_info
+radeon_hd: radeon_accelerant_mode_count
+radeon_hd: radeon_get_mode_list
+radeon_hd: radeon_set_display_mode
+radeon_hd:   mode->space: 0x8
+radeon_hd:   mode->virtual_width: 2560
+radeon_hd:   mode->virtual_height: 1440
+radeon_hd:   mode->h_display_start: 0
+radeon_hd:   mode->v_display_start: 0
+radeon_hd:   mode->flags: 0x8000001f
+radeon_hd: encoder_output_lock: true
+radeon_hd: display_crtc_lock
+radeon_hd: encoder_dpms_set: display 0, power: false
+radeon_hd: encoder_dpms_set_dig: display 0, power: false
+radeon_hd: transmitter_dig_setup: connector 1, pixelClock: 0
+radeon_hd: transmitter_dig_setup: table 1.6
+radeon_hd: encoder_pick_dig: connector 1
+radeon_hd: display_crtc_dpms: crtc 0 dpms powerdown
+radeon_hd: display_crtc_blank
+radeon_hd: atom_op_jump: Error: AtomBIOS stuck in loop for more then 5 seconds. (5010242 identical jmp op's)
+radeon_hd: atom_execute_table_locked: AtomBIOS parser aborted calling operation TEST_REG (0x4A) @ 0xC027
+radeon_hd: atom_execute_table: AtomBIOS parser was aborted in table BlankCRTC (0x22)
+radeon_hd: display_crtc_power
+radeon_hd: encoder_assign_crtc
+radeon_hd: encoder_assign_crtc: table 1.3
+radeon_hd: encoder_pick_dig: connector 1
+radeon_hd: encoder_crtc_scratch: display 0
+radeon_hd: radeon_set_display_mode: pll 0 selected for connector 1
+radeon_hd: pll_asic_ss_probe: No potential spread spectrum data found!
+radeon_hd: pll_setup_flags: CRTC: 0, PLL: 0
+radeon_hd: pll_adjust: table 1.3
+radeon_hd: pll_adjust: was: 241500, now: 241500
+radeon_hd: pll_compute_post_divider: vco = 2970000
+radeon_hd: pll_compute_post_divider: postDiv = 12
+radeon_hd: pll_compute: using minimum reference divider
+radeon_hd: pll_compute: performing fractional feedback calculations
+radeon_hd: pll_compute: Calculated pixel clock of 241666 based on:
+radeon_hd: pll_compute:   referenceFrequency: 100000; referenceDivider: 2
+radeon_hd: pll_compute:   feedbackDivider: 58; feedbackDividerFrac: 0
+radeon_hd: pll_compute:   postDivider: 12
+radeon_hd: pll_compute: pixel clock 241500 was changed to 241666
+radeon_hd: pll_set: table 1.7
+radeon_hd: pll_set: set adjusted pixel clock 241666 (was 241500)
+radeon_hd: display_crtc_ss
+radeon_hd: display_crtc_set_dtd called to do 2560x1440
+radeon_hd: display_crtc_fb_set: Framebuffer at: 0xF400000000
+radeon_hd: display_crtc_fb_set: Set SurfaceAddress High: 0xF4
+radeon_hd: display_crtc_fb_set: Set SurfaceAddress: 0x0
+radeon_hd: display_crtc_fb_set: fb: 2560x1440 (32 bpp)
+radeon_hd: display_crtc_fb_set: fb pitch: 2560 
+radeon_hd: display_dce45_crtc_load_lut: crtcID 0
+radeon_hd: display_crtc_scale
+radeon_hd: encoder_mode_set: display 0
+radeon_hd: encoder_dig_setup
+radeon_hd: encoder_pick_dig: connector 1
+radeon_hd: encoder_dig_setup: table 1.5
+radeon_hd: encoder_dig_setup
+radeon_hd: encoder_pick_dig: connector 1
+radeon_hd: encoder_dig_setup: table 1.5
+radeon_hd: encoder_apply_quirks: display 0
+radeon_hd: display_crtc_dpms: crtc 0 dpms powerup
+radeon_hd: display_crtc_power
+radeon_hd: display_crtc_blank
+radeon_hd: encoder_dpms_set: display 0, power: true
+radeon_hd: encoder_dpms_set_dig: display 0, power: true
+radeon_hd: encoder_dig_setup
+radeon_hd: encoder_pick_dig: connector 1
+radeon_hd: encoder_dig_setup: table 1.5
+radeon_hd: encoder_dig_setup
+radeon_hd: encoder_pick_dig: connector 1
+radeon_hd: encoder_dig_setup: table 1.5
+radeon_hd: transmitter_dig_setup: connector 1, pixelClock: 241666
+radeon_hd: transmitter_dig_setup: table 1.6
+radeon_hd: encoder_pick_dig: connector 1
+radeon_hd: display_crtc_lock
+radeon_hd: encoder_output_lock: false
+radeon_hd: debug_display_registers: begin after mode set
+radeon_hd: regdump 0x00c0 0x0200000f
+radeon_hd: regdump 0x00c1 0x00010000
+radeon_hd: regdump 0x00c2 0x00000101
+radeon_hd: regdump 0x00c3 0x00000002
+radeon_hd: regdump 0x00c7 0x22222222
+radeon_hd: regdump 0x00c9 0x000000f4
+radeon_hd: regdump 0x00ca 0x00000010
+radeon_hd: regdump 0x00d0 0x0000000f
+radeon_hd: regdump 0x00d4 0x00005218
+radeon_hd: regdump 0x00d5 0x00010000
+radeon_hd: regdump 0x00d7 0x0000031f
+radeon_hd: regdump 0x00ed 0x0000000b
+radeon_hd: regdump 0x00f0 0xe0000013
+radeon_hd: regdump 0x00f1 0x00ff0101
+radeon_hd: regdump 0x00f2 0x00001840
+radeon_hd: regdump 0x00f3 0xff080067
+radeon_hd: regdump 0x00f5 0x0000000b
+radeon_hd: regdump 0x00f8 0x00000001
+radeon_hd: regdump 0x00f9 0x00000001
+radeon_hd: regdump 0x00fa 0x00000001
+radeon_hd: regdump 0x00fc 0x00000100
+radeon_hd: regdump 0x0800 0x00000003
+radeon_hd: regdump 0x0801 0x00432210
+radeon_hd: regdump 0x0802 0x00001032
+radeon_hd: regdump 0x0803 0x33344333
+radeon_hd: regdump 0x0804 0x33444433
+radeon_hd: regdump 0x0805 0x77300333
+radeon_hd: regdump 0x0806 0x00333333
+radeon_hd: regdump 0x0807 0x37773337
+radeon_hd: regdump 0x0808 0x03003330
+radeon_hd: regdump 0x0809 0xf4fff400
+radeon_hd: regdump 0x0819 0x00000503
+radeon_hd: regdump 0x081b 0x00000001
+radeon_hd: regdump 0x0b00 0x0f200029
+radeon_hd: regdump 0x0b01 0xf4000000
+radeon_hd: regdump 0x0b02 0x00020080
+radeon_hd: regdump 0x0b03 0x7ffffbff
+radeon_hd: regdump 0x0b08 0x00020080
+radeon_hd: regdump 0x0b09 0x7ffffbff
+radeon_hd: regdump 0x0b0e 0x00020080
+radeon_hd: regdump 0x0b0f 0x7ffffbff
+radeon_hd: regdump 0x1505 0x0000001a
+radeon_hd: regdump 0x1506 0x00000002
+radeon_hd: regdump 0x1507 0x00000006
+radeon_hd: regdump 0x1509 0x0000000d
+radeon_hd: regdump 0x150a 0x00001000
+radeon_hd: regdump 0x150b 0xe0000000
+radeon_hd: regdump 0x150c 0x00000100
+radeon_hd: regdump 0x150d 0x00040000
+radeon_hd: regdump 0x1514 0x00018003
+radeon_hd: regdump 0x1516 0x00040040
+radeon_hd: regdump 0x1517 0x4010e110
+radeon_hd: regdump 0x1518 0x00000001
+radeon_hd: regdump 0x151a 0x00000010
+radeon_hd: regdump 0x151f 0x000001ce
+radeon_hd: regdump 0x1523 0x00000b00
+radeon_hd: regdump 0x1524 0x00000003
+radeon_hd: regdump 0x1529 0x0000003f
+radeon_hd: regdump 0x152a 0x00000018
+radeon_hd: regdump 0x1536 0x0000000e
+radeon_hd: regdump 0x153e 0xffff0000
+radeon_hd: regdump 0x153f 0xffff0000
+radeon_hd: regdump 0x1a00 0x00000001
+radeon_hd: regdump 0x1a01 0x00000002
+radeon_hd: regdump 0x1a06 0x00000a00
+radeon_hd: regdump 0x1a07 0x000000f4
+radeon_hd: regdump 0x1a08 0x000000f4
+radeon_hd: regdump 0x1a0d 0x00000a00
+radeon_hd: regdump 0x1a0e 0x000005a0
+radeon_hd: regdump 0x1a0f 0x00000012
+radeon_hd: regdump 0x1a12 0x00000020
+radeon_hd: regdump 0x1a16 0x00000001
+radeon_hd: regdump 0x1a1c 0x000000ff
+radeon_hd: regdump 0x1a1d 0x0000ffff
+radeon_hd: regdump 0x1a2d 0x00000010
+radeon_hd: regdump 0x1a2e 0x20000000
+radeon_hd: regdump 0x1a2f 0x20000000
+radeon_hd: regdump 0x1a30 0x20000000
+radeon_hd: regdump 0x1a36 0x00002000
+radeon_hd: regdump 0x1a38 0x20000000
+radeon_hd: regdump 0x1a3b 0x00002000
+radeon_hd: regdump 0x1a3d 0x00002000
+radeon_hd: regdump 0x1a3f 0x20000000
+radeon_hd: regdump 0x1a42 0x00002000
+radeon_hd: regdump 0x1a43 0x00002000
+radeon_hd: regdump 0x1a45 0x20000000
+radeon_hd: regdump 0x1a48 0x00002000
+radeon_hd: regdump 0x1a49 0x00002000
+radeon_hd: regdump 0x1a4b 0x20000000
+radeon_hd: regdump 0x1a4e 0x00002000
+radeon_hd: regdump 0x1a51 0x0000000a
+radeon_hd: regdump 0x1a52 0x00003fff
+radeon_hd: regdump 0x1a5a 0x00002000
+radeon_hd: regdump 0x1a5c 0x20000000
+radeon_hd: regdump 0x1a5f 0x00002000
+radeon_hd: regdump 0x1a66 0x04000010
+radeon_hd: regdump 0x1a6f 0x04000010
+radeon_hd: regdump 0x1a7b 0x00400000
+radeon_hd: regdump 0x1a7c 0x00401004
+radeon_hd: regdump 0x1a7d 0x00000001
+radeon_hd: regdump 0x1a7e 0x00000007
+radeon_hd: regdump 0x1a7f 0x00000002
+radeon_hd: regdump 0x1a84 0x0000ffff
+radeon_hd: regdump 0x1a85 0x0000ffff
+radeon_hd: regdump 0x1a86 0x0000ffff
+radeon_hd: regdump 0x1a8a 0x00004000
+radeon_hd: regdump 0x1a8c 0x00002220
+radeon_hd: regdump 0x1a8d 0x00400000
+radeon_hd: regdump 0x1a90 0x60002000
+radeon_hd: regdump 0x1a91 0x00000145
+radeon_hd: regdump 0x1a96 0x11111111
+radeon_hd: regdump 0x1a97 0x00000200
+radeon_hd: regdump 0x1a9c 0x00003fff
+radeon_hd: regdump 0x1a9d 0x00003fff
+radeon_hd: regdump 0x1a9f 0x00000010
+radeon_hd: regdump 0x1aa1 0x00000001
+radeon_hd: regdump 0x1aa2 0x00018eaf
+radeon_hd: regdump 0x1aa3 0x00000007
+radeon_hd: regdump 0x1abc 0x00000002
+radeon_hd: regdump 0x1ac0 0x00001000
+radeon_hd: regdump 0x1ac1 0x000306b0
+radeon_hd: regdump 0x1ac2 0x000006b0
+radeon_hd: regdump 0x1ac3 0x000005a0
+radeon_hd: regdump 0x1ac6 0x000001fa
+radeon_hd: regdump 0x1acb 0x00000001
+radeon_hd: regdump 0x1acc 0x00c00002
+radeon_hd: regdump 0x1ad7 0xa0a88002
+radeon_hd: regdump 0x1ad8 0x00200010
+radeon_hd: regdump 0x1ada 0x00110102
+radeon_hd: regdump 0x1ae2 0x00000002
+radeon_hd: regdump 0x1ae3 0x00000001
+radeon_hd: regdump 0x1aff 0x44444444
+radeon_hd: regdump 0x1b00 0x80020000
+radeon_hd: regdump 0x1b03 0x00000004
+radeon_hd: regdump 0x1b05 0x00000054
+radeon_hd: regdump 0x1b06 0x00000001
+radeon_hd: regdump 0x1b07 0x00000010
+radeon_hd: regdump 0x1b2c 0x81818181
+bfs: Could not find value in index "size"!
+radeon_hd: regdump 0x1b30 0x0000242b
+radeon_hd: regdump 0x1b31 0x04000800
+radeon_hd: regdump 0x1b33 0x00007fff
+radeon_hd: regdump 0x1b34 0x00000001
+radeon_hd: regdump 0x1b35 0x00000200
+radeon_hd: regdump 0x1b36 0x00000111
+radeon_hd: regdump 0x1b37 0x00000200
+radeon_hd: regdump 0x1b39 0x45454545
+radeon_hd: regdump 0x1b3a 0x00000011
+radeon_hd: regdump 0x1b40 0x00000001
+radeon_hd: regdump 0x1b41 0x28601fd8
+radeon_hd: regdump 0x1b45 0x00000002
+radeon_hd: regdump 0x1b48 0x00000100
+radeon_hd: regdump 0x1b4a 0x01000000
+radeon_hd: regdump 0x1b4b 0x00000100
+radeon_hd: regdump 0x1b4d 0x01000000
+radeon_hd: regdump 0x1b4e 0x01000000
+radeon_hd: regdump 0x1b4f 0x80000000
+radeon_hd: regdump 0x1b53 0x00001010
+radeon_hd: regdump 0x1b5d 0x0a0005a0
+radeon_hd: regdump 0x1b62 0x0a0005a0
+radeon_hd: regdump 0x1b6c 0x55555555
+radeon_hd: regdump 0x1b6d 0xff0220ff
+radeon_hd: regdump 0x1b6f 0x00000010
+radeon_hd: regdump 0x1b73 0x80000000
+radeon_hd: regdump 0x1b76 0x46464646
+radeon_hd: regdump 0x1b78 0x00000010
+radeon_hd: regdump 0x1b7b 0x00020000
+radeon_hd: regdump 0x1b7d 0x00000040
+radeon_hd: regdump 0x1b80 0x00000a9f
+radeon_hd: regdump 0x1b81 0x00700a70
+radeon_hd: regdump 0x1b82 0x00200000
+radeon_hd: regdump 0x1b86 0x00000004
+radeon_hd: regdump 0x1b87 0x000005c8
+radeon_hd: regdump 0x1b8b 0x00000001
+radeon_hd: regdump 0x1b8c 0x00000001
+radeon_hd: regdump 0x1b8d 0x002605c6
+radeon_hd: regdump 0x1b8e 0x00050000
+radeon_hd: regdump 0x1b93 0x0a9f05c6
+radeon_hd: regdump 0x1b9c 0x80410311
+radeon_hd: regdump 0x1ba1 0x08040110
+radeon_hd: regdump 0x1ba2 0x000006a4
+radeon_hd: regdump 0x1ba3 0x00020002
+bfs: radeon_hd: regdump 0x1ba4 0x076604c6
+Could not find value in index "last_modified"!
+radeon_hd: regdump 0x1ba5 0x000004c7
+radeon_hd: regdump 0x1ba6 0x00000001
+radeon_hd: regdump 0x1ba7 0x04c80001
+radeon_hd: regdump 0x1ba8 0x07e904c8
+radeon_hd: regdump 0x1bb3 0x00004007
+radeon_hd: regdump 0x1bb6 0x00010000
+radeon_hd: regdump 0x1bc0 0x00000008
+radeon_hd: regdump 0x1bc2 0x00000001
+radeon_hd: regdump 0x1bc3 0x00010000
+radeon_hd: regdump 0x1bc4 0x00000001
+radeon_hd: regdump 0x1bc7 0x66666666
+radeon_hd: regdump 0x1bcf 0x00001000
+radeon_hd: regdump 0x1bd1 0x00001000
+radeon_hd: regdump 0x1bd3 0x00001000
+radeon_hd: regdump 0x1be7 0x00010001
+radeon_hd: regdump 0x1bec 0x83838383
+radeon_hd: regdump 0x1bee 0x00001300
+radeon_hd: regdump 0x1bf2 0x00000921
+radeon_hd: regdump 0x1bf4 0x00000099
+radeon_hd: regdump 0x1bf5 0x000000dd
+radeon_hd: regdump 0x1bf6 0x00000010
+radeon_hd: regdump 0x1bfa 0x01000040
+radeon_hd: regdump 0x1bfb 0x00ff00ff
+radeon_hd: regdump 0x1bfc 0x000700ff
+radeon_hd: regdump 0x4805 0x01100100
+radeon_hd: regdump 0x4806 0x03020100
+radeon_hd: regdump 0x4807 0x01100100
+radeon_hd: regdump 0x4808 0x03020100
+radeon_hd: regdump 0x4809 0x00000100
+radeon_hd: regdump 0x480a 0x00010203
+radeon_hd: regdump 0x480b 0x00000100
+radeon_hd: regdump 0x480c 0x10010203
+radeon_hd: regdump 0x480d 0x01100100
+radeon_hd: regdump 0x480e 0x03020100
+radeon_hd: regdump 0x480f 0x01100100
+radeon_hd: regdump 0x4810 0x03020100
+radeon_hd: regdump 0x4811 0x01100100
+radeon_hd: regdump 0x4812 0x03020100
+radeon_hd: regdump 0x4816 0x00033333
+radeon_hd: regdump 0x4818 0x0000c400
+radeon_hd: regdump 0x4819 0x00000013
+radeon_hd: regdump 0x481b 0x02000000
+radeon_hd: regdump 0x481c 0x00000014
+radeon_hd: regdump 0x481d 0x00010f9f
+radeon_hd: regdump 0x481f 0x0000007d
+radeon_hd: regdump 0x4822 0x00000001
+radeon_hd: regdump 0x4832 0x80808080
+radeon_hd: regdump 0x4837 0x000000e4
+radeon_hd: regdump 0x4838 0x0f000000
+radeon_hd: regdump 0x4839 0x0f000000
+radeon_hd: regdump 0x483a 0x0000000f
+radeon_hd: regdump 0x483b 0x0a0b0101
+radeon_hd: regdump 0x483c 0x04030001
+radeon_hd: regdump 0x483f 0x0f000000
+radeon_hd: regdump 0x4840 0x0f000000
+radeon_hd: regdump 0x4843 0x0f000000
+radeon_hd: regdump 0x4844 0x0f000000
+radeon_hd: regdump 0x4847 0x01100100
+radeon_hd: regdump 0x4848 0x01100100
+radeon_hd: regdump 0x4849 0x03020100
+radeon_hd: regdump 0x484a 0x03020100
+radeon_hd: regdump 0x4860 0x04444444
+radeon_hd: regdump 0x4868 0xcf400000
+radeon_hd: regdump 0x486c 0xcf404040
+radeon_hd: regdump 0x4870 0xcf404040
+radeon_hd: regdump 0x4874 0xcf400000
+radeon_hd: regdump 0x4877 0x00000101
+radeon_hd: regdump 0x4878 0xcf400000
+radeon_hd: regdump 0x487b 0x00000101
+radeon_hd: regdump 0x487c 0xcf404040
+radeon_hd: regdump 0x4880 0xcf400000
+radeon_hd: regdump 0x4882 0x00010000
+radeon_hd: regdump 0x4884 0x00004040
+radeon_hd: regdump 0x4887 0x00000101
+radeon_hd: regdump 0x4888 0x04040e04
+radeon_hd: regdump 0x488b 0x00000100
+radeon_hd: regdump 0x488c 0x44440448
+radeon_hd: regdump 0x488e 0x22220202
+radeon_hd: regdump 0x488f 0x00010000
+radeon_hd: regdump 0x4890 0x66404040
+radeon_hd: regdump 0x4894 0x47ac470f
+radeon_hd: regdump 0x4895 0x00472147
+radeon_hd: regdump 0x4897 0x00010001
+radeon_hd: regdump 0x4898 0x00000044
+radeon_hd: regdump 0x489a 0x00010000
+radeon_hd: regdump 0x489b 0x00000003
+radeon_hd: regdump 0x489c 0x0000004c
+radeon_hd: regdump 0x489d 0x31116070
+radeon_hd: regdump 0x48a0 0xffff0003
+radeon_hd: regdump 0x48a1 0x0007ffff
+radeon_hd: regdump 0x48aa 0x00008000
+radeon_hd: regdump 0x48ac 0x01021202
+radeon_hd: regdump 0x48b0 0x00015540
+radeon_hd: regdump 0x48b2 0x00000007
+radeon_hd: regdump 0x4a01 0x00000100
+radeon_hd: regdump 0x4a03 0x00000063
+radeon_hd: regdump 0x4a04 0x00000060
+radeon_hd: regdump 0x4a05 0x00222222
+radeon_hd: regdump 0x4a09 0x00010001
+radeon_hd: regdump 0x4a0b 0x00000010
+radeon_hd: regdump 0x4a0c 0x00010000
+radeon_hd: regdump 0x4a13 0x00000004
+radeon_hd: regdump 0x4a21 0x02000000
+radeon_hd: regdump 0x4a24 0x291c3b04
+radeon_hd: regdump 0x4a25 0x84306189
+radeon_hd: regdump 0x4a26 0x49aa180c
+radeon_hd: regdump 0x4a27 0x60066800
+radeon_hd: regdump 0x4a28 0x9c382aba
+radeon_hd: regdump 0x4a29 0xaed68191
+radeon_hd: regdump 0x4a2a 0x755044d0
+radeon_hd: regdump 0x4a2b 0x80072499
+radeon_hd: regdump 0x4a2c 0x0d60917d
+radeon_hd: regdump 0x4a36 0x00000170
+radeon_hd: regdump 0x4a42 0x04000800
+radeon_hd: regdump 0x4a46 0x00000007
+radeon_hd: regdump 0x4a47 0x00010000
+radeon_hd: regdump 0x4a48 0x00000100
+radeon_hd: regdump 0x4a49 0x00000100
+radeon_hd: regdump 0x4a4a 0xff080084
+radeon_hd: regdump 0x4a4c 0x30000000
+radeon_hd: regdump 0x4a4e 0x00000002
+radeon_hd: regdump 0x4a50 0x30000000
+radeon_hd: regdump 0x4a56 0xf266a614
+radeon_hd: regdump 0x4a57 0x000000d6
+radeon_hd: regdump 0x4a64 0xf266a614
+radeon_hd: regdump 0x4a65 0x000000d6
+radeon_hd: regdump 0x4a6b 0x00000001
+radeon_hd: regdump 0x4a73 0x00000001
+radeon_hd: regdump 0x4a74 0x00aa0355
+radeon_hd: regdump 0x4a7b 0xbabababa
+radeon_hd: regdump 0x4a7d 0xbcbcbcbc
+radeon_hd: regdump 0x4a90 0x00010000
+radeon_hd: regdump 0x4aa4 0x00100200
+radeon_hd: regdump 0x4aa9 0x00002000
+radeon_hd: regdump 0x4aab 0x10002000
+radeon_hd: regdump 0x4aad 0x01000000
+radeon_hd: regdump 0x4ab5 0x00007f00
+radeon_hd: regdump 0x4ab6 0x0101ff10
+radeon_hd: regdump 0x4ab8 0x00ff0000
+radeon_hd: regdump 0x4ab9 0xffffffff
+radeon_hd: regdump 0x4abc 0x20020000
+radeon_hd: regdump 0x4ac0 0x0000531f
+radeon_hd: regdump 0x4ac7 0x00000200
+radeon_hd: regdump 0x4ac8 0x20000000
+radeon_hd: regdump 0x4ac9 0x00008000
+radeon_hd: regdump 0x4aca 0x00008000
+radeon_hd: regdump 0x4ace 0x00001100
+radeon_hd: regdump 0x4ad6 0x000203ff
+radeon_hd: regdump 0x4ad9 0xcccccccc
+radeon_hd: regdump 0x4adb 0xcfcfcfcf
+radeon_hd: regdump 0x4adc 0x00000005
+radeon_hd: regdump 0x4b01 0x00000100
+radeon_hd: regdump 0x4b03 0x00000063
+radeon_hd: regdump 0x4b04 0x00000060
+radeon_hd: regdump 0x4b05 0x00222222
+radeon_hd: regdump 0x4b09 0x00010001
+radeon_hd: regdump 0x4b0b 0x00000010
+radeon_hd: regdump 0x4b0c 0x00010000
+radeon_hd: regdump 0x4b13 0x00000004
+radeon_hd: regdump 0x4b21 0x02000000
+radeon_hd: regdump 0x4b24 0x50eb1b40
+radeon_hd: regdump 0x4b25 0xf6426c04
+radeon_hd: regdump 0x4b26 0x6ec7a930
+radeon_hd: regdump 0x4b27 0x38d6b2b6
+radeon_hd: regdump 0x4b28 0xa307030c
+radeon_hd: regdump 0x4b29 0x7b544894
+radeon_hd: regdump 0x4b2a 0xedc2c3f6
+radeon_hd: regdump 0x4b2b 0x9ba958a5
+radeon_hd: regdump 0x4b2c 0xa23e61a0
+radeon_hd: regdump 0x4b36 0x00000170
+radeon_hd: regdump 0x4b42 0x04000800
+radeon_hd: regdump 0x4b46 0x00000007
+radeon_hd: regdump 0x4b47 0x00010000
+radeon_hd: regdump 0x4b48 0x00000100
+radeon_hd: regdump 0x4b49 0x00000100
+radeon_hd: regdump 0x4b4a 0xff080084
+radeon_hd: regdump 0x4b4c 0x30000000
+radeon_hd: regdump 0x4b4e 0x00000002
+radeon_hd: regdump 0x4b50 0x30000000
+radeon_hd: regdump 0x4b56 0xf266a614
+radeon_hd: regdump 0x4b57 0x000000d6
+radeon_hd: regdump 0x4b64 0xf266a614
+radeon_hd: regdump 0x4b65 0x000000d6
+radeon_hd: regdump 0x4b6b 0x00000001
+radeon_hd: regdump 0x4b73 0x00000001
+radeon_hd: regdump 0x4b74 0x00aa0355
+radeon_hd: regdump 0x4b7b 0xbabababa
+radeon_hd: regdump 0x4b7d 0xbcbcbcbc
+radeon_hd: regdump 0x4b90 0x00010000
+radeon_hd: regdump 0x4ba4 0x00100200
+radeon_hd: regdump 0x4ba9 0x00002000
+radeon_hd: regdump 0x4bab 0x10002000
+radeon_hd: regdump 0x4bad 0x01000000
+radeon_hd: regdump 0x4bb5 0x00007f00
+radeon_hd: regdump 0x4bb6 0x0101ff10
+radeon_hd: regdump 0x4bb8 0x00ff0000
+radeon_hd: regdump 0x4bb9 0xffffffff
+radeon_hd: regdump 0x4bbc 0x20020000
+radeon_hd: regdump 0x4bc0 0x0000531f
+radeon_hd: regdump 0x4bc7 0x00000200
+radeon_hd: regdump 0x4bc8 0x20000000
+radeon_hd: regdump 0x4bc9 0x00008000
+radeon_hd: regdump 0x4bca 0x00008000
+radeon_hd: regdump 0x4bce 0x00001100
+radeon_hd: regdump 0x4bd6 0x000203ff
+radeon_hd: regdump 0x4bd9 0xcccccccc
+radeon_hd: regdump 0x4bdb 0xcfcfcfcf
+radeon_hd: regdump 0x4bdc 0x00000005
+radeon_hd: regdump 0x4c01 0x00000100
+radeon_hd: regdump 0x4c03 0x0000001f
+radeon_hd: regdump 0x4c04 0x00000060
+radeon_hd: regdump 0x4c05 0x00222222
+radeon_hd: regdump 0x4c09 0x00010001
+radeon_hd: regdump 0x4c0b 0x00000010
+radeon_hd: regdump 0x4c0c 0x00010000
+radeon_hd: regdump 0x4c13 0x00000004
+radeon_hd: regdump 0x4c21 0x02000000
+radeon_hd: regdump 0x4c24 0x0d2a5ca5
+radeon_hd: regdump 0x4c25 0x47d107eb
+radeon_hd: regdump 0x4c26 0xc076218c
+radeon_hd: regdump 0x4c27 0x7b8066c8
+radeon_hd: regdump 0x4c28 0x44b5d4c4
+radeon_hd: regdump 0x4c29 0x98d2e144
+radeon_hd: regdump 0x4c2a 0x04788111
+radeon_hd: regdump 0x4c2b 0x960a9900
+radeon_hd: regdump 0x4c2c 0x0c4e0042
+radeon_hd: regdump 0x4c36 0x00000170
+radeon_hd: regdump 0x4c42 0x04000800
+radeon_hd: regdump 0x4c46 0x00000007
+radeon_hd: regdump 0x4c47 0x40020000
+radeon_hd: regdump 0x4c48 0x00000100
+radeon_hd: regdump 0x4c49 0x00000100
+radeon_hd: regdump 0x4c4a 0xff080084
+radeon_hd: regdump 0x4c4c 0x30000000
+radeon_hd: regdump 0x4c4e 0x00000002
+radeon_hd: regdump 0x4c50 0x30000000
+radeon_hd: regdump 0x4c56 0xf266a614
+radeon_hd: regdump 0x4c57 0x000000d6
+radeon_hd: regdump 0x4c64 0xf266a614
+radeon_hd: regdump 0x4c65 0x000000d6
+radeon_hd: regdump 0x4c6b 0x00000001
+radeon_hd: regdump 0x4c72 0x00000001
+radeon_hd: regdump 0x4c73 0x00000001
+radeon_hd: regdump 0x4c74 0x00aa0355
+radeon_hd: regdump 0x4c7b 0xbabababa
+radeon_hd: regdump 0x4c7d 0xbcbcbcbc
+radeon_hd: regdump 0x4c90 0x00010000
+radeon_hd: regdump 0x4ca4 0x00100200
+radeon_hd: regdump 0x4ca9 0x00002000
+radeon_hd: regdump 0x4cab 0x10002000
+radeon_hd: regdump 0x4cad 0x01000000
+radeon_hd: regdump 0x4cb5 0x00007f00
+radeon_hd: regdump 0x4cb6 0x0101ff10
+radeon_hd: regdump 0x4cb8 0x00ff0000
+radeon_hd: regdump 0x4cb9 0xffffffff
+radeon_hd: regdump 0x4cbc 0x20020000
+radeon_hd: regdump 0x4cc0 0x0000531f
+radeon_hd: regdump 0x4cc7 0x00000200
+radeon_hd: regdump 0x4cc8 0x20000000
+radeon_hd: regdump 0x4cc9 0x00008000
+radeon_hd: regdump 0x4cca 0x00008000
+radeon_hd: regdump 0x4cce 0x00001100
+radeon_hd: regdump 0x4cd6 0x000203ff
+radeon_hd: regdump 0x4cd9 0xcccccccc
+radeon_hd: regdump 0x4cdb 0xcfcfcfcf
+radeon_hd: regdump 0x4cdc 0x00000005
+radeon_hd: regdump 0x4d00 0x01000000
+radeon_hd: regdump 0x4d01 0x00000100
+radeon_hd: regdump 0x4d03 0x0000001f
+radeon_hd: regdump 0x4d04 0x00000060
+radeon_hd: regdump 0x4d05 0x00222222
+radeon_hd: regdump 0x4d06 0x22099000
+radeon_hd: regdump 0x4d09 0x00010001
+radeon_hd: regdump 0x4d0b 0x00000010
+radeon_hd: regdump 0x4d0c 0x00010000
+radeon_hd: regdump 0x4d13 0x00000004
+radeon_hd: regdump 0x4d21 0x02000000
+radeon_hd: regdump 0x4d24 0xec6a11c6
+radeon_hd: regdump 0x4d25 0x8f062e47
+radeon_hd: regdump 0x4d26 0x73e85d15
+radeon_hd: regdump 0x4d27 0x283c4610
+radeon_hd: regdump 0x4d28 0xb3e48e00
+radeon_hd: regdump 0x4d29 0x1320f64c
+radeon_hd: regdump 0x4d2a 0x194eb86c
+radeon_hd: regdump 0x4d2b 0xe9312c80
+radeon_hd: regdump 0x4d2c 0xd2d76296
+radeon_hd: regdump 0x4d36 0x00000170
+radeon_hd: regdump 0x4d42 0x04000800
+radeon_hd: regdump 0x4d46 0x00000007
+radeon_hd: regdump 0x4d47 0x20020800
+radeon_hd: regdump 0x4d48 0x00000101
+radeon_hd: regdump 0x4d49 0x00000100
+radeon_hd: regdump 0x4d4a 0xff080084
+radeon_hd: regdump 0x4d4c 0x30000000
+radeon_hd: regdump 0x4d4e 0x00000002
+radeon_hd: regdump 0x4d50 0x30000000
+radeon_hd: regdump 0x4d56 0xf266a614
+radeon_hd: regdump 0x4d57 0x000000d6
+radeon_hd: regdump 0x4d64 0xf266a614
+radeon_hd: regdump 0x4d65 0x000000d6
+radeon_hd: regdump 0x4d6b 0x00000001
+radeon_hd: regdump 0x4d72 0x00000001
+radeon_hd: regdump 0x4d73 0x00000001
+radeon_hd: regdump 0x4d74 0x00aa0355
+radeon_hd: regdump 0x4d79 0x0000010f
+radeon_hd: regdump 0x4d7b 0xbabababa
+radeon_hd: regdump 0x4d7d 0xbcbcbcbc
+radeon_hd: regdump 0x4d7e 0x00000100
+radeon_hd: regdump 0x4d90 0x00010000
+radeon_hd: regdump 0x4da4 0x00100200
+radeon_hd: regdump 0x4da9 0x00002000
+radeon_hd: regdump 0x4dab 0x10002000
+radeon_hd: regdump 0x4dad 0x01000000
+radeon_hd: regdump 0x4db5 0x00007f00
+radeon_hd: regdump 0x4db6 0x0101ff10
+radeon_hd: regdump 0x4db8 0x00ff0000
+radeon_hd: regdump 0x4db9 0xffffffff
+radeon_hd: regdump 0x4dbc 0x20020000
+radeon_hd: regdump 0x4dc0 0x0000531f
+radeon_hd: regdump 0x4dc7 0x00000200
+radeon_hd: regdump 0x4dc8 0x20000000
+radeon_hd: regdump 0x4dc9 0x00008000
+radeon_hd: regdump 0x4dca 0x00008000
+radeon_hd: regdump 0x4dce 0x00001100
+radeon_hd: regdump 0x4dd6 0x000203ff
+radeon_hd: regdump 0x4dd9 0xcccccccc
+radeon_hd: regdump 0x4ddb 0xcfcfcfcf
+radeon_hd: regdump 0x4ddc 0x00000005
+radeon_hd: regdump 0x4e01 0x00000100
+radeon_hd: regdump 0x4e03 0x00000063
+radeon_hd: regdump 0x4e04 0x00000060
+radeon_hd: regdump 0x4e05 0x00222222
+radeon_hd: regdump 0x4e09 0x00010001
+radeon_hd: regdump 0x4e0b 0x00000010
+radeon_hd: regdump 0x4e0c 0x00010000
+radeon_hd: regdump 0x4e13 0x00000004
+radeon_hd: regdump 0x4e21 0x02000000
+radeon_hd: regdump 0x4e24 0xc9e4c3c2
+radeon_hd: regdump 0x4e25 0x3124612a
+radeon_hd: regdump 0x4e26 0x3b396e6d
+radeon_hd: regdump 0x4e27 0x2a0b403b
+radeon_hd: regdump 0x4e28 0x00d59612
+radeon_hd: regdump 0x4e29 0x02023548
+radeon_hd: regdump 0x4e2a 0x04553182
+radeon_hd: regdump 0x4e2b 0xe64be80a
+radeon_hd: regdump 0x4e2c 0xc924b3d6
+radeon_hd: regdump 0x4e36 0x00000170
+radeon_hd: regdump 0x4e42 0x04000800
+radeon_hd: regdump 0x4e46 0x00000007
+radeon_hd: regdump 0x4e47 0x00010000
+radeon_hd: regdump 0x4e48 0x00000100
+radeon_hd: regdump 0x4e49 0x00000100
+radeon_hd: regdump 0x4e4a 0xff080084
+radeon_hd: regdump 0x4e4c 0x30000000
+radeon_hd: regdump 0x4e4e 0x00000002
+radeon_hd: regdump 0x4e50 0x30000000
+radeon_hd: regdump 0x4e56 0xf266a614
+radeon_hd: regdump 0x4e57 0x000000d6
+radeon_hd: regdump 0x4e64 0xf266a614
+radeon_hd: regdump 0x4e65 0x000000d6
+radeon_hd: regdump 0x4e6b 0x00000001
+radeon_hd: regdump 0x4e73 0x00000001
+radeon_hd: regdump 0x4e74 0x00aa0355
+radeon_hd: regdump 0x4e7b 0xbabababa
+radeon_hd: regdump 0x4e7d 0xbcbcbcbc
+radeon_hd: regdump 0x4e90 0x00010000
+radeon_hd: regdump 0x4ea4 0x00100200
+radeon_hd: regdump 0x4ea9 0x00002000
+radeon_hd: regdump 0x4eab 0x10002000
+radeon_hd: regdump 0x4ead 0x01000000
+radeon_hd: regdump 0x4eb5 0x00007f00
+radeon_hd: regdump 0x4eb6 0x0101ff10
+radeon_hd: regdump 0x4eb8 0x00ff0000
+radeon_hd: regdump 0x4eb9 0xffffffff
+radeon_hd: regdump 0x4ebc 0x20020000
+radeon_hd: regdump 0x4ec0 0x0000531f
+radeon_hd: regdump 0x4ec7 0x00000200
+radeon_hd: regdump 0x4ec8 0x20000000
+radeon_hd: regdump 0x4ec9 0x00008000
+radeon_hd: regdump 0x4eca 0x00008000
+radeon_hd: regdump 0x4ece 0x00001100
+radeon_hd: regdump 0x4ed6 0x000203ff
+radeon_hd: regdump 0x4ed9 0xcccccccc
+radeon_hd: regdump 0x4edb 0xcfcfcfcf
+radeon_hd: regdump 0x4edc 0x00000005
+radeon_hd: regdump 0x0102 0x00000101
+radeon_hd: regdump 0x0103 0x00000101
+radeon_hd: regdump 0x0107 0x00000100
+radeon_hd: regdump 0x0108 0x00000200
+radeon_hd: regdump 0x0109 0x00000001
+radeon_hd: regdump 0x010b 0x00000200
+radeon_hd: regdump 0x010f 0x00000200
+radeon_hd: regdump 0x0110 0x00000003
+radeon_hd: regdump 0x0116 0x00989680
+radeon_hd: regdump 0x0117 0x00000600
+radeon_hd: regdump 0x011d 0x00000001
+radeon_hd: regdump 0x011e 0x0000010b
+radeon_hd: regdump 0x0124 0x18791717
+radeon_hd: regdump 0x0130 0x001186a0
+radeon_hd: regdump 0x0131 0x0811003c
+radeon_hd: regdump 0x0133 0xfffff800
+radeon_hd: regdump 0x0134 0x74ee00fd
+radeon_hd: regdump 0x0135 0x00000200
+radeon_hd: regdump 0x0136 0x00000200
+radeon_hd: regdump 0x0137 0x01600801
+radeon_hd: regdump 0x013b 0x00120264
+radeon_hd: regdump 0x013c 0x037f037f
+radeon_hd: regdump 0x013d 0x00000200
+radeon_hd: regdump 0x0140 0x00190000
+radeon_hd: regdump 0x0142 0x23c34600
+radeon_hd: regdump 0x0143 0x00000003
+radeon_hd: regdump 0x0144 0x0000c000
+radeon_hd: regdump 0x0146 0x23c34600
+radeon_hd: regdump 0x0148 0x0000c000
+radeon_hd: regdump 0x014a 0x23c34600
+radeon_hd: regdump 0x014c 0x0000c000
+radeon_hd: regdump 0x014e 0x23c34600
+radeon_hd: regdump 0x0150 0x0000c000
+radeon_hd: regdump 0x0152 0x23c34600
+radeon_hd: regdump 0x0156 0x23c34600
+radeon_hd: regdump 0x015c 0x0000000f
+radeon_hd: regdump 0x0161 0x00000100
+radeon_hd: regdump 0x0162 0x00000201
+radeon_hd: regdump 0x0163 0x00000301
+radeon_hd: regdump 0x0164 0x00000400
+radeon_hd: regdump 0x0165 0x00000500
+radeon_hd: regdump 0x0168 0x00070000
+radeon_hd: regdump 0x0169 0x00030000
+radeon_hd: regdump 0x016a 0x00030000
+radeon_hd: regdump 0x016b 0x00000030
+radeon_hd: regdump 0x016d 0x00000001
+radeon_hd: regdump 0x016f 0x00000001
+radeon_hd: regdump 0x0178 0x81818181
+radeon_hd: regdump 0x017d 0x99999999
+radeon_hd: regdump 0x017e 0x01ff01ff
+radeon_hd: regdump 0x0184 0x00080000
+radeon_hd: regdump 0x0185 0x53d42924
+radeon_hd: regdump 0x0186 0x00502904
+radeon_hd: regdump 0x018b 0x80000000
+radeon_hd: regdump 0x018c 0x80000000
+radeon_hd: regdump 0x018e 0x000000ae
+radeon_hd: regdump 0x018f 0x00000002
+radeon_hd: regdump 0x0191 0x7fffffff
+radeon_hd: regdump 0x0193 0x7fffffff
+radeon_hd: regdump 0x0194 0x7c7fffff
+radeon_hd: regdump 0x0195 0x00080000
+radeon_hd: regdump 0x0196 0x00402804
+radeon_hd: regdump 0x0197 0x7c37d7fb
+radeon_hd: regdump 0x01a7 0xaaaa5555
+radeon_hd: regdump 0x01a9 0xaaaa5555
+radeon_hd: regdump 0x01ab 0xaaaa5555
+radeon_hd: regdump 0x01ad 0xaaaa5555
+radeon_hd: regdump 0x01af 0xaaaa5555
+radeon_hd: regdump 0x01b1 0xaaaa5555
+radeon_hd: regdump 0x01b3 0xaaaa5555
+radeon_hd: regdump 0x01b5 0xaaaa5555
+radeon_hd: regdump 0x01b7 0x00000004
+radeon_hd: regdump 0x01b8 0x00000002
+radeon_hd: regdump 0x0302 0x31313131
+radeon_hd: regdump 0x0304 0x0000031f
+radeon_hd: regdump 0x0305 0x000003ff
+radeon_hd: regdump 0x0306 0x000003ff
+radeon_hd: regdump 0x0307 0x000003ff
+radeon_hd: regdump 0x0308 0x000003ff
+radeon_hd: regdump 0x0309 0x000003ff
+radeon_hd: regdump 0x030a 0x000003ff
+radeon_hd: regdump 0x030b 0x00001000
+radeon_hd: regdump 0x030c 0x10009000
+radeon_hd: regdump 0x030d 0x00002020
+radeon_hd: regdump 0x030f 0x30303030
+radeon_hd: regdump 0x0312 0x00000001
+radeon_hd: regdump 0x0314 0x20000800
+radeon_hd: regdump 0x0315 0xa0001000
+radeon_hd: regdump 0x0317 0x00001a00
+radeon_hd: regdump 0x0318 0x000ad6b5
+radeon_hd: regdump 0x031f 0x33333333
+radeon_hd: regdump 0x0321 0x00000011
+radeon_hd: regdump 0x0322 0x00000010
+radeon_hd: regdump 0x0323 0x00000010
+radeon_hd: regdump 0x0324 0x00000010
+radeon_hd: regdump 0x0325 0x00000010
+radeon_hd: regdump 0x0327 0x00000010
+radeon_hd: regdump 0x032c 0x000003ff
+radeon_hd: regdump 0x032d 0x000003ff
+radeon_hd: regdump 0x0330 0x000120ff
+radeon_hd: regdump 0x033b 0x0000003f
+radeon_hd: regdump 0x0360 0x81818181
+radeon_hd: regdump 0x036c 0x81818181
+radeon_hd: regdump 0x0392 0x000000bf
+radeon_hd: regdump 0x0394 0x20000040
+radeon_hd: regdump 0x03a5 0xffffffff
+radeon_hd: regdump 0x03a6 0x81017250
+radeon_hd: regdump 0x03a9 0x00000001
+radeon_hd: regdump 0x03ad 0x00000001
+radeon_hd: regdump 0x03b1 0x0001ffff
+radeon_hd: regdump 0x03b2 0xffffffff
+radeon_hd: regdump 0x03b3 0x00001008
+radeon_hd: regdump 0x03b4 0x00001008
+radeon_hd: regdump 0x03b5 0x00001008
+radeon_hd: regdump 0x03b6 0x00001008
+radeon_hd: regdump 0x03b7 0x00001008
+radeon_hd: regdump 0x03b8 0x00001008
+radeon_hd: regdump 0x03b9 0x00001008
+radeon_hd: regdump 0x03ba 0x00001008
+radeon_hd: regdump 0x03c6 0x00001000
+radeon_hd: regdump 0x03c9 0xe2199b28
+radeon_hd: regdump 0x03e1 0x00200040
+radeon_hd: regdump 0x03e2 0x50000000
+radeon_hd: regdump 0x03e4 0x00008200
+radeon_hd: regdump 0x03eb 0xdadadada
+radeon_hd: regdump 0x03ec 0x00007000
+radeon_hd: regdump 0x03f3 0xffff00f0
+radeon_hd: regdump 0x03f7 0x00000200
+radeon_hd: regdump 0x03f8 0x007f8007
+radeon_hd: regdump 0x03fc 0x00000200
+radeon_hd: regdump 0x03fd 0xdadadadb
+radeon_hd: debug_display_registers: end after mode set
+radeon_hd: Current DisplayPort Info =================
+radeon_hd: Connector #0) DP: true
+radeon_hd:  + DP Config Data
+radeon_hd: dp_aux_speak: dp_aux channel flags not zero!
+Last message repeated 6 times.
+radeon_hd: dp_aux_transaction: IO Error. 7 attempts
+radeon_hd: dpcd_reg_read: error on DisplayPort aux read (0x80000001)
+radeon_hd:    - max lane count:          0
+radeon_hd: dp_aux_speak: dp_aux channel flags not zero!
+Last message repeated 6 times.
+radeon_hd: dp_aux_transaction: IO Error. 7 attempts
+radeon_hd: dpcd_reg_read: error on DisplayPort aux read (0x80000001)
+radeon_hd:    - max link rate:           0
+radeon_hd: dp_aux_speak: dp_aux channel flags not zero!
+Last message repeated 6 times.
+radeon_hd: dp_aux_transaction: IO Error. 7 attempts
+radeon_hd: dpcd_reg_read: error on DisplayPort aux read (0x80000001)
+radeon_hd:    - receiver port count:     0
+radeon_hd: dp_aux_speak: dp_aux channel flags not zero!
+Last message repeated 6 times.
+radeon_hd: dp_aux_transaction: IO Error. 7 attempts
+radeon_hd: dpcd_reg_read: error on DisplayPort aux read (0x80000001)
+radeon_hd:    - downstream port present: no
+radeon_hd: dp_aux_speak: dp_aux channel flags not zero!
+Last message repeated 6 times.
+radeon_hd: dp_aux_transaction: IO Error. 7 attempts
+radeon_hd: dpcd_reg_read: error on DisplayPort aux read (0x80000001)
+radeon_hd:    - downstream port count:   0
+radeon_hd:  + Training
+radeon_hd:    - attempts:                0
+radeon_hd:    - delay:                   0
+radeon_hd:  + Data
+radeon_hd:    - auxPin:                  0x90
+radeon_hd:  + Video
+radeon_hd:    - laneCount:               0
+radeon_hd:    - linkRate:                0
+radeon_hd: Connector #1) DP: false
+radeon_hd: Connector #2) DP: false
+radeon_hd: ==========================================
+radeon_hd: D1CRTC_STATUS        Value: 0x0
+radeon_hd: D2CRTC_STATUS        Value: 0x0
+radeon_hd: D1CRTC_CONTROL       Value: 0xAAAAAAAA
+radeon_hd: D2CRTC_CONTROL       Value: 0x0
+radeon_hd: D1GRPH_ENABLE        Value: 0x0
+radeon_hd: D2GRPH_ENABLE        Value: 0x0
+radeon_hd: D1SCL_ENABLE         Value: 0x0
+radeon_hd: D2SCL_ENABLE         Value: 0x0
+radeon_hd: D1CRTC_BLANK_CONTROL Value: 0x0
+radeon_hd: D2CRTC_BLANK_CONTROL Value: 0x0
+radeon_hd: radeon_get_frame_buffer_config
+radeon_hd:   config->frame_buffer: 0xffffffff96800000
+radeon_hd:   config->frame_buffer_dma: 0xe0000000
+radeon_hd:   config->bytes_per_row: 10240
+radeon_hd: radeon_get_edid_info
+radeon_hd: display_crtc_dpms: crtc 0 dpms powerup
+radeon_hd: display_crtc_power
+radeon_hd: display_crtc_blank
+radeon_hd: encoder_dpms_set: display 0, power: true
+radeon_hd: encoder_dpms_set_dig: display 0, power: true
+radeon_hd: encoder_dig_setup
+radeon_hd: encoder_pick_dig: connector 1
+radeon_hd: encoder_dig_setup: table 1.5
+radeon_hd: encoder_dig_setup
+radeon_hd: encoder_pick_dig: connector 1
+radeon_hd: encoder_dig_setup: table 1.5
+radeon_hd: transmitter_dig_setup: connector 1, pixelClock: 241666
+radeon_hd: transmitter_dig_setup: table 1.6
+radeon_hd: encoder_pick_dig: connector 1
+radeon_hd: radeon_get_edid_info
+slab memory manager: created area 0xffffffffa6801000 (12946)
+loaded driver /boot/system/add-ons/kernel/drivers/dev/input/wacom
+usb_hid: no handlers for hid device
+Last message repeated 2 times.
+loaded driver /boot/system/add-ons/kernel/drivers/dev/input/usb_hid
+ps2_hid: init_hardware
+ps2_hid: init_driver
+ps2_hid: publish_devices
+ps2_hid: uninit_driver
+loaded driver /boot/system/add-ons/kernel/drivers/dev/input/ps2_hid
+AddOnManager::_RegisterAddOn(): InitCheck() in "/boot/system/add-ons/input_server/devices/virtio" returned No such file or directory
+ps2_dev: reset failed: I/O error
+ps2: devfs_publish_device input/mouse/ps2/0, status = 0xffffffff
+ps2: devfs_publish_device input/keyboard/at/0, status = 0x00000000
+ps2: keyboard reset failed, status 0x80000001, data 0xff
+ps2: keyboard getid failed, status 0x80000001, data 0x0000. Assuming no keyboard
+ps2: keyboard probing failed
+ps2: devfs_unpublish_device input/keyboard/at/0, status = 0x00000000
+KeyboardDevice: error when opening /dev/input/keyboard/at/0: General system error
+usb_hid: keyboard device unhandled control 0x00002710
+loaded driver /boot/system/add-ons/kernel/drivers/dev/bus/usb_raw
+sis7018:init_hardware:ver:2.0.2
+usb_audio:00.34.618:AudioStreamingInterface::if[1]:alt_count:2
+usb_audio:00.34.618:AudioStreamingInterface::if[1]:alt[0]:descrs_count:0
+usb_audio:00.34.618:AudioStreamingInterface::if[1]:alt[1]:descrs_count:3
+usb_audio:00.34.618:AudioStreamingInterface::if[2]:alt_count:2
+usb_audio:00.34.618:AudioStreamingInterface::if[2]:alt[0]:descrs_count:0
+usb_audio:00.34.618:AudioStreamingInterface::if[2]:alt[1]:descrs_count:3
+usb_audio:00.34.618:AudioStreamingInterface::if[4]:alt_count:2
+usb_audio:00.34.618:AudioStreamingInterface::if[4]:alt[0]:descrs_count:0
+usb_audio:00.34.618:AudioStreamingInterface::if[4]:alt[1]:descrs_count:3
+usb error xhci 1: unsuccessful command 12, error Bandwidth (8)
+loaded driver /boot/system/add-ons/kernel/drivers/dev/audio/hmulti/usb_audio
+pci_reserve_device(1, 0, 1, hda)
+HDA: Detected controller @ PCI:1:0:1, IRQ:17, type 1002/aae0 (1787/aae0)
+pci_reserve_device(0, 27, 0, hda)
+HDA: Detected controller @ PCI:0:27:0, IRQ:22, type 8086/1c20 (1043/8444)
+loaded driver /boot/system/add-ons/kernel/drivers/dev/audio/hmulti/hda
+emuxki: init_hardware()
+echo3g: init_hardware()
+echo3g: no card found
+auvia: init_hardware()
+auich: init_hardware()
+allocate_io_interrupt_vectors: allocated 1 vectors starting from 27
+msi_allocate_vectors: allocated 1 vectors starting from 27
+msi enabled: 0x0081
+hda: using MSI vector 27
+hda: DMA snooping: no
+hda: HDA v1.0, O:5/I:0/B:0, #SDO:1, 64bit:no
+hda: Audio Group: Output delay: 0 samples, Input delay: 0 samples, Beep Generator: no
+hda:   #GPIO: 0, #GPO: 0, #GPI: 0, unsol: no, wake: no
+hda: 	Supported formats: 16bits 
+hda: 	Supported rates: 32khz 44khz 48khz 
+hda:   widget start 2, count 12
+hda: 2: Audio output
+hda: 	Supported formats: 16bits 
+hda: 	Supported rates: 32khz 44khz 48khz 
+hda: 	Supported power states: 
+hda: 	[Digital] [Stripe] [Stereo] 
+hda: 3: Pin complex
+hda: 	[Output]
+hda: 	Jack, HDMI Digital other out, Other digital, N/A, Association:15
+hda: 	Supported power states: 
+hda: 	[Digital] [Conn. list] [Unsol. responses] [Stereo] 
+hda: 	Inputs: <2> 
+hda: 4: Audio output
+hda: 	Supported formats: 16bits 
+hda: 	Supported rates: 32khz 44khz 48khz 
+hda: 	Supported power states: 
+hda: 	[Digital] [Stripe] [Stereo] 
+hda: 5: Pin complex
+hda: 	[Output]
+hda: 	Jack, HDMI Digital other out, Other digital, N/A, Association:15
+hda: 	Supported power states: 
+hda: 	[Digital] [Conn. list] [Unsol. responses] [Stereo] 
+hda: 	Inputs: <4> 
+hda: 6: Audio output
+hda: 	Supported formats: 16bits 
+hda: 	Supported rates: 32khz 44khz 48khz 
+hda: 	Supported power states: 
+hda: 	[Digital] [Stripe] [Stereo] 
+hda: 7: Pin complex
+hda: 	[Output]
+hda: 	Jack, HDMI Digital other out, Other digital, N/A, Association:15
+hda: 	Supported power states: 
+hda: 	[Digital] [Conn. list] [Unsol. responses] [Stereo] 
+hda: 	Inputs: <6> 
+hda: 8: Audio output
+hda: 	Supported formats: 16bits 
+hda: 	Supported rates: 32khz 44khz 48khz 
+hda: 	Supported power states: 
+hda: 	[Digital] [Stripe] [Stereo] 
+hda: 9: Pin complex
+hda: 	[Output]
+hda: 	Jack, HDMI Digital other out, Other digital, N/A, Association:15
+hda: 	Supported power states: 
+hda: 	[Digital] [Conn. list] [Unsol. responses] [Stereo] 
+hda: 	Inputs: <8> 
+hda: 10: Audio output
+hda: 	Supported formats: 16bits 
+hda: 	Supported rates: 32khz 44khz 48khz 
+hda: 	Supported power states: 
+hda: 	[Digital] [Stripe] [Stereo] 
+hda: 11: Pin complex
+hda: 	[Output]
+hda: 	Jack, HDMI Digital other out, Other digital, N/A, Association:15
+hda: 	Supported power states: 
+hda: 	[Digital] [Conn. list] [Unsol. responses] [Stereo] 
+hda: 	Inputs: <10> 
+hda: 12: Audio output
+hda: 	Supported formats: 16bits 
+hda: 	Supported rates: 32khz 44khz 48khz 
+hda: 	Supported power states: 
+hda: 	[Digital] [Stripe] [Stereo] 
+hda: 13: Pin complex
+hda: 	[Output]
+hda: 	None, HDMI Digital other out, Other digital, N/A, Association:15
+hda: 	Supported power states: 
+hda: 	[Digital] [Conn. list] [Unsol. responses] [Stereo] 
+hda: 	Inputs: <12> 
+hda: build output tree: use mixer
+hda:   look at pin widget 3 (1 inputs)
+hda:     try widget 2: 0xffffffff959a3c08
+hda:   look at pin widget 5 (1 inputs)
+hda:     try widget 4: 0xffffffff959a3d60
+hda:   look at pin widget 7 (1 inputs)
+hda:     try widget 6: 0xffffffff959a3eb8
+hda:   look at pin widget 9 (1 inputs)
+hda:     try widget 8: 0xffffffff959a4010
+hda:   look at pin widget 11 (1 inputs)
+hda:     try widget 10: 0xffffffff959a4168
+hda:   look at pin widget 13 (1 inputs)
+hda:     try widget 12: 0xffffffff959a42c0
+hda: try without mixer!
+hda: build output tree: don't use mixer
+hda:   look at pin widget 3 (1 inputs)
+hda:     try widget 2: 0xffffffff959a3c08
+hda:     widget 2 is candidate
+hda:       output: added output widget 2
+hda:     add pin widget 3
+hda:   look at pin widget 5 (1 inputs)
+hda:     try widget 4: 0xffffffff959a3d60
+hda:     widget 4 is candidate
+hda:       output: added output widget 4
+hda:     add pin widget 5
+hda:   look at pin widget 7 (1 inputs)
+hda:     try widget 6: 0xffffffff959a3eb8
+hda:     widget 6 is candidate
+hda:       output: added output widget 6
+hda:     add pin widget 7
+hda:   look at pin widget 9 (1 inputs)
+hda:     try widget 8: 0xffffffff959a4010
+hda:     widget 8 is candidate
+hda:       output: added output widget 8
+hda:     add pin widget 9
+hda:   look at pin widget 11 (1 inputs)
+hda:     try widget 10: 0xffffffff959a4168
+hda:     widget 10 is candidate
+hda:       output: added output widget 10
+hda:     add pin widget 11
+hda:   look at pin widget 13 (1 inputs)
+hda:     try widget 12: 0xffffffff959a42c0
+hda:     widget 12 is candidate
+hda:       output: added output widget 12
+hda:     add pin widget 13
+hda: build input tree
+hda: build input tree failed
+hda: build tree!
+hda: 	Audiogroup:
+hda: 2: Audio output
+hda: 	Supported power states: 
+hda: 	[Digital] [Stripe] [Stereo] 
+hda: 3: Pin complex
+hda: 	[Pres Detect][Output]
+hda: 	Supported power states: 
+hda: 	[Digital] [Conn. list] [Unsol. responses] [Stereo] 
+hda: 	Inputs: <2> 
+hda: 4: Audio output
+hda: 	Supported power states: 
+hda: 	[Digital] [Stripe] [Stereo] 
+hda: 5: Pin complex
+hda: 	[Pres Detect][Output]
+hda: 	Supported power states: 
+hda: 	[Digital] [Conn. list] [Unsol. responses] [Stereo] 
+hda: 	Inputs: <4> 
+hda: 6: Audio output
+hda: 	Supported power states: 
+hda: 	[Digital] [Stripe] [Stereo] 
+hda: 7: Pin complex
+hda: 	[Pres Detect][Output]
+hda: 	Supported power states: 
+hda: 	[Digital] [Conn. list] [Unsol. responses] [Stereo] 
+hda: 	Inputs: <6> 
+hda: 8: Audio output
+hda: 	Supported power states: 
+hda: 	[Digital] [Stripe] [Stereo] 
+hda: 9: Pin complex
+hda: 	[Pres Detect][Output]
+hda: 	Supported power states: 
+hda: 	[Digital] [Conn. list] [Unsol. responses] [Stereo] 
+hda: 	Inputs: <8> 
+hda: 10: Audio output
+hda: 	Supported power states: 
+hda: 	[Digital] [Stripe] [Stereo] 
+hda: 11: Pin complex
+hda: 	[Pres Detect][Output]
+hda: 	Supported power states: 
+hda: 	[Digital] [Conn. list] [Unsol. responses] [Stereo] 
+hda: 	Inputs: <10> 
+hda: 12: Audio output
+hda: 	Supported power states: 
+hda: 	[Digital] [Stripe] [Stereo] 
+hda: 13: Pin complex
+hda: 	[Pres Detect][Output]
+hda: 	Supported power states: 
+hda: 	[Digital] [Conn. list] [Unsol. responses] [Stereo] 
+hda: 	Inputs: <12> 
+hda: Enabled unsolicited responses on widget 3
+hda: Enabled unsolicited responses on widget 5
+hda: Enabled unsolicited responses on widget 7
+hda: Enabled unsolicited responses on widget 9
+hda: Enabled unsolicited responses on widget 11
+hda: Enabled unsolicited responses on widget 13
+hda: ENABLE pin widget 3
+hda: ENABLE pin widget 5
+hda: ENABLE pin widget 7
+hda: ENABLE pin widget 9
+hda: ENABLE pin widget 11
+hda: ENABLE pin widget 13
+hda: hda_audio_group_get_widgets failed for playback stream
+hda: hda_audio_group_get_widgets failed for record stream
+hda: streams playback 0x0000000000000000, record 0x0000000000000000
+hda: Failed to setup new audio function group (No such device)!
+hda: no active codec
+msi_free_vectors: freeing 1 vectors starting from 27
+free_io_interrupt_vectors: freeing 1 vectors starting from 27
+hda: ERROR: No such device(80007007)
+allocate_io_interrupt_vectors: allocated 1 vectors starting from 27
+msi_allocate_vectors: allocated 1 vectors starting from 27
+msi enabled: 0x0081
+hda: using MSI vector 27
+hda: DMA snooping: yes
+hda: HDA v1.0, O:4/I:4/B:0, #SDO:1, 64bit:yes
+hda: Audio Group: Output delay: 15 samples, Input delay: 15 samples, Beep Generator: yes
+hda:   #GPIO: 2, #GPO: 0, #GPI: 0, unsol: yes, wake: no
+hda: 	Supported formats: 16bits 20bits 24bits 
+hda: 	Supported rates: 32khz 44khz 48khz 88khz 96khz 192khz 
+hda:   widget start 2, count 37
+hda: 2: Audio output
+hda: 	Supported formats: 16bits 20bits 24bits 
+hda: 	Supported rates: 44khz 48khz 96khz 192khz 
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Format override] [Amplifier override] [Out amplifier] [Stereo] 
+hda: 	Out Amp: step size: 1 dB, # steps: 64, offset to 0 dB: 64
+hda: 3: Audio output
+hda: 	Supported formats: 16bits 20bits 24bits 
+hda: 	Supported rates: 44khz 48khz 96khz 192khz 
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Format override] [Amplifier override] [Out amplifier] [Stereo] 
+hda: 	Out Amp: step size: 1 dB, # steps: 64, offset to 0 dB: 64
+hda: 4: Audio output
+hda: 	Supported formats: 16bits 20bits 24bits 
+hda: 	Supported rates: 44khz 48khz 96khz 192khz 
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Format override] [Amplifier override] [Out amplifier] [Stereo] 
+hda: 	Out Amp: step size: 1 dB, # steps: 64, offset to 0 dB: 64
+hda: 5: Audio output
+hda: 	Supported formats: 16bits 20bits 24bits 
+hda: 	Supported rates: 44khz 48khz 96khz 192khz 
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Format override] [Amplifier override] [Out amplifier] [Stereo] 
+hda: 	Out Amp: step size: 1 dB, # steps: 64, offset to 0 dB: 64
+hda: 6: Audio output
+hda: 	Supported formats: 16bits 20bits 24bits 
+hda: 	Supported rates: 32khz 44khz 48khz 88khz 96khz 192khz 
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Digital] [Format override] [Stereo] 
+hda: 7: Vendor defined
+hda: 	Supported power states: D0 
+hda: 8: Audio input
+hda: 	Supported formats: 16bits 20bits 24bits 
+hda: 	Supported rates: 44khz 48khz 96khz 192khz 
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Conn. list] [Format override] [Amplifier override] [In amplifier] [Stereo] 
+hda: 	In Amp: supports mute, step size: 1 dB, # steps: 46, offset to 0 dB: 16
+hda: 	Inputs: <35> 
+hda: 9: Audio input
+hda: 	Supported formats: 16bits 20bits 24bits 
+hda: 	Supported rates: 44khz 48khz 96khz 192khz 
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Conn. list] [Format override] [Amplifier override] [In amplifier] [Stereo] 
+hda: 	In Amp: supports mute, step size: 1 dB, # steps: 46, offset to 0 dB: 16
+hda: 	Inputs: <34> 
+hda: 10: Audio input
+hda: 	Supported formats: 16bits 20bits 24bits 
+hda: 	Supported rates: 44khz 48khz 96khz 192khz 
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Digital] [Conn. list] [Format override] [Stereo] 
+hda: 	Inputs: <31> 
+hda: 11: Audio mixer
+hda: 	Supported power states: D0 
+hda: 	[Conn. list] [Amplifier override] [In amplifier] [Stereo] 
+hda: 	In Amp: supports mute, step size: 1.5 dB, # steps: 31, offset to 0 dB: 23
+hda: 	Inputs: 24 25 26 27 28 29 20 21 22 23 
+hda: 12: Audio mixer
+hda: 	Supported power states: D0 
+hda: 	[Conn. list] [Amplifier override] [In amplifier] [Stereo] 
+hda: 	In Amp: supports mute, step size: 0.25 dB, # steps: 0, offset to 0 dB: 0
+hda: 	Inputs: 2 11 
+hda: 13: Audio mixer
+hda: 	Supported power states: D0 
+hda: 	[Conn. list] [Amplifier override] [In amplifier] [Stereo] 
+hda: 	In Amp: supports mute, step size: 0.25 dB, # steps: 0, offset to 0 dB: 0
+hda: 	Inputs: 3 11 
+hda: 14: Audio mixer
+hda: 	Supported power states: D0 
+hda: 	[Conn. list] [Amplifier override] [In amplifier] [Stereo] 
+hda: 	In Amp: supports mute, step size: 0.25 dB, # steps: 0, offset to 0 dB: 0
+hda: 	Inputs: 4 11 
+hda: 15: Audio mixer
+hda: 	Supported power states: D0 
+hda: 	[Conn. list] [Amplifier override] [In amplifier] [Stereo] 
+hda: 	In Amp: supports mute, step size: 0.25 dB, # steps: 0, offset to 0 dB: 0
+hda: 	Inputs: 5 11 
+hda: 16: Audio output
+hda: 	Supported formats: 16bits 20bits 24bits 
+hda: 	Supported rates: 32khz 44khz 48khz 88khz 96khz 192khz 
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Digital] [Format override] [Stereo] 
+hda: 17: Pin complex
+hda: 	[Output]
+hda: 	Fixed, SPDIF out, ATAPI internal, N/A, Association:4
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Digital] [Conn. list] [Unsol. responses] [Stereo] 
+hda: 	Inputs: <16> 
+hda: 18: Pin complex
+hda: 	[Input] 
+hda: 	None, Speaker, 1/8", Black, Association:15
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Stereo] 
+hda: 19: Vendor defined
+hda: 	Supported power states: D0 
+hda: 20: Pin complex
+hda: 	[Input] [Output]
+hda: 	Jack, Line out, 1/8", Green, Association:1
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Conn. list] [Unsol. responses] [Amplifier override] [Out amplifier] [Stereo] 
+hda: 	Out Amp: supports mute, step size: 0.25 dB, # steps: 0, offset to 0 dB: 0
+hda: 	Inputs: <12> 
+hda: 21: Pin complex
+hda: 	[Input] [Output]
+hda: 	Jack, Line out, 1/8", Black, Association:1
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Conn. list] [Unsol. responses] [Amplifier override] [Out amplifier] [Stereo] 
+hda: 	Out Amp: supports mute, step size: 0.25 dB, # steps: 0, offset to 0 dB: 0
+hda: 	Inputs: <13> 
+hda: 22: Pin complex
+hda: 	[Input] [Output]
+hda: 	Jack, Line out, 1/8", Orange, Association:1
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Conn. list] [Unsol. responses] [Amplifier override] [Out amplifier] [Stereo] 
+hda: 	Out Amp: supports mute, step size: 0.25 dB, # steps: 0, offset to 0 dB: 0
+hda: 	Inputs: <14> 
+hda: 23: Pin complex
+hda: 	[Input] [Output]
+hda: 	Jack, Line out, 1/8", Grey, Association:1
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Conn. list] [Unsol. responses] [Amplifier override] [Out amplifier] [Stereo] 
+hda: 	Out Amp: supports mute, step size: 0.25 dB, # steps: 0, offset to 0 dB: 0
+hda: 	Inputs: <15> 
+hda: 24: Pin complex
+hda: 	[Input] [Output]
+hda: 	Jack, Mic in, 1/8", Pink, Association:5
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Conn. list] [Unsol. responses] [Amplifier override] [Out amplifier] [In amplifier] [Stereo] 
+hda: 	In Amp: step size: 10 dB, # steps: 3, offset to 0 dB: 0
+hda: 	Out Amp: supports mute, step size: 0.25 dB, # steps: 0, offset to 0 dB: 0
+hda: 	Inputs: 12 13 14 15 38 
+hda: 25: Pin complex
+hda: 	[Input] [Output]
+hda: 	Jack, Front Mic in, 1/8", Pink, Association:6
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Conn. list] [Unsol. responses] [Amplifier override] [Out amplifier] [In amplifier] [Stereo] 
+hda: 	In Amp: step size: 10 dB, # steps: 3, offset to 0 dB: 0
+hda: 	Out Amp: supports mute, step size: 0.25 dB, # steps: 0, offset to 0 dB: 0
+hda: 	Inputs: 12 13 14 15 38 
+hda: 26: Pin complex
+hda: 	[Input] [Output]
+hda: 	Jack, Line in, 1/8", Blue, Association:5
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Conn. list] [Unsol. responses] [Amplifier override] [Out amplifier] [In amplifier] [Stereo] 
+hda: 	In Amp: step size: 10 dB, # steps: 3, offset to 0 dB: 0
+hda: 	Out Amp: supports mute, step size: 0.25 dB, # steps: 0, offset to 0 dB: 0
+hda: 	Inputs: 12 13 14 15 38 
+hda: 27: Pin complex
+hda: 	[Input] [Output]
+hda: 	Jack, Front HP out, 1/8", Green, Association:2
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Conn. list] [Unsol. responses] [Amplifier override] [Out amplifier] [In amplifier] [Stereo] 
+hda: 	In Amp: step size: 10 dB, # steps: 3, offset to 0 dB: 0
+hda: 	Out Amp: supports mute, step size: 0.25 dB, # steps: 0, offset to 0 dB: 0
+hda: 	Inputs: 12 13 14 15 38 
+hda: 28: Pin complex
+hda: 	[Input] 
+hda: 	None, Speaker, 1/8", Black, Association:15
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Unsol. responses] [Stereo] 
+hda: 29: Pin complex
+hda: 	[Input] 
+hda: 	None, Line out, Optical, White, Association:0
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] 
+hda: 30: Pin complex
+hda: 	[Output]
+hda: 	Jack, SPDIF out, Optical, Orange, Association:3
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Digital] [Conn. list] [Unsol. responses] [Stereo] 
+hda: 	Inputs: <6> 
+hda: 31: Pin complex
+hda: 	[Input] 
+hda: 	None, Speaker, 1/8", Black, Association:15
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Digital] [Unsol. responses] [Stereo] 
+hda: 32: Vendor defined
+hda: 	Supported power states: D0 
+hda: 	[Proc widget] 
+hda: 33: Vendor defined
+hda: 	Supported power states: D0 
+hda: 34: Audio mixer
+hda: 	Supported power states: D0 
+hda: 	[Conn. list] [Amplifier override] [In amplifier] [Stereo] 
+hda: 	In Amp: supports mute, step size: 0.25 dB, # steps: 0, offset to 0 dB: 0
+hda: 	Inputs: 24 25 26 27 28 29 20 21 22 23 11 18 
+hda: 35: Audio mixer
+hda: 	Supported power states: D0 
+hda: 	[Conn. list] [Amplifier override] [In amplifier] [Stereo] 
+hda: 	In Amp: supports mute, step size: 0.25 dB, # steps: 0, offset to 0 dB: 0
+hda: 	Inputs: 24 25 26 27 28 29 20 21 22 23 11 
+hda: 36: Vendor defined
+hda: 	Supported power states: D0 
+hda: 37: Audio output
+hda: 	Supported formats: 16bits 20bits 24bits 
+hda: 	Supported rates: 44khz 48khz 96khz 192khz 
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Format override] [Amplifier override] [Out amplifier] [Stereo] 
+hda: 	Out Amp: step size: 1 dB, # steps: 64, offset to 0 dB: 64
+hda: 38: Audio mixer
+hda: 	Supported power states: D0 
+hda: 	[Conn. list] [Amplifier override] [In amplifier] [Stereo] 
+hda: 	In Amp: supports mute, step size: 0.25 dB, # steps: 0, offset to 0 dB: 0
+hda: 	Inputs: 37 11 
+hda: build output tree: use mixer
+hda:   look at pin widget 20 (1 inputs)
+hda:     try widget 12: 0xffffffff8225e6b8
+hda:     widget 12 is candidate
+hda:         output: added output widget 2
+hda:       output: added mixer/selector widget 12
+hda:         output: not added mixer/selector widget 11
+hda:     add pin widget 20
+hda:   look at pin widget 21 (1 inputs)
+hda:     try widget 13: 0xffffffff8225e764
+hda:     widget 13 is candidate
+hda:         output: added output widget 3
+hda:       output: added mixer/selector widget 13
+hda:         output: not added mixer/selector widget 11
+hda:     add pin widget 21
+hda:   look at pin widget 22 (1 inputs)
+hda:     try widget 14: 0xffffffff8225e810
+hda:     widget 14 is candidate
+hda:         output: added output widget 4
+hda:       output: added mixer/selector widget 14
+hda:         output: not added mixer/selector widget 11
+hda:     add pin widget 22
+hda:   look at pin widget 23 (1 inputs)
+hda:     try widget 15: 0xffffffff8225e8bc
+hda:     widget 15 is candidate
+hda:         output: added output widget 5
+hda:       output: added mixer/selector widget 15
+hda:         output: not added mixer/selector widget 11
+hda:     add pin widget 23
+hda:   look at pin widget 27 (5 inputs)
+hda:     try widget 12: 0xffffffff8225e6b8
+hda:     widget 12 is candidate
+hda:     add pin widget 27
+hda: build input tree
+hda:   look at input widget 8 (1 inputs)
+hda:     try widget 35: 0xffffffff8225f62c
+hda:     widget 35 is candidate
+hda:         input: added input widget 24
+hda:       input: added mixer/selector widget 35
+hda:         input: added input widget 25
+hda:       input: added mixer/selector widget 35
+hda:         input: added input widget 26
+hda:       input: added mixer/selector widget 35
+hda:         input: not added mixer/selector widget 11
+hda:     add pin widget 8
+hda:   look at input widget 9 (1 inputs)
+hda:     try widget 34: 0xffffffff8225f580
+hda:     widget 34 is candidate
+hda:         input: not added mixer/selector widget 11
+hda:       input: not added mixer/selector widget 34
+hda:   look at input widget 10 (1 inputs)
+hda:     try widget 31: 0xffffffff8225f37c
+hda:     widget 31 is candidate
+hda: build tree!
+hda: 	Audiogroup:
+hda: 2: Audio output
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Format override] [Amplifier override] [Out amplifier] [Stereo] 
+hda: 	Out Amp: step size: 1 dB, # steps: 64, offset to 0 dB: 64
+hda: 3: Audio output
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Format override] [Amplifier override] [Out amplifier] [Stereo] 
+hda: 	Out Amp: step size: 1 dB, # steps: 64, offset to 0 dB: 64
+hda: 4: Audio output
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Format override] [Amplifier override] [Out amplifier] [Stereo] 
+hda: 	Out Amp: step size: 1 dB, # steps: 64, offset to 0 dB: 64
+hda: 5: Audio output
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Format override] [Amplifier override] [Out amplifier] [Stereo] 
+hda: 	Out Amp: step size: 1 dB, # steps: 64, offset to 0 dB: 64
+hda: 6: Audio output
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Digital] [Format override] [Stereo] 
+hda: 7: Vendor defined
+hda: 	Supported power states: D0 
+hda: 8: Audio input
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Conn. list] [Format override] [Amplifier override] [In amplifier] [Stereo] 
+hda: 	In Amp: supports mute, step size: 1 dB, # steps: 46, offset to 0 dB: 16
+hda: 	Inputs: <35> 
+hda: 9: Audio input
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Conn. list] [Format override] [Amplifier override] [In amplifier] [Stereo] 
+hda: 	In Amp: supports mute, step size: 1 dB, # steps: 46, offset to 0 dB: 16
+hda: 	Inputs: <34> 
+hda: 10: Audio input
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Digital] [Conn. list] [Format override] [Stereo] 
+hda: 	Inputs: <31> 
+hda: 11: Audio mixer
+hda: 	Supported power states: D0 
+hda: 	[Conn. list] [Amplifier override] [In amplifier] [Stereo] 
+hda: 	In Amp: supports mute, step size: 1.5 dB, # steps: 31, offset to 0 dB: 23
+hda: 	Inputs: <24> 25 26 27 28 29 20 21 22 23 
+hda: 12: Audio mixer
+hda: 	Supported power states: D0 
+hda: 	[Conn. list] [Amplifier override] [In amplifier] [Stereo] 
+hda: 	In Amp: supports mute, step size: 0.25 dB, # steps: 0, offset to 0 dB: 0
+hda: 	Inputs: <2> 11 
+hda: 13: Audio mixer
+hda: 	Supported power states: D0 
+hda: 	[Conn. list] [Amplifier override] [In amplifier] [Stereo] 
+hda: 	In Amp: supports mute, step size: 0.25 dB, # steps: 0, offset to 0 dB: 0
+hda: 	Inputs: <3> 11 
+hda: 14: Audio mixer
+hda: 	Supported power states: D0 
+hda: 	[Conn. list] [Amplifier override] [In amplifier] [Stereo] 
+hda: 	In Amp: supports mute, step size: 0.25 dB, # steps: 0, offset to 0 dB: 0
+hda: 	Inputs: <4> 11 
+hda: 15: Audio mixer
+hda: 	Supported power states: D0 
+hda: 	[Conn. list] [Amplifier override] [In amplifier] [Stereo] 
+hda: 	In Amp: supports mute, step size: 0.25 dB, # steps: 0, offset to 0 dB: 0
+hda: 	Inputs: <5> 11 
+hda: 16: Audio output
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Digital] [Format override] [Stereo] 
+hda: 17: Pin complex
+hda: 	[Output]
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Digital] [Conn. list] [Unsol. responses] [Stereo] 
+hda: 	Inputs: <16> 
+hda: 18: Pin complex
+hda: 	[Input]
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Stereo] 
+hda: 19: Vendor defined
+hda: 	Supported power states: D0 
+hda: 20: Pin complex
+hda: 	[Trigger Req][Pres Detect][HP Drive][Output][Input][EAPD]
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Conn. list] [Unsol. responses] [Amplifier override] [Out amplifier] [Stereo] 
+hda: 	Out Amp: supports mute, step size: 0.25 dB, # steps: 0, offset to 0 dB: 0
+hda: 	Inputs: <12> 
+hda: 21: Pin complex
+hda: 	[Trigger Req][Pres Detect][Output][Input]
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Conn. list] [Unsol. responses] [Amplifier override] [Out amplifier] [Stereo] 
+hda: 	Out Amp: supports mute, step size: 0.25 dB, # steps: 0, offset to 0 dB: 0
+hda: 	Inputs: <13> 
+hda: 22: Pin complex
+hda: 	[Trigger Req][Pres Detect][Output][Input]
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Conn. list] [Unsol. responses] [Amplifier override] [Out amplifier] [Stereo] 
+hda: 	Out Amp: supports mute, step size: 0.25 dB, # steps: 0, offset to 0 dB: 0
+hda: 	Inputs: <14> 
+hda: 23: Pin complex
+hda: 	[Trigger Req][Pres Detect][Output][Input]
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Conn. list] [Unsol. responses] [Amplifier override] [Out amplifier] [Stereo] 
+hda: 	Out Amp: supports mute, step size: 0.25 dB, # steps: 0, offset to 0 dB: 0
+hda: 	Inputs: <15> 
+hda: 24: Pin complex
+hda: 	[Trigger Req][Pres Detect][Output][Input][VRef HIZ][VRef 50][VRef Gr][VRef 80][VRef 100]
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Conn. list] [Unsol. responses] [Amplifier override] [Out amplifier] [In amplifier] [Stereo] 
+hda: 	In Amp: step size: 10 dB, # steps: 3, offset to 0 dB: 0
+hda: 	Out Amp: supports mute, step size: 0.25 dB, # steps: 0, offset to 0 dB: 0
+hda: 	Inputs: <12> 13 14 15 38 
+hda: 25: Pin complex
+hda: 	[Trigger Req][Pres Detect][HP Drive][Output][Input][VRef HIZ][VRef 50][VRef Gr][VRef 80][VRef 100]
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Conn. list] [Unsol. responses] [Amplifier override] [Out amplifier] [In amplifier] [Stereo] 
+hda: 	In Amp: step size: 10 dB, # steps: 3, offset to 0 dB: 0
+hda: 	Out Amp: supports mute, step size: 0.25 dB, # steps: 0, offset to 0 dB: 0
+hda: 	Inputs: <12> 13 14 15 38 
+hda: 26: Pin complex
+hda: 	[Trigger Req][Pres Detect][Output][Input][VRef HIZ][VRef 50][VRef Gr][VRef 80][VRef 100]
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Conn. list] [Unsol. responses] [Amplifier override] [Out amplifier] [In amplifier] [Stereo] 
+hda: 	In Amp: step size: 10 dB, # steps: 3, offset to 0 dB: 0
+hda: 	Out Amp: supports mute, step size: 0.25 dB, # steps: 0, offset to 0 dB: 0
+hda: 	Inputs: <12> 13 14 15 38 
+hda: 27: Pin complex
+hda: 	[Trigger Req][Pres Detect][HP Drive][Output][Input][VRef HIZ][VRef 50][VRef Gr][VRef 80][VRef 100][EAPD]
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Conn. list] [Unsol. responses] [Amplifier override] [Out amplifier] [In amplifier] [Stereo] 
+hda: 	In Amp: step size: 10 dB, # steps: 3, offset to 0 dB: 0
+hda: 	Out Amp: supports mute, step size: 0.25 dB, # steps: 0, offset to 0 dB: 0
+hda: 	Inputs: <12> 13 14 15 38 
+hda: 28: Pin complex
+hda: 	[Pres Detect][Input]
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Unsol. responses] [Stereo] 
+hda: 29: Pin complex
+hda: 	[Input]
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] 
+hda: 30: Pin complex
+hda: 	[Output]
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Digital] [Conn. list] [Unsol. responses] [Stereo] 
+hda: 	Inputs: <6> 
+hda: 31: Pin complex
+hda: 	[Input]
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Digital] [Unsol. responses] [Stereo] 
+hda: 32: Vendor defined
+hda: 	Supported power states: D0 
+hda: 	[Proc widget] 
+hda: 33: Vendor defined
+hda: 	Supported power states: D0 
+hda: 34: Audio mixer
+hda: 	Supported power states: D0 
+hda: 	[Conn. list] [Amplifier override] [In amplifier] [Stereo] 
+hda: 	In Amp: supports mute, step size: 0.25 dB, # steps: 0, offset to 0 dB: 0
+hda: 	Inputs: <24> 25 26 27 28 29 20 21 22 23 11 18 
+hda: 35: Audio mixer
+hda: 	Supported power states: D0 
+hda: 	[Conn. list] [Amplifier override] [In amplifier] [Stereo] 
+hda: 	In Amp: supports mute, step size: 0.25 dB, # steps: 0, offset to 0 dB: 0
+hda: 	Inputs: <24> 25 26 27 28 29 20 21 22 23 11 
+hda: 36: Vendor defined
+hda: 	Supported power states: D0 
+hda: 37: Audio output
+hda: 	Supported power states: D0 D1 D2 D3 
+hda: 	[Power] [Format override] [Amplifier override] [Out amplifier] [Stereo] 
+hda: 	Out Amp: step size: 1 dB, # steps: 64, offset to 0 dB: 64
+hda: 38: Audio mixer
+hda: 	Supported power states: D0 
+hda: 	[Conn. list] [Amplifier override] [In amplifier] [Stereo] 
+hda: 	In Amp: supports mute, step size: 0.25 dB, # steps: 0, offset to 0 dB: 0
+hda: 	Inputs: <37> 11 
+hda: Enabled unsolicited responses on widget 20
+hda: Enabled unsolicited responses on widget 21
+hda: Enabled unsolicited responses on widget 22
+hda: Enabled unsolicited responses on widget 23
+hda: Enabled unsolicited responses on widget 24
+hda: Enabled unsolicited responses on widget 25
+hda: Enabled unsolicited responses on widget 26
+hda: Enabled unsolicited responses on widget 27
+hda: UNMUTE/SET OUTPUT GAIN widget 2 (offset 64)
+hda: UNMUTE/SET OUTPUT GAIN widget 3 (offset 64)
+hda: UNMUTE/SET OUTPUT GAIN widget 4 (offset 64)
+hda: UNMUTE/SET OUTPUT GAIN widget 5 (offset 64)
+hda: UNMUTE/SET INPUT GAIN widget 12 (offset 0)
+hda: UNMUTE/SET INPUT GAIN widget 13 (offset 0)
+hda: UNMUTE/SET INPUT GAIN widget 14 (offset 0)
+hda: UNMUTE/SET INPUT GAIN widget 15 (offset 0)
+hda: ENABLE pin widget 20
+hda: ENABLE EAPD pin widget 20
+hda: UNMUTE/SET OUTPUT GAIN widget 20 (offset 0)
+hda: ENABLE pin widget 21
+hda: UNMUTE/SET OUTPUT GAIN widget 21 (offset 0)
+hda: ENABLE pin widget 22
+hda: UNMUTE/SET OUTPUT GAIN widget 22 (offset 0)
+hda: ENABLE pin widget 23
+hda: UNMUTE/SET OUTPUT GAIN widget 23 (offset 0)
+hda: ENABLE pin widget 27
+hda: ENABLE EAPD pin widget 27
+hda: UNMUTE/SET OUTPUT GAIN widget 27 (offset 0)
+hda: UNMUTE/SET INPUT GAIN widget 27 (offset 0)
+hda: UNMUTE/SET INPUT GAIN widget 8 (offset 16)
+hda: input vref 50 enabled
+hda: input vref 80 enabled
+hda: input vref 100 enabled
+hda: ENABLE pin widget 24
+hda: UNMUTE/SET OUTPUT GAIN widget 24 (offset 0)
+hda: UNMUTE/SET INPUT GAIN widget 24 (offset 0)
+hda: input vref 50 enabled
+hda: input vref 80 enabled
+hda: input vref 100 enabled
+hda: ENABLE pin widget 25
+hda: UNMUTE/SET OUTPUT GAIN widget 25 (offset 0)
+hda: UNMUTE/SET INPUT GAIN widget 25 (offset 0)
+hda: input vref 50 enabled
+hda: input vref 80 enabled
+hda: input vref 100 enabled
+hda: ENABLE pin widget 26
+hda: UNMUTE/SET OUTPUT GAIN widget 26 (offset 0)
+hda: UNMUTE/SET INPUT GAIN widget 26 (offset 0)
+hda: UNMUTE/SET INPUT GAIN widget 35 (offset 0)
+hda: streams playback 0xffffffff95f9da30, record 0xffffffff95fb97c8
+hda: sensed pin widget 27, 0
+hda: Codec 0 Vendor: 10ec Product: 0887 Subsystem: 10438444, Revision: 1.0.3.2 Quirks: 0700
+looking for settings file
+hda: sample size 4, num channels 2, buffer length 10240
+hda: hda_stream_setup_buffers: setup stream 1: SR=192000, SF=24 F=0x1831 (0x100)
+hda: hda_stream_setup_buffers(Playback): Allocated 163840 bytes for 2 buffers
+hda: hda_stream_setup_buffers(Playback): Allocated 4096 bytes for 2 BDLEs
+hda: stream: 1 fifo size: 1536 num_io_widgets: 4
+hda: widgets: 2 3 4 5 
+hda: sample size 4, num channels 2, buffer length 10240
+hda: hda_stream_setup_buffers: setup stream 2: SR=192000, SF=24 F=0x1831 (0x100)
+hda: hda_stream_setup_buffers(Recording): Allocated 163840 bytes for 2 buffers
+hda: hda_stream_setup_buffers(Recording): Allocated 4096 bytes for 2 BDLEs
+hda: stream: 2 fifo size: 1536 num_io_widgets: 1
+hda: widgets: 8 
+usb_audio:00.34.796:GetSamplingRateId::Ignore unsupported sample rate 0.
+usb error xhci 1: TRB 0x1fbe300 was not found in the endpoint!
+usb_audio:00.34.796:SetGlobalFormat::set_speed 80bb00 for ep 0x2 3: No error
+usb_audio:00.34.796:GetSamplingRateId::Ignore unsupported sample rate 0.
+usb error xhci 1: TRB 0x1fbe100 was not found in the endpoint!
+usb_audio:00.34.797:SetGlobalFormat::set_speed 80bb00 for ep 0x1 3: No error
+usb_audio:00.34.797:GetSamplingRateId::Ignore unsupported sample rate 0.
+usb error xhci 1: unsuccessful command 15, error Parameter (17)
+usb error xhci 1: unsuccessful command 15, error Parameter (17)
+usb error xhci 1: cancel queued transfers: could not stop endpoint: I/O error!
+usb_audio:00.34.797:SetGlobalFormat::set_speed 80bb00 for ep 0x81 3: No error
+usb xhci 1: transfer error on slot 4 endpoint 1: Stall
+usb_audio:00.34.798:_InitGainLimits::Request 0 (0200:0203) fail:0x8000a015; received 0 of 2
+usb error control pipe 36: timeout waiting for queued request to complete
+usb error xhci 1: cancel queued transfers: halted endpoint, reset!
+usb_audio:00.39.798:_InitGainLimits::Request 1 (0200:0203) fail:0x80000009; received 0 of 2
+usb xhci 1: transfer error on slot 4 endpoint 1: Stall
+usb_audio:00.39.799:_InitGainLimits::Request 2 (0200:0203) fail:0x8000a015; received 0 of 2
+usb error control pipe 36: timeout waiting for queued request to complete
+usb error xhci 1: cancel queued transfers: halted endpoint, reset!
+usb_audio:00.44.799:_InitGainLimits::Request 3 (0200:0203) fail:0x80000009; received 0 of 2
+usb_audio:00.44.799:_InitGainLimits::Control : 0 dB, from 0 to 100 dB, step 1 dB.
+usb_audio:00.44.800:_InitGainLimits::Control : -5 dB, from -50 to 5 dB, step 1 dB.
+usb_audio:00.44.802:_InitGainLimits::Control : -5 dB, from -50 to 5 dB, step 1 dB.
+usb xhci 1: transfer error on slot 4 endpoint 1: Stall
+usb_audio:00.44.802:_InitGainLimits::Request 0 (0200:0b03) fail:0x8000a015; received 0 of 2
+usb error control pipe 36: timeout waiting for queued request to complete
+usb error xhci 1: cancel queued transfers: halted endpoint, reset!
+usb_audio:00.49.803:_InitGainLimits::Request 1 (0200:0b03) fail:0x80000009; received 0 of 2
+usb xhci 1: transfer error on slot 4 endpoint 1: Stall
+usb_audio:00.49.803:_InitGainLimits::Request 2 (0200:0b03) fail:0x8000a015; received 0 of 2

@@ -19,6 +19,8 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "radeon_hd.h"
+
 
 static const char* kDevicePath = "/dev/graphics/radeon_hd_010000";
 static const char* kAccelerantPath
@@ -128,15 +130,22 @@ main(int argc, char** argv)
 		frame_buffer_config config;
 		getFrameBufferConfig(&config);
 
-		// Map the frame buffer ourselves via its physical address, in case
-		// the pointer from the accelerant is not usable from userland.
+		// Clone the frame buffer area through the driver's shared info;
+		// the pointer from the accelerant is a kernel address.
+		radeon_get_private_data data;
+		data.magic = RADEON_PRIVATE_DATA_MAGIC;
+		ioctl(device, RADEON_GET_PRIVATE_DATA, &data,
+			sizeof(radeon_get_private_data));
+		radeon_shared_info* sharedInfo;
+		area_id sharedArea = clone_area("modeset_test shared info",
+			(void**)&sharedInfo, B_ANY_ADDRESS, B_READ_AREA,
+			data.shared_info_area);
 		void* frameBuffer;
-		area_id area = map_physical_memory("modeset_test fb",
-			(phys_addr_t)config.frame_buffer_dma,
-			config.bytes_per_row * height, B_ANY_ADDRESS,
-			B_READ_AREA | B_WRITE_AREA, &frameBuffer);
+		area_id area = sharedArea < 0 ? sharedArea
+			: clone_area("modeset_test fb", &frameBuffer, B_ANY_ADDRESS,
+				B_READ_AREA | B_WRITE_AREA, sharedInfo->frame_buffer_area);
 		if (area < 0) {
-			fprintf(stderr, "cannot map frame buffer: %s\n",
+			fprintf(stderr, "cannot clone frame buffer: %s\n",
 				strerror(area));
 			return 1;
 		}
