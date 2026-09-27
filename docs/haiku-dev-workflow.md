@@ -27,13 +27,21 @@ cd ~/haiku/generated
 jam -q radeon_hd radeon_hd.accelerant
 ```
 
-## Install (non-packaged overrides the system copy)
+## Install (user non-packaged overrides the system copy)
 
 `tools/haiku-install.sh` copies the two binaries to:
 
-- `/boot/system/non-packaged/add-ons/kernel/drivers/bin/radeon_hd`
+- `/boot/home/config/non-packaged/add-ons/kernel/drivers/bin/radeon_hd`
   (+ symlink in `.../drivers/dev/graphics/`)
-- `/boot/system/non-packaged/add-ons/accelerants/radeon_hd.accelerant`
+- `/boot/home/config/non-packaged/add-ons/accelerants/radeon_hd.accelerant`
+
+Not `/boot/system/non-packaged`: the kernel's `get_priority()`
+(legacy_drivers.cpp) tests `/boot/system` before
+`/boot/system/non-packaged`, so both get priority 0 and the packaged
+radeon_hd wins on the next rescan ("devfs: reload driver" in syslog).
+
+Build commands over SSH must run in a login shell (`bash -lc`), otherwise
+`LIBRARY_PATH` is unset and the host `package` tool fails to find libbsd.
 
 then reboots. `tools/haiku-install.sh --remove` restores the stock setup.
 

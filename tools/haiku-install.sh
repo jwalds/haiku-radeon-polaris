@@ -3,11 +3,21 @@
 # usage: haiku-install.sh [--no-reboot]      install from ~/haiku/generated
 #        haiku-install.sh --remove            restore packaged driver
 
-NP=/boot/system/non-packaged/add-ons
+# Use the *user* non-packaged directory: the kernel's legacy driver
+# get_priority() matches /boot/system as a prefix first, so drivers in
+# /boot/system/non-packaged get the same priority as the packaged ones and
+# the stock radeon_hd replaces ours on the next driver rescan.
+NP=/boot/home/config/non-packaged/add-ons
+OLD_NP=/boot/system/non-packaged/add-ons
 DRV_BIN=$NP/kernel/drivers/bin
 DRV_DEV=$NP/kernel/drivers/dev/graphics
 ACC=$NP/accelerants
 GEN=${GEN:-$HOME/haiku/generated}
+
+# clean up installs from older versions of this script
+rm -f "$OLD_NP/kernel/drivers/bin/radeon_hd" \
+	"$OLD_NP/kernel/drivers/dev/graphics/radeon_hd" \
+	"$OLD_NP/accelerants/radeon_hd.accelerant"
 
 if [ "$1" = "--remove" ]; then
 	rm -f "$DRV_BIN/radeon_hd" "$DRV_DEV/radeon_hd" "$ACC/radeon_hd.accelerant"
