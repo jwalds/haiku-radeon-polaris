@@ -1,0 +1,78 @@
+From 5559d706ace0c0286f86e52cda90d658a403831c Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
+Date: Sun, 27 Sep 2026 20:23:50 +0000
+Subject: [PATCH 3/3] radeon_hd: fix Polaris HDMI transmitter setup and DCE
+ clocks
+
+* Only use dual link (8 lanes) in UNIPHYTransmitterControl v1.5/v1.6
+  for DVI connectors; HDMI is single link up to 340MHz. With 8 lanes
+  requested for a 241MHz HDMI mode the table waits forever on the
+  second PHY (AtomBIOS loop in DIG1TransmitterControl).
+* Program DISPCLK and DPREFCLK through SetDCEClock on DCE 11.2, as
+  Linux does for Polaris.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01NqrEBcidivS5BSWVfbLqvu
+---
+ src/add-ons/accelerants/radeon_hd/encoder.cpp | 14 ++++++++++++--
+ src/add-ons/accelerants/radeon_hd/pll.cpp     |  5 +++++
+ 2 files changed, 17 insertions(+), 2 deletions(-)
+
+diff --git a/src/add-ons/accelerants/radeon_hd/encoder.cpp b/src/add-ons/accelerants/radeon_hd/encoder.cpp
+index e1970c3aca..84f43db71a 100644
+--- a/src/add-ons/accelerants/radeon_hd/encoder.cpp
++++ b/src/add-ons/accelerants/radeon_hd/encoder.cpp
+@@ -1339,6 +1339,16 @@ transmitter_dig_setup(uint32 connectorIndex, uint32 pixelClock,
+ 	bool linkB = gConnector[connectorIndex]->encoder.linkEnumeration
+ 		== GRAPH_OBJECT_ENUM_ID2 ? true : false;
+ 
++	// Only DVI connectors have a second TMDS link, HDMI stays single link
++	// up to 340MHz
++	uint32 connectorType = gConnector[connectorIndex]->type;
++	bool dualLink = false;
++	if ((connectorType == VIDEO_CONNECTOR_DVID
++			|| connectorType == VIDEO_CONNECTOR_DVII)
++		&& pixelClock > 165000) {
++		dualLink = true;
++	}
++
+ 	dp_info* dpInfo = &gConnector[connectorIndex]->dpInfo;
+ 
+ 	uint32 dpClock = 0;
+@@ -1656,7 +1666,7 @@ transmitter_dig_setup(uint32 connectorIndex, uint32 pixelClock,
+ 					}
+ 					if (isDP) {
+ 						args.v5.ucLaneNum = dpLaneCount;
+-					} else if (pixelClock >= 165000) {
++					} else if (dualLink) {
+ 						args.v5.ucLaneNum = 8;
+ 					} else {
+ 						args.v5.ucLaneNum = 4;
+@@ -1729,7 +1739,7 @@ transmitter_dig_setup(uint32 connectorIndex, uint32 pixelClock,
+ 					}
+ 					if (isDP)
+ 						args.v6.ucLaneNum = dpLaneCount;
+-					else if (pixelClock > 165000)
++					else if (dualLink)
+ 						args.v6.ucLaneNum = 8;
+ 					else
+ 						args.v6.ucLaneNum = 4;
+diff --git a/src/add-ons/accelerants/radeon_hd/pll.cpp b/src/add-ons/accelerants/radeon_hd/pll.cpp
+index c7b6dd854f..dc266f429d 100644
+--- a/src/add-ons/accelerants/radeon_hd/pll.cpp
++++ b/src/add-ons/accelerants/radeon_hd/pll.cpp
+@@ -1134,6 +1134,11 @@ pll_external_init()
+ 			DCE_CLOCK_TYPE_DISPCLK, ATOM_GCK_DFS);
+ 		pll_set_dce(gInfo->displayClockFrequency,
+ 			DCE_CLOCK_TYPE_DPREFCLK, ATOM_GCK_DFS);
++	} else if (info.dceMajor == 11 && info.dceMinor == 2) {
++		// Polaris: DPREFCLK 0 lets the VBIOS pick its default
++		pll_set_dce(gInfo->displayClockFrequency,
++			DCE_CLOCK_TYPE_DISPCLK, ATOM_GCK_DFS);
++		pll_set_dce(0, DCE_CLOCK_TYPE_DPREFCLK, ATOM_GCK_DFS);
+ 	} else if (info.dceMajor >= 6) {
+ 		pll_set_external(gInfo->displayClockFrequency);
+ 	} else if (info.dceMajor >= 4) {
+-- 
+2.34.1
+
