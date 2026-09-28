@@ -5,9 +5,9 @@
 # The Haiku box keeps full clones (needed to build); we push commits to them
 # and they update their checked-out branch (receive.denyCurrentBranch=updateInstead).
 #
-# usage: tools/sync-to-haiku.sh [host]     (default user@192.168.137.55)
+# usage: tools/sync-to-haiku.sh [host]     (default user@${HAIKU_IP:-192.168.137.55})
 set -e
-HOST="${1:-${HAIKU_HOST:-user@192.168.137.55}}"
+HOST="${1:-${HAIKU_HOST:-user@${HAIKU_IP:-192.168.137.55}}}"
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 KEY="${HAIKU_KEY:-$ROOT/.keys/haiku_dev_ed25519}"
 export GIT_SSH_COMMAND="ssh -i $KEY -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new"
