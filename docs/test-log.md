@@ -64,3 +64,14 @@ VBIOS state (BlankCRTC timeout). Next: cold boot test.
 
 Also: `screenmode -l` made the monitor drop out briefly; 2560x1440 is
 missing from the mode list (EDID extension not read).
+
+## 2026-09-28 — cold boot and BlankCRTC fix
+
+- The monitor also has a DP cable from another computer. During the 5 s
+  BlankCRTC timeout HDMI goes silent and the monitor auto-switches to the
+  DP input — this explains the earlier "dead screen" boots.
+- Cold boot with patches 0001–0007: clean desktop at 2560x1440, with the
+  5 s gap.
+- Patch 0008 (VGA enable around BlankCRTC, as Linux dce_v11_0): **boot
+  goes straight to the desktop at 2560x1440@60**, 0 AtomBIOS timeouts,
+  DISPOUT error count 0.

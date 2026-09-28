@@ -18,9 +18,14 @@ a separate, much larger effort and should not be bolted onto the accelerant.
   (`docs/linux-register-dump.md`).
 - **Phase 1 – modesetting in radeon_hd**
   - 1a: enable Polaris 11 IDs, fix chip-name table and VRAM-size register ✅ patch 0001
-  - 1b: single head on CRTC0 at native resolution; DCE 11 register fixes ✅ patch 0001 (untested)
+  - 1b: single head on CRTC0 at native resolution ✅ patches 0001–0008 —
+    **working: HDMI 2560x1440@60 on RX 560 (1002:67ef), 2026-09-28**
   - 1c: CRTC1–5 / multi-head
   - 1d: DPMS, hardware cursor, brightness, more Polaris IDs
+  - Open items: EDID extension blocks not read (common `ddc2_read_edid1`
+    out-of-bounds parse; 2560x1440 missing from mode list, patch 0007's HDMI
+    detection unreliable), skip DP AUX reads when nothing is plugged in,
+    `screenmode -l` causes a brief monitor drop-out, HDMI audio
 - **Phase 2 – acceleration** (later): firmware loading, GART/VM, IH, SDMA,
   then Mesa via an amdgpu-style interface (coordinate with X512's RadeonGfx).
 
