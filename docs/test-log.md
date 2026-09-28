@@ -42,3 +42,25 @@
   (EDID HDMI VSDB, DCE 5+).
 - Network: DHCP gives a new address per boot (.105, .31, ...); find the
   box by scanning 192.168.137.0/24 for port 22.
+
+## 2026-09-28 — controlled 2560x1440 tests (correction)
+
+Patch 0007 did **not** take effect: `ddc2_read_edid1()` (accelerants/common)
+reads only the 128-byte base block, and `edid_decode()` then parses
+`num_sections` "extension" blocks from memory past the buffer. The HDMI
+VSDB check therefore reads garbage; DIG3 stayed in DVI mode (0x4d47 =
+0x20020800) on the working boot.
+
+| Test | Clock | DIG mode | Result |
+|---|---|---|---|
+| boot (saved mode) | 241.699 MHz | DVI | works |
+| `screenmode -m` Linux CVT-RB timing | 241.0 MHz (rounded) | DVI | works (59.8 Hz) |
+
+CRTC timing registers for the 241.699 MHz mode are identical to Linux's
+(H total 2720, V total 1481). Conclusion: neither HDMI mode nor the timing
+was the cause of the earlier black 2560x1440 boots. Suspects: GPU state
+left from a warm reboot (VBIOS does not re-POST), first mode set from the
+VBIOS state (BlankCRTC timeout). Next: cold boot test.
+
+Also: `screenmode -l` made the monitor drop out briefly; 2560x1440 is
+missing from the mode list (EDID extension not read).
