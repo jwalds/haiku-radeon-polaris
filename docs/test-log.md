@@ -30,3 +30,15 @@
   visible. DISPOUT error count 0. PLL 23 (COMBOPHY_PLL3) used.
 - Open: BlankCRTC still loops 5 s (TEST_REG @ 0xC027) on the first
   power-down.
+
+## 2026-09-28 — first working desktop
+
+- Normal boot with patches 0001–0006: app_server runs on radeon_hd at
+  2560x1440 but the monitor shows nothing. `screenmode -q 1920 1080 32 60`
+  over SSH → **clear, crisp desktop** (148.5 MHz, DVI mode).
+- Back to 2560x1440 (241.5 MHz) + poking `DIG3_DIG_BE_CNTL` 0x4d47 to
+  DIG_MODE=3 (HDMI) with `radeon_regs` → **works**. DVI mode can't carry
+  >165 MHz single link. Patch 0007 selects HDMI mode for HDMI sinks
+  (EDID HDMI VSDB, DCE 5+).
+- Network: DHCP gives a new address per boot (.105, .31, ...); find the
+  box by scanning 192.168.137.0/24 for port 22.

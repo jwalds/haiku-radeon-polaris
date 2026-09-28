@@ -1,0 +1,77 @@
+From 21e04ce83ffd9df9ee0603bf93e04899c49d755f Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
+Date: Mon, 28 Sep 2026 19:28:15 +0000
+Subject: [PATCH 7/7] radeon_hd: drive HDMI sinks in HDMI encoder mode on DCE
+ 5+
+
+Detect HDMI sinks through the HDMI vendor specific data block in the
+EDID CTA extension. DVI mode is limited to 165MHz on a single link, so
+modes like 2560x1440@60 (241.5MHz) only work over HDMI in HDMI mode.
+HDMI audio is not set up yet.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01NqrEBcidivS5BSWVfbLqvu
+---
+ src/add-ons/accelerants/radeon_hd/display.cpp | 27 ++++++++++++++++---
+ 1 file changed, 23 insertions(+), 4 deletions(-)
+
+diff --git a/src/add-ons/accelerants/radeon_hd/display.cpp b/src/add-ons/accelerants/radeon_hd/display.cpp
+index 8edadbe7db..bd47f8e7c0 100644
+--- a/src/add-ons/accelerants/radeon_hd/display.cpp
++++ b/src/add-ons/accelerants/radeon_hd/display.cpp
+@@ -518,20 +518,39 @@ display_get_encoder_mode(uint32 connectorIndex)
+ 		}
+ 	}
+ 	bool edidDigital = false;
++	bool edidHDMI = false;
+ 	if (crtcID == -1) {
+ 		ERROR("%s: BUG: executed on connector without assigned display!\n",
+ 			__func__);
+ 	} else {
+ 		edid1_info* edid = &gDisplay[crtcID]->edidData;
+ 		edidDigital = edid->display.input_type ? true : false;
++
++		// HDMI sinks have an HDMI vendor specific data block (OUI 0x000c03)
++		for (uint32 i = 0; i < edid->cta_block.num_data_blocks; i++) {
++			cta_data_block* block = &edid->cta_block.data_blocks[i];
++			if (block->tag_code == 3
++				&& block->vendor_specific.ouinum0 == 0x03
++				&& block->vendor_specific.ouinum1 == 0x0c
++				&& block->vendor_specific.ouinum2 == 0x00) {
++				edidHDMI = true;
++				break;
++			}
++		}
+ 	}
+ 
++	// TODO: HDMI audio. DCE 4 would need ATOM_ENCODER_MODE_DVI when audio
++	// is present; DCE 5+ can drive HDMI sinks in HDMI mode, which is
++	// required for single link TMDS clocks above 165MHz.
++	radeon_shared_info &info = *gInfo->shared_info;
++	bool useHDMI = edidHDMI && info.dceMajor >= 5;
++
+ 	// Normal encoder situations
+ 	switch (gConnector[connectorIndex]->type) {
+ 		case VIDEO_CONNECTOR_DVII:
+ 		case VIDEO_CONNECTOR_HDMIB: /* HDMI-B is DL-DVI; analog works fine */
+-			// TODO: if audio detected on edid and DCE4, ATOM_ENCODER_MODE_DVI
+-			//        if audio detected on edid not DCE4, ATOM_ENCODER_MODE_HDMI
++			if (edidDigital && useHDMI)
++				return ATOM_ENCODER_MODE_HDMI;
+ 			if (edidDigital)
+ 				return ATOM_ENCODER_MODE_DVI;
+ 			else
+@@ -540,8 +559,8 @@ display_get_encoder_mode(uint32 connectorIndex)
+ 		case VIDEO_CONNECTOR_DVID:
+ 		case VIDEO_CONNECTOR_HDMIA:
+ 		default:
+-			// TODO: if audio detected on edid and DCE4, ATOM_ENCODER_MODE_DVI
+-			//        if audio detected on edid not DCE4, ATOM_ENCODER_MODE_HDMI
++			if (useHDMI)
++				return ATOM_ENCODER_MODE_HDMI;
+ 			return ATOM_ENCODER_MODE_DVI;
+ 		case VIDEO_CONNECTOR_LVDS:
+ 			return ATOM_ENCODER_MODE_LVDS;
+-- 
+2.34.1
+

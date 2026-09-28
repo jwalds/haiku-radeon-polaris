@@ -1,7 +1,7 @@
 From 4592901fb2d9db493eb5f9dd364d1bd8eb4329d4 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
 Date: Sun, 27 Sep 2026 20:31:27 +0000
-Subject: [PATCH 5/6] radeon_hd: add DCE 10+ display register dump for
+Subject: [PATCH 5/7] radeon_hd: add DCE 10+ display register dump for
  debugging
 
 Dumps non-zero display registers before and after the mode set in the
