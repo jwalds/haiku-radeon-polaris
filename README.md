@@ -1,56 +1,96 @@
 # haiku-radeon-polaris
 
-Bring-up of AMD Polaris (Radeon RX 560, Polaris 11 / DCE 11.2) support in
-Haiku's `radeon_hd` driver.
+Patches that add AMD Polaris support (Radeon RX 460/560, Polaris 11,
+display engine DCE 11.2) to Haiku's `radeon_hd` driver.
 
-## Decision
+**Status:** native mode setting works — tested on a Radeon RX 560
+(`1002:67ef`, rev `0xcf`) over HDMI at 2560x1440@60 on Haiku R1/beta6+
+(hrev60147). There is no 2D/3D acceleration yet.
 
-Extend the existing `radeon_hd` driver for display/modesetting. Its mode
-setting is AtomBIOS-driven and already handles the table revisions Polaris
-uses (SetPixelClock v7, DIGxEncoderControl v5, UNIPHYTransmitterControl v6,
-SetDCEClock v2); most CRTC0/MC registers sit at the same offsets as
-Evergreen. Acceleration (GFX8 CP/SDMA, firmware, GPUVM, power management) is
-a separate, much larger effort and should not be bolted onto the accelerant.
+> These patches were developed with AI assistance. Haiku does not accept
+> AI-generated contributions (see `AGENTS.md` in the Haiku tree), so they
+> are not intended for upstream submission as-is.
 
 ## Phases
 
-- **Phase 0 – baseline:** UEFI framebuffer/VESA works; Linux reference captures
-  (`docs/linux-register-dump.md`).
-- **Phase 1 – modesetting in radeon_hd**
-  - 1a: enable Polaris 11 IDs, fix chip-name table and VRAM-size register ✅ patch 0001
-  - 1b: single head on CRTC0 at native resolution ✅ patches 0001–0008 —
-    **working: HDMI 2560x1440@60 on RX 560 (1002:67ef), 2026-09-28**
-  - 1c: CRTC1–5 / multi-head
-  - 1d: DPMS, hardware cursor, brightness, more Polaris IDs
-  - Open items: EDID extension blocks not read (common `ddc2_read_edid1`
-    out-of-bounds parse; 2560x1440 missing from mode list, patch 0007's HDMI
-    detection unreliable), skip DP AUX reads when nothing is plugged in,
-    `screenmode -l` causes a brief monitor drop-out, HDMI audio
-- **Phase 2 – acceleration** (later): firmware loading, GART/VM, IH, SDMA,
-  then Mesa via an amdgpu-style interface (coordinate with X512's RadeonGfx).
+- **Phase 1 – mode setting in `radeon_hd`**
+  - 1a: enable Polaris 11 PCI IDs, fix chip names and VRAM size ✅
+  - 1b: single display at native resolution (DCE 11.2 registers, memory
+    controller, pixel clock/PLL, HDMI transmitter, BlankCRTC) ✅
+  - 1c: multiple displays (CRTC 1–4)
+  - 1d: DPMS, hardware cursor, brightness, HDMI audio, full EDID parsing
+- **Phase 2 – acceleration:** firmware loading, GART/VM, interrupts, SDMA,
+  then Mesa through an amdgpu-style interface.
 
-## Layout
+See `docs/test-log.md` for test results and `docs/findings-linux-capture.md`
+for register findings.
 
-- `patches/` – `git format-patch` series against upstream Haiku
-  (`patches/BASE_COMMIT`).
-- `tools/` – helper scripts (Linux capture, Haiku build/install).
-- `docs/` – notes, register findings, test logs.
-- `captures/` – Linux reference dumps (tarballs).
+## Supported hardware
+
+Polaris 11 PCI IDs enabled by the patches: `67e0 67e1 67e3 67e7 67e8 67e9
+67eb 67ef 67ff` (RX 460/560, Radeon Pro WX 4100/4130/4170, ...).
+Only `67ef` has been tested. Check yours with `listdev`.
+
+## Build and install (on the Haiku machine)
+
+You need Haiku x86_64 with the development tools (`gcc`, `jam`, `git`).
+
+```sh
+cd ~
+git clone https://github.com/jwalds/haiku-radeon-polaris.git
+git clone https://github.com/haiku/haiku.git
+
+# apply the patches on top of the Haiku revision they were made for
+cd ~/haiku
+git checkout -b radeon_hd-polaris $(cat ~/haiku-radeon-polaris/patches/BASE_COMMIT)
+git am ~/haiku-radeon-polaris/patches/*.patch
+
+# configure a native build and build only the driver and accelerant
+./configure
+jam -q radeon_hd radeon_hd.accelerant
+```
+
+`git am` needs a git identity (`git config --global user.name/user.email`).
+If you build over SSH, run the commands in a login shell (`bash -l`),
+otherwise the build tools can't find their libraries.
+
+Install the build to the user non-packaged directories (they take priority
+over the system `radeon_hd`), then reboot:
+
+```sh
+sh ~/haiku-radeon-polaris/tools/haiku-install.sh --no-reboot
+shutdown -r
+```
+
+This installs:
+
+- `/boot/home/config/non-packaged/add-ons/kernel/drivers/bin/radeon_hd`
+  (+ link in `.../drivers/dev/graphics/`)
+- `/boot/home/config/non-packaged/add-ons/accelerants/radeon_hd.accelerant`
+
+Do not use `/boot/system/non-packaged`: the kernel ranks it the same as the
+system directory, and the stock `radeon_hd` replaces the patched one.
+
+## Removing it / recovery
+
+```sh
+sh ~/haiku-radeon-polaris/tools/haiku-install.sh --remove
+shutdown -r
+```
+
+If the screen stays black: at boot hold **Shift**, choose *Safe mode
+options* → *Disable user add-ons* (skips the patched driver) or *Use
+fail-safe video mode*.
+
+## Repository layout
+
+- `patches/` – patch series against Haiku (`patches/BASE_COMMIT`)
+- `tools/` – install script, Linux register capture, and debug tools
+  (`radeon_regs` register peek/poke, `modeset_test`)
+- `docs/` – coding style, findings, test log
+- `captures/` – register dumps from Linux (amdgpu) and Haiku
 
 ## Coding style
 
-All driver code follows the existing radeon_hd conventions — see
+All driver code follows the existing `radeon_hd` conventions, see
 `docs/coding-style.md`.
-
-## Working layout (minibook `Documents\haiku_gfx`)
-
-```
-haiku_gfx/
-  haiku-radeon-polaris/   this repo (docs, tools, patches)  -> GitHub
-  haiku/                  sparse Haiku checkout, branch radeon_hd-polaris (edit here)
-  .keys/                  SSH keys (never committed)
-```
-
-Edit in `haiku/`, commit, then `tools/export-patches.sh` to refresh
-`patches/`, and `tools/sync-to-haiku.sh` to push both trees to the Haiku box
-for building/testing. See `docs/haiku-dev-workflow.md`.
