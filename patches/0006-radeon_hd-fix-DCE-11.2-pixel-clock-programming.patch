@@ -1,7 +1,7 @@
 From 43b73dea8e107f5848b783c686bf07857019bc6b Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
 Date: Sun, 27 Sep 2026 20:48:18 +0000
-Subject: [PATCH 6/7] radeon_hd: fix DCE 11.2 pixel clock programming
+Subject: [PATCH 6/8] radeon_hd: fix DCE 11.2 pixel clock programming
 
 * SetPixelClock v7 takes the clock in 100Hz units, not 10kHz; the
   PLL was programmed to 1/100 of the requested pixel clock.
