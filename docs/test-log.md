@@ -75,3 +75,13 @@ missing from the mode list (EDID extension not read).
 - Patch 0008 (VGA enable around BlankCRTC, as Linux dce_v11_0): **boot
   goes straight to the desktop at 2560x1440@60**, 0 AtomBIOS timeouts,
   DISPOUT error count 0.
+
+## 2026-09-29 — EDID extension
+
+- Correction: 2560x1440 (60 and 75 Hz) *is* in the mode list; an earlier
+  `grep | head` cut it off.
+- Monitor EDID base block: 2560x1440@59.95 (241.5 MHz) and @74
+  (329.79 MHz), ranges 30–113 kHz / 56–76 Hz, max 340 MHz, 1 extension.
+- Patch 0009: `ddc2_read_edid1()` now reads the first extension block and
+  clamps `num_sections`, fixing the out-of-bounds decode; this makes the
+  HDMI VSDB detection from patch 0007 work.

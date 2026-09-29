@@ -1,0 +1,77 @@
+From a7eb79b260a16496801e5cecab6ff888f9507c46 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
+Date: Tue, 29 Sep 2026 18:19:39 +0000
+Subject: [PATCH 9/9] accelerants/common: read the first EDID extension block
+ over DDC
+
+ddc2_read_edid1() read only the 128 byte base block, while
+edid_decode() parses num_sections extension blocks following it, so
+it decoded memory past the buffer as CTA/DisplayID blocks. Read the
+first extension block (which carries the CTA-861 data, including the
+HDMI vendor specific data block) and clamp num_sections to what was
+actually read. radeon_hd's DisplayPort EDID path does not read
+extensions yet; clear num_sections there.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01NqrEBcidivS5BSWVfbLqvu
+---
+ src/add-ons/accelerants/common/ddc.c          | 20 +++++++++++++++----
+ .../accelerants/radeon_hd/displayport.cpp     |  4 ++++
+ 2 files changed, 20 insertions(+), 4 deletions(-)
+
+diff --git a/src/add-ons/accelerants/common/ddc.c b/src/add-ons/accelerants/common/ddc.c
+index ab83518bd7..5807c03bd4 100644
+--- a/src/add-ons/accelerants/common/ddc.c
++++ b/src/add-ons/accelerants/common/ddc.c
+@@ -166,17 +166,29 @@ status_t
+ ddc2_read_edid1(const i2c_bus *bus, edid1_info *edid,
+ 	void **vdif, size_t *vdifLength)
+ {
+-	edid1_raw raw;
+-	status_t status = ddc2_read(bus, 0, (uint8 *)&raw, sizeof(raw));
++	edid1_raw raw[2];
++	status_t status = ddc2_read(bus, 0, (uint8 *)&raw[0], sizeof(raw[0]));
+ 	if (status != B_OK)
+ 		return status;
+ 
+-	if (raw.version.version != 1 || raw.version.revision > 4) {
++	if (raw[0].version.version != 1 || raw[0].version.revision > 4) {
+ 		TRACE("%s: EDID version or revision out of range\n", __func__);
+ 		return B_ERROR;
+ 	}
+ 
+-	edid_decode(edid, &raw);
++	// edid_decode() parses num_sections extension blocks following the base
++	// block, so only announce the ones we actually read. Blocks beyond the
++	// first need E-DDC segment addressing, which is not supported here.
++	if (raw[0].num_sections > 0) {
++		if (ddc2_read(bus, sizeof(raw[0]), (uint8 *)&raw[1], sizeof(raw[1]))
++				!= B_OK) {
++			TRACE("%s: could not read EDID extension block\n", __func__);
++			raw[0].num_sections = 0;
++		} else if (raw[0].num_sections > 1)
++			raw[0].num_sections = 1;
++	}
++
++	edid_decode(edid, raw);
+ 
+ 	if (vdif != NULL)
+ 		*vdif = NULL;
+diff --git a/src/add-ons/accelerants/radeon_hd/displayport.cpp b/src/add-ons/accelerants/radeon_hd/displayport.cpp
+index c7d59425eb..7eb26c5b9a 100644
+--- a/src/add-ons/accelerants/radeon_hd/displayport.cpp
++++ b/src/add-ons/accelerants/radeon_hd/displayport.cpp
+@@ -954,6 +954,10 @@ ddc2_dp_read_edid1(uint32 connectorIndex, edid1_info* edid)
+ 		return false;
+ 	}
+ 
++	// TODO: read the extension blocks; until then keep edid_decode() from
++	// parsing past the base block
++	raw.num_sections = 0;
++
+ 	edid_decode(edid, &raw);
+ 
+ 	return true;
+-- 
+2.34.1
+
