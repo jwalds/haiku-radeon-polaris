@@ -112,3 +112,8 @@ missing from the mode list (EDID extension not read).
   `tools/haiku-install.sh` now syncs; `tools/addon_check.cpp` verifies an
   accelerant loads. Check `listimage <app_server team> | grep accelerant`
   to see which accelerant is in use.
+- Clean reinstall + reboot: our accelerant loaded
+  (`/boot/home/config/non-packaged/.../radeon_hd.accelerant`), desktop
+  2560x1440@75, **hardware cursor looks and works normally** (app_server
+  uses `set_cursor_bitmap`, 33x33; `CUR_CONTROL` = 0x04000211). No
+  AtomBIOS timeouts this boot.

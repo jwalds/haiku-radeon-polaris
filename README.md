@@ -3,9 +3,9 @@
 Patches that add AMD Polaris support (Radeon RX 460/560, Polaris 11,
 display engine DCE 11.2) to Haiku's `radeon_hd` driver.
 
-**Status:** native mode setting works — tested on a Radeon RX 560
-(`1002:67ef`, rev `0xcf`) over HDMI at 2560x1440@60 on Haiku R1/beta6+
-(hrev60147). There is no 2D/3D acceleration yet.
+**Status:** native mode setting, DPMS and a hardware cursor work — tested
+on a Radeon RX 560 (`1002:67ef`, rev `0xcf`) over HDMI at 2560x1440@60 and
+@75 on Haiku R1/beta6+ (hrev60147). There is no 2D/3D acceleration yet.
 
 > These patches were developed with AI assistance. Haiku does not accept
 > AI-generated contributions (see `AGENTS.md` in the Haiku tree), so they
@@ -18,7 +18,8 @@ display engine DCE 11.2) to Haiku's `radeon_hd` driver.
   - 1b: single display at native resolution (DCE 11.2 registers, memory
     controller, pixel clock/PLL, HDMI transmitter, BlankCRTC) ✅
   - 1c: multiple displays (CRTC 1–4)
-  - 1d: DPMS, hardware cursor, brightness, HDMI audio, full EDID parsing
+  - 1d: DPMS ✅, hardware cursor ✅, first EDID extension block ✅;
+    open: brightness, HDMI audio
 
 Known issues: after a runtime mode change the output falls back from HDMI
 to DVI signalling (picture unaffected); the DisplayPort path doesn't read
@@ -60,7 +61,9 @@ If you build over SSH, run the commands in a login shell (`bash -l`),
 otherwise the build tools can't find their libraries.
 
 Install the build to the user non-packaged directories (they take priority
-over the system `radeon_hd`), then reboot:
+over the system `radeon_hd`), then reboot. If the patched accelerant fails
+to load, app_server silently falls back to the stock one (black screen on
+Polaris); `tools/addon_check.cpp` checks that it loads.
 
 ```sh
 sh ~/haiku-radeon-polaris/tools/haiku-install.sh --no-reboot
