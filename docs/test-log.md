@@ -95,3 +95,11 @@ missing from the mode list (EDID extension not read).
   in both cases. Suspect VBIOS state (BIOS scratch registers / device
   flags) that differs between the first and later mode sets. Matters for
   HDMI audio/infoframes later.
+
+## 2026-09-29 — DPMS and hardware cursor
+
+- DPMS: `tools/dpms_test cycle off 8` → monitor goes to standby (and
+  auto-switches to its other input), returns to the desktop on wake. No
+  AtomBIOS timeouts. After the DPMS cycle DIG_MODE is HDMI again.
+- Patch 0011: hardware cursor (DCE 4+ `CUR_*` registers, 64x64 premultiplied
+  ARGB at the end of the mapped frame buffer).

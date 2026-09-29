@@ -1,0 +1,370 @@
+From c0619dbfc36574ba2a2ea1369cca9aa9b6a9fd7f Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
+Date: Tue, 29 Sep 2026 18:45:07 +0000
+Subject: [PATCH 11/11] radeon_hd: add hardware cursor support for DCE 4+
+
+Implement the set_cursor_shape, set_cursor_bitmap, move_cursor and
+show_cursor hooks using the Evergreen style CUR_* registers, as Linux
+does for DCE 4 through 11. The 64x64 premultiplied ARGB image is kept
+at the end of the mapped frame buffer.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01NqrEBcidivS5BSWVfbLqvu
+---
+ src/add-ons/accelerants/radeon_hd/Jamfile     |   1 +
+ .../accelerants/radeon_hd/accelerant.h        |   5 +
+ .../accelerants/radeon_hd/accelerant_protos.h |   9 +
+ src/add-ons/accelerants/radeon_hd/cursor.cpp  | 240 ++++++++++++++++++
+ src/add-ons/accelerants/radeon_hd/cursor.h    |  15 ++
+ src/add-ons/accelerants/radeon_hd/hooks.cpp   |  11 +
+ 6 files changed, 281 insertions(+)
+ create mode 100644 src/add-ons/accelerants/radeon_hd/cursor.cpp
+ create mode 100644 src/add-ons/accelerants/radeon_hd/cursor.h
+
+diff --git a/src/add-ons/accelerants/radeon_hd/Jamfile b/src/add-ons/accelerants/radeon_hd/Jamfile
+index bdc5c4f038..7c839fadbc 100644
+--- a/src/add-ons/accelerants/radeon_hd/Jamfile
++++ b/src/add-ons/accelerants/radeon_hd/Jamfile
+@@ -15,6 +15,7 @@ Addon radeon_hd.accelerant :
+ 	bios.cpp
+ 	connector.cpp
+ 	create_display_modes.cpp
++	cursor.cpp
+ 	display.cpp
+ 	displayport.cpp
+ 	encoder.cpp
+diff --git a/src/add-ons/accelerants/radeon_hd/accelerant.h b/src/add-ons/accelerants/radeon_hd/accelerant.h
+index cf8a254f46..2c852d198a 100644
+--- a/src/add-ons/accelerants/radeon_hd/accelerant.h
++++ b/src/add-ons/accelerants/radeon_hd/accelerant.h
+@@ -73,6 +73,11 @@ struct accelerant_info {
+ 
+ 	volatile uint32	dpms_mode;		// current driver dpms mode
+ 
++	uint16			cursorX;
++	uint16			cursorY;
++	uint16			cursorHotX;
++	uint16			cursorHotY;
++
+ 	uint32			maximumPixelClock;
+ 	uint32			displayClockFrequency;
+ 	uint32			dpExternalClock;
+diff --git a/src/add-ons/accelerants/radeon_hd/accelerant_protos.h b/src/add-ons/accelerants/radeon_hd/accelerant_protos.h
+index 324d005f13..a82888d749 100644
+--- a/src/add-ons/accelerants/radeon_hd/accelerant_protos.h
++++ b/src/add-ons/accelerants/radeon_hd/accelerant_protos.h
+@@ -42,6 +42,15 @@ status_t radeon_get_edid_info(void* info, size_t size, uint32* edid_version);
+ status_t radeon_set_brightness(float brightness);
+ status_t radeon_get_brightness(float* brightness);
+ 
++// cursor
++status_t radeon_set_cursor_shape(uint16 width, uint16 height, uint16 hotX,
++	uint16 hotY, const uint8* andMask, const uint8* xorMask);
++status_t radeon_set_cursor_bitmap(uint16 width, uint16 height, uint16 hotX,
++	uint16 hotY, color_space colorSpace, uint16 bytesPerRow,
++	const uint8* bitmapData);
++void radeon_move_cursor(uint16 x, uint16 y);
++void radeon_show_cursor(bool isVisible);
++
+ // accelerant engine
+ uint32 radeon_accelerant_engine_count(void);
+ status_t radeon_acquire_engine(uint32 capabilities, uint32 maxWait,
+diff --git a/src/add-ons/accelerants/radeon_hd/cursor.cpp b/src/add-ons/accelerants/radeon_hd/cursor.cpp
+new file mode 100644
+index 0000000000..5de81336aa
+--- /dev/null
++++ b/src/add-ons/accelerants/radeon_hd/cursor.cpp
+@@ -0,0 +1,240 @@
++/*
++ * Copyright 2026, Haiku, Inc. All Rights Reserved.
++ * Distributed under the terms of the MIT License.
++ */
++
++
++#include "cursor.h"
++
++#include <string.h>
++
++#include "accelerant.h"
++#include "accelerant_protos.h"
++#include "display.h"
++
++
++#define TRACE_CURSOR
++#ifdef TRACE_CURSOR
++extern "C" void _sPrintf(const char* format, ...);
++#	define TRACE(x...) _sPrintf("radeon_hd: " x)
++#else
++#	define TRACE(x...) ;
++#endif
++
++#define ERROR(x...) _sPrintf("radeon_hd: " x)
++
++
++// The cursor image always uses a fixed size surface; smaller cursors are
++// padded with transparent pixels.
++static const uint32 kCursorSize = 64;
++static const uint32 kCursorImageSize = kCursorSize * kCursorSize * 4;
++
++
++/*! The cursor image lives in the last page aligned block of the mapped
++	frame buffer, out of the way of the visible screen.
++*/
++static uint64
++cursor_offset()
++{
++	uint64 frameBufferSize
++		= (uint64)gInfo->shared_info->frame_buffer_size * 1024;
++	return (frameBufferSize - kCursorImageSize) & ~(uint64)(B_PAGE_SIZE - 1);
++}
++
++
++bool
++cursor_supported()
++{
++	// Evergreen style cursor registers
++	return gInfo != NULL && gInfo->shared_info->dceMajor >= 4;
++}
++
++
++static uint32*
++cursor_image()
++{
++	return (uint32*)(gInfo->shared_info->frame_buffer + cursor_offset());
++}
++
++
++static void
++cursor_lock(uint8 crtcID, bool lock)
++{
++	register_info* regs = gDisplay[crtcID]->regs;
++	uint32 update = Read32(OUT, EVERGREEN_CUR_UPDATE + regs->crtcOffset);
++	if (lock)
++		update |= EVERGREEN_CURSOR_UPDATE_LOCK;
++	else
++		update &= ~EVERGREEN_CURSOR_UPDATE_LOCK;
++	Write32(OUT, EVERGREEN_CUR_UPDATE + regs->crtcOffset, update);
++}
++
++
++static void
++cursor_set_position(uint8 crtcID)
++{
++	register_info* regs = gDisplay[crtcID]->regs;
++
++	int32 x = (int32)gInfo->cursorX - gInfo->cursorHotX;
++	int32 y = (int32)gInfo->cursorY - gInfo->cursorHotY;
++	uint32 xOrigin = 0;
++	uint32 yOrigin = 0;
++
++	// The position can't be negative, move the hot spot instead
++	if (x < 0) {
++		xOrigin = min_c(-x, (int32)kCursorSize - 1);
++		x = 0;
++	}
++	if (y < 0) {
++		yOrigin = min_c(-y, (int32)kCursorSize - 1);
++		y = 0;
++	}
++
++	Write32(OUT, EVERGREEN_CUR_POSITION + regs->crtcOffset, (x << 16) | y);
++	Write32(OUT, EVERGREEN_CUR_HOT_SPOT + regs->crtcOffset,
++		(xOrigin << 16) | yOrigin);
++	Write32(OUT, EVERGREEN_CUR_SIZE + regs->crtcOffset,
++		((kCursorSize - 1) << 16) | (kCursorSize - 1));
++}
++
++
++static void
++cursor_enable(uint8 crtcID, bool enable)
++{
++	register_info* regs = gDisplay[crtcID]->regs;
++
++	uint32 control = Read32(OUT, EVERGREEN_CUR_CONTROL + regs->crtcOffset);
++	control &= ~(EVERGREEN_CURSOR_EN | EVERGREEN_CURSOR_MODE(0x3));
++
++	if (enable) {
++		uint64 address = gInfo->fb.vramStart + cursor_offset();
++		Write32(OUT, EVERGREEN_CUR_SURFACE_ADDRESS_HIGH + regs->crtcOffset,
++			(address >> 32) & 0xff);
++		Write32(OUT, EVERGREEN_CUR_SURFACE_ADDRESS + regs->crtcOffset,
++			address & EVERGREEN_CUR_SURFACE_ADDRESS_MASK);
++
++		control |= EVERGREEN_CURSOR_EN
++			| EVERGREEN_CURSOR_MODE(EVERGREEN_CURSOR_24_8_PRE_MULT);
++	}
++
++	Write32(OUT, EVERGREEN_CUR_CONTROL + regs->crtcOffset, control);
++}
++
++
++//	#pragma mark - accelerant hooks
++
++
++status_t
++radeon_set_cursor_shape(uint16 width, uint16 height, uint16 hotX, uint16 hotY,
++	const uint8* andMask, const uint8* xorMask)
++{
++	TRACE("%s: %" B_PRIu16 "x%" B_PRIu16 "\n", __func__, width, height);
++
++	if (width > kCursorSize || height > kCursorSize)
++		return B_BAD_VALUE;
++
++	uint32* image = cursor_image();
++	memset(image, 0, kCursorImageSize);
++
++	uint32 bytesPerRow = (width + 7) / 8;
++	for (uint32 y = 0; y < height; y++) {
++		for (uint32 x = 0; x < width; x++) {
++			uint32 byte = y * bytesPerRow + x / 8;
++			uint8 bit = 0x80 >> (x % 8);
++			bool transparent = (andMask[byte] & bit) != 0;
++			bool white = (xorMask[byte] & bit) != 0;
++
++			uint32 pixel;
++			if (transparent && !white)
++				pixel = 0x00000000;
++			else if (white && !transparent)
++				pixel = 0xffffffff;
++			else {
++				// black, or "invert screen" which the hardware can't do
++				pixel = 0xff000000;
++			}
++			image[y * kCursorSize + x] = pixel;
++		}
++	}
++
++	gInfo->cursorHotX = hotX;
++	gInfo->cursorHotY = hotY;
++
++	uint8 crtcID = 0;
++	cursor_lock(crtcID, true);
++	cursor_set_position(crtcID);
++	cursor_lock(crtcID, false);
++
++	return B_OK;
++}
++
++
++status_t
++radeon_set_cursor_bitmap(uint16 width, uint16 height, uint16 hotX,
++	uint16 hotY, color_space colorSpace, uint16 bytesPerRow,
++	const uint8* bitmapData)
++{
++	TRACE("%s: %" B_PRIu16 "x%" B_PRIu16 "\n", __func__, width, height);
++
++	if (width > kCursorSize || height > kCursorSize)
++		return B_BAD_VALUE;
++	if (colorSpace != B_RGBA32)
++		return B_BAD_VALUE;
++
++	uint32* image = cursor_image();
++	memset(image, 0, kCursorImageSize);
++
++	// The hardware wants premultiplied alpha
++	for (uint32 y = 0; y < height; y++) {
++		const uint8* source = bitmapData + y * bytesPerRow;
++		for (uint32 x = 0; x < width; x++) {
++			uint32 blue = source[x * 4 + 0];
++			uint32 green = source[x * 4 + 1];
++			uint32 red = source[x * 4 + 2];
++			uint32 alpha = source[x * 4 + 3];
++
++			blue = blue * alpha / 255;
++			green = green * alpha / 255;
++			red = red * alpha / 255;
++
++			image[y * kCursorSize + x]
++				= (alpha << 24) | (red << 16) | (green << 8) | blue;
++		}
++	}
++
++	gInfo->cursorHotX = hotX;
++	gInfo->cursorHotY = hotY;
++
++	uint8 crtcID = 0;
++	cursor_lock(crtcID, true);
++	cursor_set_position(crtcID);
++	cursor_lock(crtcID, false);
++
++	return B_OK;
++}
++
++
++void
++radeon_move_cursor(uint16 x, uint16 y)
++{
++	gInfo->cursorX = x;
++	gInfo->cursorY = y;
++
++	uint8 crtcID = 0;
++	cursor_lock(crtcID, true);
++	cursor_set_position(crtcID);
++	cursor_lock(crtcID, false);
++}
++
++
++void
++radeon_show_cursor(bool isVisible)
++{
++	TRACE("%s: %s\n", __func__, isVisible ? "true" : "false");
++
++	uint8 crtcID = 0;
++	cursor_lock(crtcID, true);
++	cursor_enable(crtcID, isVisible);
++	cursor_set_position(crtcID);
++	cursor_lock(crtcID, false);
++}
+diff --git a/src/add-ons/accelerants/radeon_hd/cursor.h b/src/add-ons/accelerants/radeon_hd/cursor.h
+new file mode 100644
+index 0000000000..de3fad6d6f
+--- /dev/null
++++ b/src/add-ons/accelerants/radeon_hd/cursor.h
+@@ -0,0 +1,15 @@
++/*
++ * Copyright 2026, Haiku, Inc. All Rights Reserved.
++ * Distributed under the terms of the MIT License.
++ */
++#ifndef RADEON_HD_CURSOR_H
++#define RADEON_HD_CURSOR_H
++
++
++#include <Accelerant.h>
++
++
++bool cursor_supported();
++
++
++#endif /* RADEON_HD_CURSOR_H */
+diff --git a/src/add-ons/accelerants/radeon_hd/hooks.cpp b/src/add-ons/accelerants/radeon_hd/hooks.cpp
+index 2c6a69b2aa..a64926fa44 100644
+--- a/src/add-ons/accelerants/radeon_hd/hooks.cpp
++++ b/src/add-ons/accelerants/radeon_hd/hooks.cpp
+@@ -10,6 +10,7 @@
+ 
+ #include "accelerant.h"
+ #include "accelerant_protos.h"
++#include "cursor.h"
+ 
+ 
+ extern "C" void*
+@@ -65,6 +66,16 @@ get_accelerant_hook(uint32 feature, void* data)
+ 		case B_GET_PIXEL_CLOCK_LIMITS:
+ 			return (void*)radeon_get_pixel_clock_limits;
+ 
++		/* cursor */
++		case B_SET_CURSOR_SHAPE:
++			return cursor_supported() ? (void*)radeon_set_cursor_shape : NULL;
++		case B_SET_CURSOR_BITMAP:
++			return cursor_supported() ? (void*)radeon_set_cursor_bitmap : NULL;
++		case B_MOVE_CURSOR:
++			return cursor_supported() ? (void*)radeon_move_cursor : NULL;
++		case B_SHOW_CURSOR:
++			return cursor_supported() ? (void*)radeon_show_cursor : NULL;
++
+ 		/* engine */
+ 		case B_ACCELERANT_ENGINE_COUNT:
+ 			return (void*)radeon_accelerant_engine_count;
+-- 
+2.34.1
+
