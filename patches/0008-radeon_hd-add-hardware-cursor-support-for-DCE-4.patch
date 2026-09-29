@@ -1,7 +1,7 @@
-From 16dc6f8e5f971156baf68cbc88eac49a4049365d Mon Sep 17 00:00:00 2001
+From 8ebac57c56e7d1625c0f6cf0536f5333dbc3f0a5 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
 Date: Tue, 29 Sep 2026 18:45:07 +0000
-Subject: [PATCH 11/12] radeon_hd: add hardware cursor support for DCE 4+
+Subject: [PATCH 08/11] radeon_hd: add hardware cursor support for DCE 4+
 
 Implement the set_cursor_shape, set_cursor_bitmap, move_cursor and
 show_cursor hooks using the Evergreen style CUR_* registers, as Linux

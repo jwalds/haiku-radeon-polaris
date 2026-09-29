@@ -1,7 +1,7 @@
-From 21e04ce83ffd9df9ee0603bf93e04899c49d755f Mon Sep 17 00:00:00 2001
+From ac7e25f173e93561671faf5da5b88b297da93426 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
 Date: Mon, 28 Sep 2026 19:28:15 +0000
-Subject: [PATCH 07/12] radeon_hd: drive HDMI sinks in HDMI encoder mode on DCE
+Subject: [PATCH 07/11] radeon_hd: drive HDMI sinks in HDMI encoder mode on DCE
  5+
 
 Detect HDMI sinks through the HDMI vendor specific data block in the
@@ -16,10 +16,10 @@ Claude-Session: https://claude.ai/code/session_01NqrEBcidivS5BSWVfbLqvu
  1 file changed, 23 insertions(+), 4 deletions(-)
 
 diff --git a/src/add-ons/accelerants/radeon_hd/display.cpp b/src/add-ons/accelerants/radeon_hd/display.cpp
-index 8edadbe7db..bd47f8e7c0 100644
+index 99095dc6c7..dddbfef3cf 100644
 --- a/src/add-ons/accelerants/radeon_hd/display.cpp
 +++ b/src/add-ons/accelerants/radeon_hd/display.cpp
-@@ -518,20 +518,39 @@ display_get_encoder_mode(uint32 connectorIndex)
+@@ -480,20 +480,39 @@ display_get_encoder_mode(uint32 connectorIndex)
  		}
  	}
  	bool edidDigital = false;
@@ -61,7 +61,7 @@ index 8edadbe7db..bd47f8e7c0 100644
  			if (edidDigital)
  				return ATOM_ENCODER_MODE_DVI;
  			else
-@@ -540,8 +559,8 @@ display_get_encoder_mode(uint32 connectorIndex)
+@@ -502,8 +521,8 @@ display_get_encoder_mode(uint32 connectorIndex)
  		case VIDEO_CONNECTOR_DVID:
  		case VIDEO_CONNECTOR_HDMIA:
  		default:

@@ -1,35 +1,45 @@
-# Development workflow on the Haiku test machine
+# Development workflow
 
-**Rule: Claude never reboots the Haiku machine.** Claude installs with
-`tools/haiku-install.sh --no-reboot` and then asks Jonathan to reboot; he
-also re-establishes the network after each boot.
-
-The RX 560 box (`192.168.137.55`) is both build host and test target.
-
-Source of truth is the minibook folder `haiku_gfx/`; the Haiku box holds full
-clones that we push to.
-
-## Sync (from the minibook)
+The setup used during development: a workstation holds the two working
+trees side by side, and a Haiku machine with the Polaris card is both the
+build host and the test target.
 
 ```
-haiku-radeon-polaris/tools/sync-to-haiku.sh      # default user@192.168.137.55
+workspace/
+  haiku-radeon-polaris/   this repository
+  haiku/                  Haiku checkout, branch radeon_hd-polaris
+  .keys/                  SSH keys (not part of any repository)
 ```
 
-First run clones `haiku` and `buildtools` on the box and allows pushes into
-the checked-out branch; later runs just push `radeon_hd-polaris` and `main`.
+**Rule: only the person at the Haiku machine reboots it.** Builds are
+installed with `tools/haiku-install.sh --no-reboot`.
 
-## One-time build setup (on the Haiku box)
+## Sync to the Haiku machine
 
 ```
-cd ~/haiku && mkdir -p generated && cd generated && ../configure   # native build, system gcc
+HAIKU_IP=<address> haiku-radeon-polaris/tools/sync-to-haiku.sh
+```
+
+The first run clones Haiku on the test machine (reusing a local clone in
+`~/haiku-build/haiku` if there is one) and allows pushes into the checked
+out branch; later runs push `radeon_hd-polaris` and `main`. If the machine
+gets its address by DHCP, find it by scanning the subnet for port 22.
+
+## One-time build setup (on the Haiku machine)
+
+```
+cd ~/haiku && ./configure        # native build, system gcc
 ```
 
 ## Build just the driver + accelerant
 
 ```
-cd ~/haiku/generated
+cd ~/haiku
 jam -q radeon_hd radeon_hd.accelerant
 ```
+
+Build commands over SSH must run in a login shell (`bash -lc`), otherwise
+`LIBRARY_PATH` is unset and the host `package` tool fails to find libbsd.
 
 ## Install (user non-packaged overrides the system copy)
 
@@ -39,20 +49,26 @@ jam -q radeon_hd radeon_hd.accelerant
   (+ symlink in `.../drivers/dev/graphics/`)
 - `/boot/home/config/non-packaged/add-ons/accelerants/radeon_hd.accelerant`
 
-Not `/boot/system/non-packaged`: the kernel's `get_priority()`
-(legacy_drivers.cpp) tests `/boot/system` before
+and syncs the disk. Not `/boot/system/non-packaged`: the kernel's
+`get_priority()` (legacy_drivers.cpp) tests `/boot/system` before
 `/boot/system/non-packaged`, so both get priority 0 and the packaged
 radeon_hd wins on the next rescan ("devfs: reload driver" in syslog).
 
-Build commands over SSH must run in a login shell (`bash -lc`), otherwise
-`LIBRARY_PATH` is unset and the host `package` tool fails to find libbsd.
+If the patched accelerant fails to load, app_server silently falls back to
+the stock one. Check with `tools/addon_check.cpp`, and see which accelerant
+is in use with `listimage <app_server team> | grep accelerant`.
 
-Always use `--no-reboot` (see rule above). `tools/haiku-install.sh --remove`
-restores the stock setup.
+## Debug tools (build on the Haiku machine with g++)
+
+- `tools/radeon_regs.cpp` – read/write/dump registers (dword index).
+- `tools/modeset_test.cpp` – set a mode through the accelerant without
+  app_server (use in fail-safe video mode).
+- `tools/dpms_test.cpp` – query/set DPMS through app_server.
+- `tools/addon_check.cpp` – check that an accelerant loads.
 
 ## If the screen stays black
 
-SSH still works, so: `tools/haiku-install.sh --remove && shutdown -r`.
+SSH still works, so: `tools/haiku-install.sh --remove`, then reboot.
 At the console: hold **Shift** at boot → *Safe mode options* →
 *Disable user add-ons* (ignores non-packaged drivers), or
 *Use fail-safe video mode*.

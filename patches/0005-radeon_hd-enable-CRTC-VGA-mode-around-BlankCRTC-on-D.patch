@@ -1,7 +1,7 @@
-From ef9a4a16d4d5c81d084a8c99372adeaa15126038 Mon Sep 17 00:00:00 2001
+From f77ec27dfd6a3a83b30cf53fc208ad0518dc8f4d Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
 Date: Mon, 28 Sep 2026 19:54:53 +0000
-Subject: [PATCH 08/12] radeon_hd: enable CRTC VGA mode around BlankCRTC on DCE
+Subject: [PATCH 05/11] radeon_hd: enable CRTC VGA mode around BlankCRTC on DCE
  10+
 
 The BlankCRTC table loops until the 5 second AtomBIOS timeout unless
@@ -16,10 +16,10 @@ Claude-Session: https://claude.ai/code/session_01NqrEBcidivS5BSWVfbLqvu
  1 file changed, 13 insertions(+)
 
 diff --git a/src/add-ons/accelerants/radeon_hd/display.cpp b/src/add-ons/accelerants/radeon_hd/display.cpp
-index bd47f8e7c0..960dfba09b 100644
+index 51df52a817..99095dc6c7 100644
 --- a/src/add-ons/accelerants/radeon_hd/display.cpp
 +++ b/src/add-ons/accelerants/radeon_hd/display.cpp
-@@ -622,7 +622,20 @@ display_crtc_blank(uint8 crtcID, int command)
+@@ -565,7 +565,20 @@ display_crtc_blank(uint8 crtcID, int command)
  	args.usBlackColorGY = 0;
  	args.usBlackColorBCb = 0;
  

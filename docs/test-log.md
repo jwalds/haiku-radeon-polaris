@@ -41,7 +41,7 @@
   >165 MHz single link. Patch 0007 selects HDMI mode for HDMI sinks
   (EDID HDMI VSDB, DCE 5+).
 - Network: DHCP gives a new address per boot (.105, .31, ...); find the
-  box by scanning 192.168.137.0/24 for port 22.
+  box by scanning the local subnet for port 22.
 
 ## 2026-09-28 — controlled 2560x1440 tests (correction)
 

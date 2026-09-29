@@ -31,6 +31,25 @@ EDID extension blocks yet.
 See `docs/test-log.md` for test results and `docs/findings-linux-capture.md`
 for register findings.
 
+## Patches
+
+| # | Patch |
+|---|---|
+| 0001 | DCE 10/11 register fixes (chip names, VRAM size, CRTC offsets, LUT) |
+| 0002 | keep the VBIOS memory controller setup on Volcanic Islands+ |
+| 0003 | SetDCEClock on DCE 11.2, single-link HDMI transmitter |
+| 0004 | SetPixelClock v7 units and per-PHY PLLs |
+| 0005 | BlankCRTC VGA workaround (no 5 s delay) |
+| 0006 | read the first EDID extension block (shared DDC code) |
+| 0007 | HDMI encoder mode for HDMI sinks |
+| 0008 | hardware cursor (DCE 4+) |
+| 0009 | skip empty DisplayPort connectors (HPD) |
+| 0010 | enable the Polaris 11 PCI IDs |
+| 0011 | optional: debug register dump and traces |
+
+Patch numbers in `docs/test-log.md` refer to the development order and
+don't match this list.
+
 ## Supported hardware
 
 Polaris 11 PCI IDs enabled by the patches: `67e0 67e1 67e3 67e7 67e8 67e9

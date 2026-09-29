@@ -1,13 +1,13 @@
 #!/bin/bash
-# Sync the working trees in haiku_gfx/ to the Haiku test machine over SSH.
-#   haiku_gfx/haiku                 (branch radeon_hd-polaris) -> ~/haiku
-#   haiku_gfx/haiku-radeon-polaris  (main)                     -> ~/haiku-radeon-polaris
+# Sync the working trees in the workspace to the Haiku test machine over SSH.
+#   workspace/haiku                 (branch radeon_hd-polaris) -> ~/haiku
+#   workspace/haiku-radeon-polaris  (main)                     -> ~/haiku-radeon-polaris
 # The Haiku box keeps full clones (needed to build); we push commits to them
 # and they update their checked-out branch (receive.denyCurrentBranch=updateInstead).
 #
-# usage: tools/sync-to-haiku.sh [host]     (default user@${HAIKU_IP:-192.168.137.55})
+# usage: HAIKU_IP=<address> tools/sync-to-haiku.sh   (or pass user@host)
 set -e
-HOST="${1:-${HAIKU_HOST:-user@${HAIKU_IP:-192.168.137.55}}}"
+HOST="${1:-${HAIKU_HOST:-user@${HAIKU_IP:?set HAIKU_IP or pass user@host}}}"
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 KEY="${HAIKU_KEY:-$ROOT/.keys/haiku_dev_ed25519}"
 export GIT_SSH_COMMAND="ssh -i $KEY -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new"

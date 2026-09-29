@@ -1,11 +1,11 @@
-From 4592901fb2d9db493eb5f9dd364d1bd8eb4329d4 Mon Sep 17 00:00:00 2001
+From b7c35a66a3cce6820126a137b5d123e34c933453 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
-Date: Sun, 27 Sep 2026 20:31:27 +0000
-Subject: [PATCH 05/12] radeon_hd: add DCE 10+ display register dump for
- debugging
+Date: Tue, 29 Sep 2026 19:17:28 +0000
+Subject: [PATCH 11/11] radeon_hd: debug output for DCE 10+ bring-up
 
-Dumps non-zero display registers before and after the mode set in the
-same format as the Linux amdgpu captures.
+* Dump the non-zero display registers before and after the mode set in
+  the same format as Linux amdgpu register captures.
+* Trace the encoder mode chosen on mode set.
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
 Claude-Session: https://claude.ai/code/session_01NqrEBcidivS5BSWVfbLqvu
@@ -13,8 +13,9 @@ Claude-Session: https://claude.ai/code/session_01NqrEBcidivS5BSWVfbLqvu
  .../accelerants/radeon_hd/accelerant.cpp      |  1 +
  src/add-ons/accelerants/radeon_hd/display.cpp | 38 +++++++++++++++++++
  src/add-ons/accelerants/radeon_hd/display.h   |  1 +
+ src/add-ons/accelerants/radeon_hd/encoder.cpp |  6 +++
  src/add-ons/accelerants/radeon_hd/mode.cpp    |  1 +
- 4 files changed, 41 insertions(+)
+ 5 files changed, 47 insertions(+)
 
 diff --git a/src/add-ons/accelerants/radeon_hd/accelerant.cpp b/src/add-ons/accelerants/radeon_hd/accelerant.cpp
 index 0cd1df72ca..e70cfd8fd6 100644
@@ -29,10 +30,10 @@ index 0cd1df72ca..e70cfd8fd6 100644
  	// create initial list of video modes
  	status = create_mode_list();
 diff --git a/src/add-ons/accelerants/radeon_hd/display.cpp b/src/add-ons/accelerants/radeon_hd/display.cpp
-index df66ca6642..b5c747b480 100644
+index cd9fa1e602..faab3f5739 100644
 --- a/src/add-ons/accelerants/radeon_hd/display.cpp
 +++ b/src/add-ons/accelerants/radeon_hd/display.cpp
-@@ -454,6 +454,44 @@ debug_displays()
+@@ -461,6 +461,44 @@ debug_displays()
  }
  
  
@@ -89,6 +90,23 @@ index 5676bbdb58..fb77ae5f25 100644
  
  uint32 display_get_encoder_mode(uint32 connectorIndex);
  void display_crtc_ss(pll_info* pll, int command);
+diff --git a/src/add-ons/accelerants/radeon_hd/encoder.cpp b/src/add-ons/accelerants/radeon_hd/encoder.cpp
+index 84f43db71a..463590f609 100644
+--- a/src/add-ons/accelerants/radeon_hd/encoder.cpp
++++ b/src/add-ons/accelerants/radeon_hd/encoder.cpp
+@@ -396,6 +396,12 @@ encoder_mode_set(uint8 crtcID)
+ 	// TODO: Should this be the adjusted pll or the original?
+ 	uint32 pixelClock = pll->pixelClock;
+ 
++	TRACE("%s: encoder mode %" B_PRIu32 ", EDID sections %" B_PRIu8
++		", CTA data blocks %" B_PRIu8 "\n", __func__,
++		display_get_encoder_mode(connectorIndex),
++		gDisplay[crtcID]->edidData.num_sections,
++		gDisplay[crtcID]->edidData.cta_block.num_data_blocks);
++
+ 	switch (gConnector[connectorIndex]->encoder.objectID) {
+ 		case ENCODER_OBJECT_ID_INTERNAL_DAC1:
+ 		case ENCODER_OBJECT_ID_INTERNAL_KLDSCP_DAC1:
 diff --git a/src/add-ons/accelerants/radeon_hd/mode.cpp b/src/add-ons/accelerants/radeon_hd/mode.cpp
 index 664e3fe9d3..efc7a97ef1 100644
 --- a/src/add-ons/accelerants/radeon_hd/mode.cpp

@@ -1,7 +1,7 @@
-From 56750ee6923d39733b64b102f44ff55a6dde0e7d Mon Sep 17 00:00:00 2001
+From 145ab112585caaa2b7f173eb6d369c695e305721 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
 Date: Tue, 29 Sep 2026 19:14:52 +0000
-Subject: [PATCH 12/12] radeon_hd: skip DisplayPort connectors without a
+Subject: [PATCH 09/11] radeon_hd: skip DisplayPort connectors without a
  display on DCE 10/11
 
 Check the connector's hot plug detect sense bit (DC_HPD_INT_STATUS, as
@@ -80,7 +80,7 @@ index cba37acbb9..8c6d20bb57 100644
  
  #endif /* RADEON_HD_CONNECTOR_H */
 diff --git a/src/add-ons/accelerants/radeon_hd/display.cpp b/src/add-ons/accelerants/radeon_hd/display.cpp
-index 960dfba09b..faab3f5739 100644
+index dddbfef3cf..cd9fa1e602 100644
 --- a/src/add-ons/accelerants/radeon_hd/display.cpp
 +++ b/src/add-ons/accelerants/radeon_hd/display.cpp
 @@ -291,6 +291,13 @@ detect_displays()
