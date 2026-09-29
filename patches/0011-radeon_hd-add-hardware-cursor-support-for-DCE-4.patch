@@ -1,4 +1,4 @@
-From c0619dbfc36574ba2a2ea1369cca9aa9b6a9fd7f Mon Sep 17 00:00:00 2001
+From 16dc6f8e5f971156baf68cbc88eac49a4049365d Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
 Date: Tue, 29 Sep 2026 18:45:07 +0000
 Subject: [PATCH 11/11] radeon_hd: add hardware cursor support for DCE 4+
@@ -14,10 +14,10 @@ Claude-Session: https://claude.ai/code/session_01NqrEBcidivS5BSWVfbLqvu
  src/add-ons/accelerants/radeon_hd/Jamfile     |   1 +
  .../accelerants/radeon_hd/accelerant.h        |   5 +
  .../accelerants/radeon_hd/accelerant_protos.h |   9 +
- src/add-ons/accelerants/radeon_hd/cursor.cpp  | 240 ++++++++++++++++++
+ src/add-ons/accelerants/radeon_hd/cursor.cpp  | 253 ++++++++++++++++++
  src/add-ons/accelerants/radeon_hd/cursor.h    |  15 ++
  src/add-ons/accelerants/radeon_hd/hooks.cpp   |  11 +
- 6 files changed, 281 insertions(+)
+ 6 files changed, 294 insertions(+)
  create mode 100644 src/add-ons/accelerants/radeon_hd/cursor.cpp
  create mode 100644 src/add-ons/accelerants/radeon_hd/cursor.h
 
@@ -71,10 +71,10 @@ index 324d005f13..a82888d749 100644
  status_t radeon_acquire_engine(uint32 capabilities, uint32 maxWait,
 diff --git a/src/add-ons/accelerants/radeon_hd/cursor.cpp b/src/add-ons/accelerants/radeon_hd/cursor.cpp
 new file mode 100644
-index 0000000000..5de81336aa
+index 0000000000..e583ea9fc8
 --- /dev/null
 +++ b/src/add-ons/accelerants/radeon_hd/cursor.cpp
-@@ -0,0 +1,240 @@
+@@ -0,0 +1,253 @@
 +/*
 + * Copyright 2026, Haiku, Inc. All Rights Reserved.
 + * Distributed under the terms of the MIT License.
@@ -102,9 +102,20 @@ index 0000000000..5de81336aa
 +
 +
 +// The cursor image always uses a fixed size surface; smaller cursors are
-+// padded with transparent pixels.
++// padded with transparent pixels. The row pitch of the cursor surface is the
++// maximum cursor width of the hardware: 64 pixels up to DCE 6, 128 pixels
++// from DCE 8 on.
 +static const uint32 kCursorSize = 64;
-+static const uint32 kCursorImageSize = kCursorSize * kCursorSize * 4;
++static const uint32 kCursorImageSize = 128 * kCursorSize * 4;
++
++
++static uint32
++cursor_pitch()
++{
++	if (gInfo->shared_info->dceMajor >= 8)
++		return 128;
++	return 64;
++}
 +
 +
 +/*! The cursor image lives in the last page aligned block of the mapped
@@ -211,6 +222,7 @@ index 0000000000..5de81336aa
 +		return B_BAD_VALUE;
 +
 +	uint32* image = cursor_image();
++	uint32 pitch = cursor_pitch();
 +	memset(image, 0, kCursorImageSize);
 +
 +	uint32 bytesPerRow = (width + 7) / 8;
@@ -230,7 +242,7 @@ index 0000000000..5de81336aa
 +				// black, or "invert screen" which the hardware can't do
 +				pixel = 0xff000000;
 +			}
-+			image[y * kCursorSize + x] = pixel;
++			image[y * pitch + x] = pixel;
 +		}
 +	}
 +
@@ -259,6 +271,7 @@ index 0000000000..5de81336aa
 +		return B_BAD_VALUE;
 +
 +	uint32* image = cursor_image();
++	uint32 pitch = cursor_pitch();
 +	memset(image, 0, kCursorImageSize);
 +
 +	// The hardware wants premultiplied alpha
@@ -274,7 +287,7 @@ index 0000000000..5de81336aa
 +			green = green * alpha / 255;
 +			red = red * alpha / 255;
 +
-+			image[y * kCursorSize + x]
++			image[y * pitch + x]
 +				= (alpha << 24) | (red << 16) | (green << 8) | blue;
 +		}
 +	}
