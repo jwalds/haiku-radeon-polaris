@@ -1,0 +1,377 @@
+Debug information for team /boot/system/Tracker (122):
+CPU(s): 4x Intel Core™ i5-2320
+Memory: 7.97 GiB total, 427.98 MiB used
+Haiku revision: hrev60147 Sep 23 2026 06:25:01 (x86_64)
+
+Active Threads:
+	thread 122: Tracker (main)
+	thread 157: launch looper 
+	thread 160: w>Desktop 
+	thread 184: PathMonitor looper 
+	thread 209: w>Tracker status 
+	thread 214: TrashWatcher 
+	thread 215: ClipboardRefsWatcher 
+	thread 217: TrackerTaskLoop 
+	thread 740: popup 
+	thread 1300: team 122 debug task 
+	thread 742: w>Shelf 
+		state: Debugged
+
+		Frame		IP			Function Name
+		-----------------------------------------------
+		00000000	0xe4fb40587a	_kern_block_thread + 0xa 
+			Disassembly:
+				_kern_block_thread:
+				0x000000e4fb405870:           4989ca  mov %rcx, %r10
+				0x000000e4fb405873:   48c7c04e000000  mov $0x4e, %rax
+				0x000000e4fb40587a:             0f05  syscall <--
+
+		0x7fdb73d34650	0xe4fb4069b4	rw_lock_wait(rw_lock*, bool) + 0x64 
+		0x7fdb73d34690	0xe4fb406b50	__rw_lock_read_lock + 0x60 
+		0x7fdb73d346d0	0x158a339fdb2	BPrivate::BLooperList::IsLooperValid(BLooper const*) + 0x22 
+		0x7fdb73d34700	0x158a339d566	BLooper::IsLocked() const + 0x16 
+		0x7fdb73d34720	0x158a339da38	BLooper::AssertLocked() const + 0x8 
+		0x7fdb73d34740	0x158a339de8c	BLooper::Unlock() + 0xc 
+		0x7fdb73d347d0	0x158a345f79c	BWindow::task_looper() + 0xec 
+		0x7fdb73d347f0	0x158a339e7bb	BLooper::_task0_(void*) + 0x1b 
+		0x7fdb73d34810	0xe4fb404f57	thread_entry + 0x17 
+		00000000	0x7fb173930258	commpage_thread_exit + 0 
+
+		Registers:
+			  rip:	0x000000e4fb40587c
+			  rsp:	0x00007fdb73d34618
+			  rbp:	0x00007fdb73d34640
+			  rax:	0x000000008000000a
+			  rbx:	0x000000008000000a
+			  rcx:	0x000000e4fb40587c
+			  rdx:	0x00000158a35aa628
+			  rsi:	0x0000000000000000
+			  rdi:	0x0000000000000000
+			   r8:	0x0000000000000000
+			   r9:	0x0000000000000000
+			  r10:	0x000000e4fb40587c
+			  r11:	0x0000000000000246
+			  r12:	0x00000158a35aa620
+			  r13:	0x00007fdb73d34760
+			  r14:	0x000000aa963b4058
+			  r15:	0x00007fdb73d34753
+			   cs:	0x002b
+			   ds:	0x0000
+			   es:	0x0000
+			   fs:	0x0000
+			   gs:	0x0000
+			   ss:	0x0023
+			  st0:	0
+			  st1:	0
+			  st2:	0
+			  st3:	0
+			  st4:	0
+			  st5:	0
+			  st6:	0
+			  st7:	0
+			  mm0:	{0, 0, 0, 0}
+			  mm1:	{0, 0, 0, 0}
+			  mm2:	{0, 0, 0, 0}
+			  mm3:	{0, 0, 0, 0}
+			  mm4:	{0, 0, 0, 0}
+			  mm5:	{0, 0, 0, 0}
+			  mm6:	{0, 0, 0, 0}
+			  mm7:	{0, 0, 0, 0}
+			 ymm0:	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+			 ymm1:	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+			 ymm2:	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+			 ymm3:	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+			 ymm4:	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+			 ymm5:	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+			 ymm6:	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+			 ymm7:	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+			 ymm8:	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+			 ymm9:	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+			ymm10:	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+			ymm11:	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+			ymm12:	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+			ymm13:	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+			ymm14:	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+			ymm15:	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+
+Loaded Images:
+	ID		Text Base	Text End	Data Base	Data End	Type	Name
+	--------------------------------------------------------------------------------
+	5924	0xa77f16000	0xa77fc9000	0xa781c9000	0xa7821c000	lib    	/boot/system/lib/libraw.so.20.0.0
+	5942	0x1bf3c3f000	0x1bf3c4c000	0x1bf3c4c000	0x1bf3c4d000	add-on 	/boot/system/add-ons/Translators/AVIFTranslator
+	5923	0x1e8fc5e000	0x1e8fc6b000	0x1e8fc6b000	0x1e8fc6c000	add-on 	/boot/system/add-ons/Translators/RAWTranslator
+	5937	0x2a13623000	0x2a1368c000	0x2a1368c000	0x2a1368e000	lib    	/boot/system/lib/libopenjp2.so.2.5.4
+	5939	0x2de0523000	0x2de052e000	0x2de052e000	0x2de052f000	add-on 	/boot/system/add-ons/Translators/HVIFTranslator
+	5458	0x2e3e249000	0x2e3e255000	0x2e3e255000	0x2e3e257000	lib    	/boot/system/lib/libicuio.so.74.1
+	5934	0x3232512000	0x3232528000	0x3232528000	0x323252a000	add-on 	/boot/system/add-ons/Translators/JPEGTranslator
+	5921	0x32a0b4d000	0x32a0b5b000	0x32a0b5b000	0x32a0b5c000	add-on 	/boot/system/add-ons/Translators/SGITranslator
+	5467	0x335fa48000	0x335fa50000	0x335fa50000	0x335fa51000	add-on 	/boot/system/add-ons/locale/catalogs/plaintext
+	5935	0x417c6fd000	0x417c709000	0x417c709000	0x417c70a000	add-on 	/boot/system/add-ons/Translators/ICNSTranslator
+	5919	0x4735aa9000	0x4735b6d000	0x4735b6d000	0x4735b6e000	lib    	/boot/system/lib/libjpeg.so.62.4.0
+	5928	0x5952dcb000	0x5952ddc000	0x5952ddc000	0x5952ddd000	add-on 	/boot/system/add-ons/Translators/PSDTranslator
+	5906	0x5fc5feb000	0x5fc5ff8000	0x5fc5ff8000	0x5fc5ff9000	add-on 	/boot/system/add-ons/Translators/WebPTranslator
+	5945	0x96ce33c000	0x96ce64a000	0x96ce64a000	0x96ce66f000	lib    	/boot/system/lib/librav1e.so.0.8.1
+	5918	0x96f6f9d000	0x96f701b000	0x96f701b000	0x96f7020000	lib    	/boot/system/lib/libtiff.so.6.1.0
+	5929	0x985e2aa000	0x985e2b6000	0x985e2b6000	0x985e2b8000	add-on 	/boot/system/add-ons/Translators/PPMTranslator
+	5893	0x98d8420000	0x98d8431000	0x98d8431000	0x98d8433000	add-on 	/boot/system/add-ons/Translators/WonderBrushTranslator
+	5462	0x9cec929000	0x9cec93f000	0x9cec93f000	0x9cec941000	lib    	/boot/system/lib/libtranslation.so
+	5460	0xa1ef74b000	0xa1ef761000	0xa1ef761000	0xa1ef762000	lib    	/boot/system/lib/libz.so.1.3.2
+	5941	0xc0addc5000	0xc0addd2000	0xc0addd2000	0xc0addd3000	add-on 	/boot/system/add-ons/Translators/BMPTranslator
+	5915	0xc124324000	0xc124329000	0xc124329000	0xc12432b000	lib    	/boot/system/lib/libsharpyuv.so.0.1.2
+	5463	0xc71a31c000	0xc71a417000	0xc71a417000	0xc71a41a000	lib    	/boot/system/lib/libtextencoding.so
+	5457	0xc81b1e5000	0xc81b522000	0xc81b522000	0xc81b536000	lib    	/boot/system/lib/libicui18n.so.74.1
+	5938	0xd053a88000	0xd053a94000	0xd053a94000	0xd053a95000	add-on 	/boot/system/add-ons/Translators/ICOTranslator
+	5455	0xd14b890000	0xd14b891000	0xd14b891000	0xd14b892000	lib    	/boot/system/lib/libicudata.so.74.1
+	5922	0xdf342ef000	0xdf34301000	0xdf34301000	0xdf34303000	add-on 	/boot/system/add-ons/Translators/RTFTranslator
+	5944	0xe39ef05000	0xe39f0bc000	0xe39f0bc000	0xe39f0e4000	lib    	/boot/system/lib/libdav1d.so.7.0.0
+	5452	0xe4fb3c8000	0xe4fb4d3000	0xe4fb4d3000	0xe4fb4ed000	lib    	/boot/system/lib/libroot.so
+	5930	0xff5fb4d000	0xff5fb5b000	0xff5fb5b000	0xff5fb5c000	add-on 	/boot/system/add-ons/Translators/PNGTranslator
+	5453	0x106028fc000	0x1060291b000	0x1060291b000	0x1060291c000	lib    	/boot/system/lib/libgcc_s.so.1
+	5451	0x108e1aba000	0x108e1c96000	0x108e1c96000	0x108e1cb3000	lib    	/boot/system/lib/libtracker.so
+	7221	0x122d474f000	0x122d4761000	0x122d4761000	0x122d4762000	lib    	/boot/system/lib/libroot-addon-icu.so
+	5940	0x12550c83000	0x12550c98000	0x12550c98000	0x12550c9a000	add-on 	/boot/system/add-ons/Translators/GIFTranslator
+	5933	0x13a0637c000	0x13a0638f000	0x13a0638f000	0x13a06391000	add-on 	/boot/system/add-ons/Translators/JPEG2000Translator
+	5926	0x1428dbe4000	0x1428dc40000	0x1428dc40000	0x1428dc46000	lib    	/boot/system/lib/liblcms2.so.2.0.19
+	5925	0x145342ae000	0x1453430a000	0x1453430a000	0x1453430f000	lib    	/boot/system/lib/libjasper.so.4.0.0
+	5943	0x14917df0000	0x14917e25000	0x14917e25000	0x14917e26000	lib    	/boot/system/lib/libavif.so.16.4.2
+	5920	0x149aed5d000	0x149aed6b000	0x149aed6b000	0x149aed6c000	add-on 	/boot/system/add-ons/Translators/TGATranslator
+	5927	0x14b4f2a2000	0x14b4f2e9000	0x14b4f2e9000	0x14b4f2ea000	lib    	/boot/system/lib/libgomp.so.1.0.0
+	5454	0x14dfe3d9000	0x14dfe60c000	0x14dfe60c000	0x14dfe622000	lib    	/boot/system/lib/libstdc++.so.6.0.32
+	5932	0x157df2f6000	0x157df301000	0x157df301000	0x157df302000	add-on 	/boot/system/add-ons/Translators/PCXTranslator
+	5450	0x158a3243000	0x158a357d000	0x158a357d000	0x158a35ab000	lib    	/boot/system/lib/libbe.so
+	5946	0x15f5c54e000	0x15f5c55a000	0x15f5c55a000	0x15f5c55b000	add-on 	/boot/system/add-ons/Translators/STXTTranslator
+	5931	0x16315387000	0x163153b8000	0x163153b8000	0x163153b9000	lib    	/boot/system/lib/libpng16.so.16.53.0
+	5914	0x16322433000	0x163224a0000	0x163224a0000	0x163224a2000	lib    	/boot/system/lib/libwebp.so.7.2.0
+	5936	0x16a269c1000	0x16a269d1000	0x16a26bd0000	0x16a26bd1000	lib    	/boot/system/lib/libicns.so.1.2.0
+	5449	0x16a8ca9c000	0x16a8ca9d000	0x16a8ca9d000	0x16a8ca9e000	app    	/boot/system/Tracker
+	7220	0x19140c30000	0x19140c57000	0x19140c57000	0x19140c5a000	add-on 	/boot/system/apps/AboutSystem
+	5917	0x1a7524ad000	0x1a7524ba000	0x1a7524ba000	0x1a7524bb000	add-on 	/boot/system/add-ons/Translators/TIFFTranslator
+	5461	0x1bcbf1d4000	0x1bcbf2c9000	0x1bcbf2c9000	0x1bcbf2ca000	lib    	/boot/system/lib/libzstd.so.1.5.7
+	5459	0x1c76cc4b000	0x1c76ce3b000	0x1c76ce3b000	0x1c76ce4f000	lib    	/boot/system/lib/libicuuc.so.74.1
+	5448	0x239595fe000	0x2395961d000	0x2395961d000	0x2395961e000	lib    	/boot/system/runtime_loader
+	5447	0x7fb173930000	0x7fb173938000	0x00000000	0x00000000	system 	commpage
+
+Areas:
+	ID		Base		End			Size (KiB)	Protection	Locking			Name
+	--------------------------------------------------------------------------------
+	12932	0x60000000	0x60009000	        36	rw-cS      	none          	server_memory
+	12940	0x68000000	0x681b3000	      1740	rw-cS      	none          	server_memory
+	13453	0xa77f16000	0xa77fc9000	       716	r-x        	none          	libraw.so.20.0.0_seg0rx
+	13454	0xa781c9000	0xa7821c000	       332	rw-        	none          	libraw.so.20.0.0_seg1rw
+	13491	0x1bf3c3f000	0x1bf3c4c000	        52	r-x        	none          	AVIFTranslator_seg0rx
+	13492	0x1bf3c4c000	0x1bf3c4d000	         4	rw-        	none          	AVIFTranslator_seg1rw
+	13451	0x1e8fc5e000	0x1e8fc6b000	        52	r-x        	none          	RAWTranslator_seg0rx
+	13452	0x1e8fc6b000	0x1e8fc6c000	         4	rw-        	none          	RAWTranslator_seg1rw
+	13481	0x2a13623000	0x2a1368c000	       420	r-x        	none          	libopenjp2.so.2.5.4_seg0rx
+	13482	0x2a1368c000	0x2a1368e000	         8	rw-        	none          	libopenjp2.so.2.5.4_seg1rw
+	13485	0x2de0523000	0x2de052e000	        44	r-x        	none          	HVIFTranslator_seg0rx
+	13486	0x2de052e000	0x2de052f000	         4	rw-        	none          	HVIFTranslator_seg1rw
+	11923	0x2e3e249000	0x2e3e255000	        48	r-x        	none          	libicuio.so.74.1_seg0rx
+	11924	0x2e3e255000	0x2e3e257000	         8	rw-        	none          	libicuio.so.74.1_seg1rw
+	13475	0x3232512000	0x3232528000	        88	r-x        	none          	JPEGTranslator_seg0rx
+	13476	0x3232528000	0x323252a000	         8	rw-        	none          	JPEGTranslator_seg1rw
+	13447	0x32a0b4d000	0x32a0b5b000	        56	r-x        	none          	SGITranslator_seg0rx
+	13448	0x32a0b5b000	0x32a0b5c000	         4	rw-        	none          	SGITranslator_seg1rw
+	11948	0x335fa48000	0x335fa50000	        32	r-x        	none          	plaintext_seg0rx
+	11949	0x335fa50000	0x335fa51000	         4	rw-        	none          	plaintext_seg1rw
+	11900	0x3425817000	0x3425857000	       256	rw-        	none          	rld heap
+	13477	0x417c6fd000	0x417c709000	        48	r-x        	none          	ICNSTranslator_seg0rx
+	13478	0x417c709000	0x417c70a000	         4	rw-        	none          	ICNSTranslator_seg1rw
+	13443	0x4735aa9000	0x4735b6d000	       784	r-x        	none          	libjpeg.so.62.4.0_seg0rx
+	13444	0x4735b6d000	0x4735b6e000	         4	rw-        	none          	libjpeg.so.62.4.0_seg1rw
+	13463	0x5952dcb000	0x5952ddc000	        68	r-x        	none          	PSDTranslator_seg0rx
+	13464	0x5952ddc000	0x5952ddd000	         4	rw-        	none          	PSDTranslator_seg1rw
+	13386	0x5fc5feb000	0x5fc5ff8000	        52	r-x        	none          	WebPTranslator_seg0rx
+	13389	0x5fc5ff8000	0x5fc5ff9000	         4	rw-        	none          	WebPTranslator_seg1rw
+	13498	0x96ce33c000	0x96ce64a000	      3128	r-x        	none          	librav1e.so.0.8.1_seg0rx
+	13499	0x96ce64a000	0x96ce66f000	       148	rw-        	none          	librav1e.so.0.8.1_seg1rw
+	13441	0x96f6f9d000	0x96f701b000	       504	r-x        	none          	libtiff.so.6.1.0_seg0rx
+	13442	0x96f701b000	0x96f7020000	        20	rw-        	none          	libtiff.so.6.1.0_seg1rw
+	13465	0x985e2aa000	0x985e2b6000	        48	r-x        	none          	PPMTranslator_seg0rx
+	13466	0x985e2b6000	0x985e2b8000	         8	rw-        	none          	PPMTranslator_seg1rw
+	13357	0x98d8420000	0x98d8431000	        68	r-x        	none          	WonderBrushTranslator_seg0rx
+	13360	0x98d8431000	0x98d8433000	         8	rw-        	none          	WonderBrushTranslator_seg1rw
+	11932	0x9cec929000	0x9cec93f000	        88	r-x        	none          	libtranslation.so_seg0rx
+	11933	0x9cec93f000	0x9cec941000	         8	rw-        	none          	libtranslation.so_seg1rw
+	11928	0xa1ef74b000	0xa1ef761000	        88	r-x        	none          	libz.so.1.3.2_seg0rx
+	11929	0xa1ef761000	0xa1ef762000	         4	rw-        	none          	libz.so.1.3.2_seg1rw
+	11901	0xa7e924d000	0xa7e924e000	         4	rw-S       	none          	_rld_debug_
+	11944	0xaa9573f000	0xaa96419000	     13160	rw-        	none          	heap area
+	11945	0xbc38ae7000	0xbc3a843000	     30064	r--S       	none          	libicuuc.so.74 mmap area
+	13489	0xc0addc5000	0xc0addd2000	        52	r-x        	none          	BMPTranslator_seg0rx
+	13490	0xc0addd2000	0xc0addd3000	         4	rw-        	none          	BMPTranslator_seg1rw
+	13434	0xc124324000	0xc124329000	        20	r-x        	none          	libsharpyuv.so.0.1.2_seg0rx
+	13435	0xc124329000	0xc12432a000	         4	rw-        	none          	libsharpyuv.so.0.1.2_seg1rw
+	13436	0xc12432a000	0xc12432b000	         4	rw-        	none          	libsharpyuv.so.0.1.2_seg2rw
+	11934	0xc71a31c000	0xc71a417000	      1004	r-x        	none          	libtextencoding.so_seg0rx
+	11935	0xc71a417000	0xc71a41a000	        12	rw-        	none          	libtextencoding.so_seg1rw
+	11919	0xc81b1e5000	0xc81b522000	      3316	r-x        	none          	libicui18n.so.74.1_seg0rx
+	11921	0xc81b522000	0xc81b535000	        76	rw-        	none          	libicui18n.so.74.1_seg1rw
+	11922	0xc81b535000	0xc81b536000	         4	rw-        	none          	libicui18n.so.74.1_seg2rw
+	13483	0xd053a88000	0xd053a94000	        48	r-x        	none          	ICOTranslator_seg0rx
+	13484	0xd053a94000	0xd053a95000	         4	rw-        	none          	ICOTranslator_seg1rw
+	11917	0xd14b890000	0xd14b891000	         4	r-x        	none          	libicudata.so.74.1_seg0rx
+	11918	0xd14b891000	0xd14b892000	         4	rw-        	none          	libicudata.so.74.1_seg1rw
+	13449	0xdf342ef000	0xdf34301000	        72	r-x        	none          	RTFTranslator_seg0rx
+	13450	0xdf34301000	0xdf34303000	         8	rw-        	none          	RTFTranslator_seg1rw
+	13495	0xe39ef05000	0xe39f0bc000	      1756	r-x        	none          	libdav1d.so.7.0.0_seg0rx
+	13496	0xe39f0bc000	0xe39f0c0000	        16	rw-        	none          	libdav1d.so.7.0.0_seg1rw
+	13497	0xe39f0c0000	0xe39f0e4000	       144	rw-        	none          	libdav1d.so.7.0.0_seg2rw
+	11909	0xe4fb3c8000	0xe4fb4d3000	      1068	r-x        	none          	libroot.so_seg0rx
+	11910	0xe4fb4d3000	0xe4fb4e1000	        56	rw-        	none          	libroot.so_seg1rw
+	11911	0xe4fb4e1000	0xe4fb4ed000	        48	rw-        	none          	libroot.so_seg2rw
+	13467	0xff5fb4d000	0xff5fb5b000	        56	r-x        	none          	PNGTranslator_seg0rx
+	13468	0xff5fb5b000	0xff5fb5c000	         4	rw-        	none          	PNGTranslator_seg1rw
+	11912	0x106028fc000	0x1060291b000	       124	r-x        	none          	libgcc_s.so.1_seg0rx
+	11913	0x1060291b000	0x1060291c000	         4	rw-        	none          	libgcc_s.so.1_seg1rw
+	11906	0x108e1aba000	0x108e1c96000	      1904	r-x        	none          	libtracker.so_seg0rx
+	11907	0x108e1c96000	0x108e1cb2000	       112	rw-        	none          	libtracker.so_seg1rw
+	11908	0x108e1cb2000	0x108e1cb3000	         4	rw-        	none          	libtracker.so_seg2rw
+	16838	0x122d474f000	0x122d4761000	        72	r-x        	none          	libroot-addon-icu.so_seg0rx
+	16839	0x122d4761000	0x122d4762000	         4	rw-        	none          	libroot-addon-icu.so_seg1rw
+	13487	0x12550c83000	0x12550c98000	        84	r-x        	none          	GIFTranslator_seg0rx
+	13488	0x12550c98000	0x12550c9a000	         8	rw-        	none          	GIFTranslator_seg1rw
+	13473	0x13a0637c000	0x13a0638f000	        76	r-x        	none          	JPEG2000Translator_seg0rx
+	13474	0x13a0638f000	0x13a06391000	         8	rw-        	none          	JPEG2000Translator_seg1rw
+	13458	0x1428dbe4000	0x1428dc40000	       368	r-x        	none          	liblcms2.so.2.0.19_seg0rx
+	13459	0x1428dc40000	0x1428dc45000	        20	rw-        	none          	liblcms2.so.2.0.19_seg1rw
+	13460	0x1428dc45000	0x1428dc46000	         4	rw-        	none          	liblcms2.so.2.0.19_seg2rw
+	13455	0x145342ae000	0x1453430a000	       368	r-x        	none          	libjasper.so.4.0.0_seg0rx
+	13456	0x1453430a000	0x1453430d000	        12	rw-        	none          	libjasper.so.4.0.0_seg1rw
+	13457	0x1453430d000	0x1453430f000	         8	rw-        	none          	libjasper.so.4.0.0_seg2rw
+	13493	0x14917df0000	0x14917e25000	       212	r-x        	none          	libavif.so.16.4.2_seg0rx
+	13494	0x14917e25000	0x14917e26000	         4	rw-        	none          	libavif.so.16.4.2_seg1rw
+	13445	0x149aed5d000	0x149aed6b000	        56	r-x        	none          	TGATranslator_seg0rx
+	13446	0x149aed6b000	0x149aed6c000	         4	rw-        	none          	TGATranslator_seg1rw
+	13461	0x14b4f2a2000	0x14b4f2e9000	       284	r-x        	none          	libgomp.so.1.0.0_seg0rx
+	13462	0x14b4f2e9000	0x14b4f2ea000	         4	rw-        	none          	libgomp.so.1.0.0_seg1rw
+	11914	0x14dfe3d9000	0x14dfe60c000	      2252	r-x        	none          	libstdc++.so.6.0.32_seg0rx
+	11915	0x14dfe60c000	0x14dfe61a000	        56	rw-        	none          	libstdc++.so.6.0.32_seg1rw
+	11916	0x14dfe61a000	0x14dfe622000	        32	rw-        	none          	libstdc++.so.6.0.32_seg2rw
+	13471	0x157df2f6000	0x157df301000	        44	r-x        	none          	PCXTranslator_seg0rx
+	13472	0x157df301000	0x157df302000	         4	rw-        	none          	PCXTranslator_seg1rw
+	11904	0x158a3243000	0x158a357d000	      3304	r-x        	none          	libbe.so_seg0rx
+	11905	0x158a357d000	0x158a35ab000	       184	rw-        	none          	libbe.so_seg1rw
+	13500	0x15f5c54e000	0x15f5c55a000	        48	r-x        	none          	STXTTranslator_seg0rx
+	13501	0x15f5c55a000	0x15f5c55b000	         4	rw-        	none          	STXTTranslator_seg1rw
+	13469	0x16315387000	0x163153b8000	       196	r-x        	none          	libpng16.so.16.53.0_seg0rx
+	13470	0x163153b8000	0x163153b9000	         4	rw-        	none          	libpng16.so.16.53.0_seg1rw
+	13396	0x16322433000	0x163224a0000	       436	r-x        	none          	libwebp.so.7.2.0_seg0rx
+	13432	0x163224a0000	0x163224a1000	         4	rw-        	none          	libwebp.so.7.2.0_seg1rw
+	13433	0x163224a1000	0x163224a2000	         4	rw-        	none          	libwebp.so.7.2.0_seg2rw
+	13479	0x16a269c1000	0x16a269d1000	        64	r-x        	none          	libicns.so.1.2.0_seg0rx
+	13480	0x16a26bd0000	0x16a26bd1000	         4	rw-        	none          	libicns.so.1.2.0_seg1rw
+	11902	0x16a8ca9c000	0x16a8ca9d000	         4	r-x        	none          	Tracker_seg0rx
+	11903	0x16a8ca9d000	0x16a8ca9e000	         4	rw-        	none          	Tracker_seg1rw
+	16836	0x19140c30000	0x19140c57000	       156	r-x        	none          	AboutSystem_seg0rx
+	16837	0x19140c57000	0x19140c5a000	        12	rw-        	none          	AboutSystem_seg1rw
+	13439	0x1a7524ad000	0x1a7524ba000	        52	r-x        	none          	TIFFTranslator_seg0rx
+	13440	0x1a7524ba000	0x1a7524bb000	         4	rw-        	none          	TIFFTranslator_seg1rw
+	11930	0x1bcbf1d4000	0x1bcbf2c9000	       980	r-x        	none          	libzstd.so.1.5.7_seg0rx
+	11931	0x1bcbf2c9000	0x1bcbf2ca000	         4	rw-        	none          	libzstd.so.1.5.7_seg1rw
+	11925	0x1c76cc4b000	0x1c76ce3b000	      1984	r-x        	none          	libicuuc.so.74.1_seg0rx
+	11926	0x1c76ce3b000	0x1c76ce4e000	        76	rw-        	none          	libicuuc.so.74.1_seg1rw
+	11927	0x1c76ce4e000	0x1c76ce4f000	         4	rw-        	none          	libicuuc.so.74.1_seg2rw
+	11898	0x239595fe000	0x2395961d000	       124	r-x        	none          	runtime_loader_seg0rx
+	11899	0x2395961d000	0x2395961e000	         4	rw-        	none          	runtime_loader_seg1rw
+	16841	0x7f2541df8000	0x7f2541e3d000	       276	rw-s       	none          	popup_740_stack
+	13509	0x7f3d087ee000	0x7f3d08833000	       276	rw-s       	none          	TrashWatcher_214_stack
+	11895	0x7f58b9545000	0x7f58b9549000	        16	rw-k       	full          	user area
+	12948	0x7f6fb7432000	0x7f6fb7477000	       276	rw-s       	none          	w>TrackerWindow_160_stack
+	13510	0x7f876a470000	0x7f876a4b5000	       276	rw-s       	none          	ClipboardRefsWatcher_215_stack
+	13504	0x7fa8238ef000	0x7fa823934000	       276	rw-s       	none          	w>Tracker status_209_stack
+	11897	0x7fb173930000	0x7fb173938000	        32	r-xSk      	full          	commpage
+	12945	0x7fb939a9c000	0x7fb939ae1000	       276	rw-s       	none          	launch looper_157_stack
+	11896	0x7fba414fd000	0x7fba454fe000	     65540	rw-s       	none          	Tracker_122_stack
+	16843	0x7fdb73cf1000	0x7fdb73d36000	       276	rw-s       	none          	w>Shelf_742_stack
+	13512	0x7feec5308000	0x7feec534d000	       276	rw-s       	none          	TrackerTaskLoop_217_stack
+	13133	0x7ff01f1ad000	0x7ff01f1f2000	       276	rw-s       	none          	PathMonitor looper_184_stack
+
+Protection Flags: r - read, w - write, x - execute, s - stack, o - overcommit, c - cloneable, S - shared, k - kernel
+
+Semaphores:
+	ID		Count	Last Holder	Name
+	------------------------------------------------------------
+	655	    0	          0	Catalog
+	656	    0	          0	LocaleRosterData
+	657	    0	          0	BLocale
+	658	    0	          0	Catalog
+	659	    0	          0	some BLocker
+	660	    0	          0	some BLocker
+	661	    0	          0	undo
+	662	    0	          0	Light Lock
+	663	    0	          0	some BLocker
+	664	    0	          0	Light Lock
+	665	    0	          0	PeriodicUpdatePoses
+	666	    0	          0	BMessageQueue Lock
+	667	    0	          0	AppLooperPort
+	902	    0	          0	screen list
+	903	    0	          0	clipboard
+	904	    0	          0	width buffer
+	920	    0	          0	some BLocker
+	921	    0	          0	Light Lock
+	925	    0	        453	Tracker node icon cache
+	926	    0	        534	Tracker shared icon cache
+	927	    0	          0	BMessageQueue Lock
+	928	    0	          0	launch looper
+	932	    0	          0	BMessageQueue Lock
+	933	    0	        160	TrackerWindow
+	1087	    0	          0	BMessageQueue Lock
+	1088	    0	        184	PathMonitor looper
+	1110	    0	          0	virtual directory manager
+	1111	    0	          0	Catalog
+	1121	    0	          0	some BLocker
+	1162	    0	          0	translator list
+	1163	    0	          0	Catalog
+	1177	    0	          0	TranslatorSettings Lock
+	1242	    0	          0	Catalog
+	1243	    0	          0	TranslatorSettings Lock
+	1244	    0	          0	Catalog
+	1245	    0	          0	TranslatorSettings Lock
+	1246	    0	          0	Catalog
+	1247	    0	          0	TranslatorSettings Lock
+	1248	    0	          0	Catalog
+	1249	    0	          0	TranslatorSettings Lock
+	1250	    0	          0	Catalog
+	1251	    0	          0	Catalog
+	1252	    0	          0	TranslatorSettings Lock
+	1253	    0	          0	Catalog
+	1254	    0	          0	TranslatorSettings Lock
+	1255	    0	          0	PPM settings lock
+	1256	    0	          0	Catalog
+	1257	    0	          0	TranslatorSettings Lock
+	1258	    0	          0	Catalog
+	1259	    0	          0	TranslatorSettings Lock
+	1260	    0	          0	Catalog
+	1261	    0	          0	TranslatorSettings Lock
+	1262	    0	          0	Catalog
+	1263	    0	          0	TranslatorSettings Lock
+	1264	    0	          0	Catalog
+	1265	    0	          0	TranslatorSettings Lock
+	1266	    0	          0	Catalog
+	1267	    0	          0	TranslatorSettings Lock
+	1268	    0	          0	Catalog
+	1269	    0	          0	TranslatorSettings Lock
+	1270	    0	          0	Catalog
+	1271	    0	          0	TranslatorSettings Lock
+	1272	    0	          0	Catalog
+	1273	    0	          0	TranslatorSettings Lock
+	1274	    0	          0	Catalog
+	1275	    0	          0	TranslatorSettings Lock
+	1276	    0	          0	Catalog
+	1277	    0	          0	TranslatorSettings Lock
+	1278	    0	          0	BMessageQueue Lock
+	1279	    0	          0	TrashWatcher
+	1280	    0	          0	BMessageQueue Lock
+	1281	    0	          0	Tracker status
+	1302	    0	          0	some BLocker
+	1332	    0	          0	BMessageQueue Lock
+	1333	    0	          0	ClipboardRefsWatcher
+	1337	    0	          0	some BLocker
+	1338	    0	          0	mimeListLock
+	3812	    0	          0	Catalog
+	3813	    0	          0	BDragger static
+	3814	    0	          0	BShelf loaded image map
+	3816	    0	          0	window close lock
+	3820	    0	          0	BMessageQueue Lock
+	3821	    0	        742	Shelf

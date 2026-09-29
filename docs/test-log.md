@@ -117,3 +117,19 @@ missing from the mode list (EDID extension not read).
   2560x1440@75, **hardware cursor looks and works normally** (app_server
   uses `set_cursor_bitmap`, 33x33; `CUR_CONTROL` = 0x04000211). No
   AtomBIOS timeouts this boot.
+
+## 2026-09-29 — open issues at end of day
+
+- app_server crash in thread "cursor loop": `radeon_set_cursor_bitmap +0x1d0`
+  (store to `gInfo->cursorHotX`) when switching a USB KVM back to the
+  machine. No accelerant uninit was logged. Diagnostics build (thread id +
+  gInfo traces, re-check before the store) installed; not reproduced yet.
+  After a USB switch app_server sets the cursor bitmap repeatedly from two
+  threads (event loop + a window thread).
+- Tracker deadlock (desktop icons/right-click gone, Deskbar fine): Tracker
+  threads blocked on libbe's BLooperList lock — Tracker-internal, report in
+  `captures/haiku/`. Restarting Tracker recovers.
+- Pending verification on next boot: HPD pin lookup fix (DP connector
+  skipped, no AUX errors), shutdown fix (no crash on reboot).
+- Local, not yet in `patches/`: shutdown fix, HPD pin lookup fix, cursor
+  diagnostics (dev branch `radeon_hd-polaris`).
