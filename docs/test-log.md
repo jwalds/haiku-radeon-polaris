@@ -103,3 +103,12 @@ missing from the mode list (EDID extension not read).
   AtomBIOS timeouts. After the DPMS cycle DIG_MODE is HDMI again.
 - Patch 0011: hardware cursor (DCE 4+ `CUR_*` registers, 64x64 premultiplied
   ARGB at the end of the mapped frame buffer).
+- First cursor build: pointer squashed to half height with noise below —
+  DCE 8+ cursor surface pitch is 128 pixels, not 64. Fixed in 0011.
+- Next boot: KDL (not captured; the previous_syslog ends in the app_server
+  shutdown / `radeon_hd_uninit` sequence). After the hard reset the freshly
+  installed accelerant was corrupt ("Bad data" from load_add_on), so
+  app_server silently fell back to the **stock** accelerant → black screen.
+  `tools/haiku-install.sh` now syncs; `tools/addon_check.cpp` verifies an
+  accelerant loads. Check `listimage <app_server team> | grep accelerant`
+  to see which accelerant is in use.

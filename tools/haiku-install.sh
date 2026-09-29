@@ -33,6 +33,10 @@ mkdir -p "$DRV_BIN" "$DRV_DEV" "$ACC"
 cp "$drv" "$DRV_BIN/radeon_hd"
 ln -sf ../../bin/radeon_hd "$DRV_DEV/radeon_hd"
 cp "$acc" "$ACC/radeon_hd.accelerant"
+# flush to disk: a KDL/hard reset before the next boot would otherwise
+# leave a corrupt accelerant, and app_server silently falls back to the
+# stock one
+sync
 echo "Installed:"; ls -l "$DRV_BIN/radeon_hd" "$ACC/radeon_hd.accelerant"
 
 [ "$1" = "--no-reboot" ] || shutdown -r
