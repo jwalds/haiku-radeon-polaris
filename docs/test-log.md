@@ -85,3 +85,13 @@ missing from the mode list (EDID extension not read).
 - Patch 0009: `ddc2_read_edid1()` now reads the first extension block and
   clamps `num_sections`, fixing the out-of-bounds decode; this makes the
   HDMI VSDB detection from patch 0007 work.
+- With patch 0009 the boot mode set picks HDMI (`encoder_mode_set: encoder
+  mode 3, EDID sections 1, CTA data blocks 5`) and `DIG3_DIG_BE_CNTL`
+  reads DIG_MODE=3.
+- 2560x1440@75 (329.8 MHz) works.
+- Open: after a *runtime* mode change (`screenmode`), the driver still
+  requests HDMI (trace shows mode 3) and issues the same AtomBIOS call
+  sequence as at boot, but DIG_MODE reads back 2 (DVI). The picture is fine
+  in both cases. Suspect VBIOS state (BIOS scratch registers / device
+  flags) that differs between the first and later mode sets. Matters for
+  HDMI audio/infoframes later.

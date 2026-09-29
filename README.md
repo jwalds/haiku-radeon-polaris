@@ -19,6 +19,11 @@ display engine DCE 11.2) to Haiku's `radeon_hd` driver.
     controller, pixel clock/PLL, HDMI transmitter, BlankCRTC) ✅
   - 1c: multiple displays (CRTC 1–4)
   - 1d: DPMS, hardware cursor, brightness, HDMI audio, full EDID parsing
+
+Known issues: after a runtime mode change the output falls back from HDMI
+to DVI signalling (picture unaffected); the DisplayPort path doesn't read
+EDID extension blocks yet.
+
 - **Phase 2 – acceleration:** firmware loading, GART/VM, interrupts, SDMA,
   then Mesa through an amdgpu-style interface.
 
