@@ -1,7 +1,7 @@
 From ef9a4a16d4d5c81d084a8c99372adeaa15126038 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
 Date: Mon, 28 Sep 2026 19:54:53 +0000
-Subject: [PATCH 08/11] radeon_hd: enable CRTC VGA mode around BlankCRTC on DCE
+Subject: [PATCH 08/12] radeon_hd: enable CRTC VGA mode around BlankCRTC on DCE
  10+
 
 The BlankCRTC table loops until the 5 second AtomBIOS timeout unless

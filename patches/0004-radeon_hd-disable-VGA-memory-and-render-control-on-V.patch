@@ -1,7 +1,7 @@
 From acf1d27b22c18f94a708edb9d936e3c0f25b1b26 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
 Date: Sun, 27 Sep 2026 20:31:20 +0000
-Subject: [PATCH 04/11] radeon_hd: disable VGA memory and render control on
+Subject: [PATCH 04/12] radeon_hd: disable VGA memory and render control on
  Volcanic Islands+
 
 This was done by the memory controller setup, which is now skipped

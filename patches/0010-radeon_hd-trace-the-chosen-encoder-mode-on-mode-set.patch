@@ -1,7 +1,7 @@
 From 7141ad2fa5e9845e7425c18aa9e53f9d2b0c2c45 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
 Date: Tue, 29 Sep 2026 18:26:48 +0000
-Subject: [PATCH 10/11] radeon_hd: trace the chosen encoder mode on mode set
+Subject: [PATCH 10/12] radeon_hd: trace the chosen encoder mode on mode set
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
 Claude-Session: https://claude.ai/code/session_01NqrEBcidivS5BSWVfbLqvu

@@ -1,7 +1,7 @@
 From 21e04ce83ffd9df9ee0603bf93e04899c49d755f Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
 Date: Mon, 28 Sep 2026 19:28:15 +0000
-Subject: [PATCH 07/11] radeon_hd: drive HDMI sinks in HDMI encoder mode on DCE
+Subject: [PATCH 07/12] radeon_hd: drive HDMI sinks in HDMI encoder mode on DCE
  5+
 
 Detect HDMI sinks through the HDMI vendor specific data block in the

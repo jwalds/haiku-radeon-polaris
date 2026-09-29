@@ -1,7 +1,7 @@
 From e367a6d00909faf7dd3e6bda9513b6af32fa0444 Mon Sep 17 00:00:00 2001
 From: Claude <noreply@anthropic.com>
 Date: Fri, 25 Sep 2026 12:14:48 +0200
-Subject: [PATCH 01/11] radeon_hd: initial Polaris 11 (DCE 11.2) bring-up fixes
+Subject: [PATCH 01/12] radeon_hd: initial Polaris 11 (DCE 11.2) bring-up fixes
 
 * Fix chip name table order (Polaris 10/11 names were swapped).
 * Read VRAM size from CONFIG_MEMSIZE (0x5428) on Tahiti..Polaris,

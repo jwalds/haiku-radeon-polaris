@@ -1,7 +1,7 @@
 From a7eb79b260a16496801e5cecab6ff888f9507c46 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
 Date: Tue, 29 Sep 2026 18:19:39 +0000
-Subject: [PATCH 09/11] accelerants/common: read the first EDID extension block
+Subject: [PATCH 09/12] accelerants/common: read the first EDID extension block
  over DDC
 
 ddc2_read_edid1() read only the 128 byte base block, while

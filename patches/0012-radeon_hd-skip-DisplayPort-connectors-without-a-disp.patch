@@ -1,0 +1,121 @@
+From 56750ee6923d39733b64b102f44ff55a6dde0e7d Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
+Date: Tue, 29 Sep 2026 19:14:52 +0000
+Subject: [PATCH 12/12] radeon_hd: skip DisplayPort connectors without a
+ display on DCE 10/11
+
+Check the connector's hot plug detect sense bit (DC_HPD_INT_STATUS, as
+Linux dce_v11_0_hpd_sense) before probing a DisplayPort connector. Every
+AUX transaction to an empty connector timed out after several retries,
+slowing down detection and filling the syslog.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01NqrEBcidivS5BSWVfbLqvu
+---
+ headers/private/graphics/radeon_hd/vol_reg.h  |  5 +++++
+ .../accelerants/radeon_hd/connector.cpp       | 21 +++++++++++++++++++
+ src/add-ons/accelerants/radeon_hd/connector.h |  1 +
+ src/add-ons/accelerants/radeon_hd/display.cpp |  7 +++++++
+ .../accelerants/radeon_hd/displayport.cpp     |  8 +++++++
+ 5 files changed, 42 insertions(+)
+
+diff --git a/headers/private/graphics/radeon_hd/vol_reg.h b/headers/private/graphics/radeon_hd/vol_reg.h
+index e694284810..331c426c0a 100644
+--- a/headers/private/graphics/radeon_hd/vol_reg.h
++++ b/headers/private/graphics/radeon_hd/vol_reg.h
+@@ -37,6 +37,11 @@
+ 
+ #define VOL_LB_DESKTOP_HEIGHT			0x6b0c
+ 
++// DCE 10.x, 11.x hot plug detect, one register block per HPD pin
++#define VOL_DC_HPD_INT_STATUS			0x6260
++#define 	VOL_DC_HPD_SENSE			(1 << 1)
++#define VOL_HPD_REGISTER_OFFSET(x)		((x) * 0x20)
++
+ #define VOL_mmDC_GPIO_HPD_A                                                         0x488d
+ 
+ #endif /* DCE_10_0_D_H */
+diff --git a/src/add-ons/accelerants/radeon_hd/connector.cpp b/src/add-ons/accelerants/radeon_hd/connector.cpp
+index 720391e42f..75702f661c 100644
+--- a/src/add-ons/accelerants/radeon_hd/connector.cpp
++++ b/src/add-ons/accelerants/radeon_hd/connector.cpp
+@@ -174,6 +174,27 @@ connector_pick_atom_hpdid(uint32 connectorIndex)
+ }
+ 
+ 
++/*! Returns whether the connector's hot plug detect pin reports an attached
++	display. Only DCE 10 and 11 are handled; everywhere else, and for
++	connectors without a HPD pin, a display is assumed to be attached.
++*/
++bool
++connector_hpd_sense(uint32 connectorIndex)
++{
++	radeon_shared_info &info = *gInfo->shared_info;
++	if (info.dceMajor != 10 && info.dceMajor != 11)
++		return true;
++
++	uint16 hpdID = connector_pick_atom_hpdid(connectorIndex);
++	if (hpdID == 0xff)
++		return true;
++
++	uint32 status = Read32(OUT,
++		VOL_DC_HPD_INT_STATUS + VOL_HPD_REGISTER_OFFSET(hpdID));
++	return (status & VOL_DC_HPD_SENSE) != 0;
++}
++
++
+ bool
+ connector_read_edid(uint32 connectorIndex, edid1_info* edid)
+ {
+diff --git a/src/add-ons/accelerants/radeon_hd/connector.h b/src/add-ons/accelerants/radeon_hd/connector.h
+index cba37acbb9..8c6d20bb57 100644
+--- a/src/add-ons/accelerants/radeon_hd/connector.h
++++ b/src/add-ons/accelerants/radeon_hd/connector.h
+@@ -73,6 +73,7 @@ bool connector_is_dp(uint32 connectorIndex);
+ void debug_connectors();
+ 
+ uint16 connector_pick_atom_hpdid(uint32 connectorIndex);
++bool connector_hpd_sense(uint32 connectorIndex);
+ 
+ 
+ #endif /* RADEON_HD_CONNECTOR_H */
+diff --git a/src/add-ons/accelerants/radeon_hd/display.cpp b/src/add-ons/accelerants/radeon_hd/display.cpp
+index 960dfba09b..faab3f5739 100644
+--- a/src/add-ons/accelerants/radeon_hd/display.cpp
++++ b/src/add-ons/accelerants/radeon_hd/display.cpp
+@@ -291,6 +291,13 @@ detect_displays()
+ 			continue;
+ 		}
+ 
++		if (gConnector[id]->type == VIDEO_CONNECTOR_DP
++			&& !connector_hpd_sense(id)) {
++			TRACE("%s: connector(%" B_PRIu32 "): nothing attached to DP\n",
++				__func__, id);
++			continue;
++		}
++
+ 		if (gConnector[id]->type == VIDEO_CONNECTOR_DP
+ 			|| gConnector[id]->type == VIDEO_CONNECTOR_EDP) {
+ 			TRACE("%s: connector(%" B_PRIu32 "): Checking %sDP.\n", __func__, id,
+diff --git a/src/add-ons/accelerants/radeon_hd/displayport.cpp b/src/add-ons/accelerants/radeon_hd/displayport.cpp
+index 7eb26c5b9a..70946d7193 100644
+--- a/src/add-ons/accelerants/radeon_hd/displayport.cpp
++++ b/src/add-ons/accelerants/radeon_hd/displayport.cpp
+@@ -468,6 +468,14 @@ dp_setup_connectors()
+ 			continue;
+ 		}
+ 
++		// Don't talk to empty connectors, every AUX transaction times out
++		if (!connector_hpd_sense(index)) {
++			TRACE("%s: connector(%" B_PRIu32 "): nothing attached\n",
++				__func__, index);
++			dpInfo->valid = false;
++			continue;
++		}
++
+ 		// Configure communication pins.
+ 		uint32 i2cPinIndex = gConnector[index]->i2cPinIndex;
+ 		uint32 auxPin = gGPIOInfo[i2cPinIndex]->hwPin;
+-- 
+2.34.1
+
