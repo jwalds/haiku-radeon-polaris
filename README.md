@@ -32,7 +32,7 @@ EDID extension blocks yet.
 - **Phase 3 – 3D acceleration (in progress):** Vulkan through Mesa RADV on
   a Polaris port of X512's RadeonGfx GPU server, developed in
   [jwalds/RadeonGfx](https://github.com/jwalds/RadeonGfx) (branch
-  `polaris`). Plan: `docs/phase2-3d-plan.md`.
+  `polaris`). Plan: `docs/phase3-plan.md`.
 
 See `docs/test-log.md` for test results and `docs/findings-linux-capture.md`
 for register findings.
