@@ -16,6 +16,9 @@ RADEONGFX_BRANCH="${RADEONGFX_BRANCH:-polaris}"
 
 export PKG_CONFIG_PATH="$INSTALL/lib/pkgconfig:$INSTALL/develop/lib/pkgconfig:$PKG_CONFIG_PATH"
 export PATH="$INSTALL/bin:$PATH"
+# libdrm2 includes <libdrm/drm.h> from the installed libdrm headers
+export CFLAGS="-I$INSTALL/develop/headers $CFLAGS"
+export CXXFLAGS="-I$INSTALL/develop/headers $CXXFLAGS"
 
 mkdir -p "$WORK"
 cd "$WORK"
