@@ -1,3 +1,16 @@
+diff --git a/DomainCondVars.cpp b/DomainCondVars.cpp
+index a66ad99..dc8e666 100644
+--- a/DomainCondVars.cpp
++++ b/DomainCondVars.cpp
+@@ -25,7 +25,7 @@ void DomainCondVar::Release(bool releaseAll)
+ 		DoublyLinkedList<WaitItem> list;
+ 		{
+ 			AutoLock lock(fLocker);
+-			list.MoveFrom(&fWaitItems);
++			list.TakeFrom(&fWaitItems);
+ 		}
+ 		for (;;) {
+ 			WaitItem *item = list.RemoveHead();
 diff --git a/SADomains/DomainCondVars.h b/SADomains/DomainCondVars.h
 index ce93983..41d8e73 100644
 --- a/SADomains/DomainCondVars.h

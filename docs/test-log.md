@@ -151,3 +151,23 @@ missing from the mode list (EDID extension not read).
 - Cursor crash (PC 0x1 in "cursor loop") after a KVM switch: followed an
   in-place `cp` install over the loaded accelerant/driver. The install
   script now renames new files into place. Watch whether the crash recurs.
+
+## 2026-09-30 — Phase 3 step 0: GPU stack builds
+
+- Installed on the Haiku machine: meson, ninja, vulkan(_devel), glslang(_devel),
+  mako/pyyaml for python3.10 (HaikuPorts has them only for 3.10; Mesa will
+  be configured with python3.10), zstd/expat/zlib devel.
+- `tools/build-gpu-stack.sh` builds accelerant2 (pinned to 61baaa6),
+  mesa-drm, libdrm2 and RadeonGfx (fork, branch `polaris`) into `~/gpu/install`.
+- Fixes needed for current Haiku (patches/gpu-stack/):
+  - Locks: user mutex syscalls changed (`_kern_mutex_unlock` →
+    `_kern_mutex_unblock`, `switch_lock`/`sem_release` take flags).
+  - Locks, ThreadLink, SADomains, RadeonGfx: `DoublyLinkedList.h` moved to
+    `private/util`; `MoveFrom` is now `TakeFrom`.
+  - libdrm2: `QueryInterface` gained a version argument; `ALIGN` clashes
+    with `<sys/param.h>`.
+- Not built: VideoStreams and RadeonGfx's display code (need
+  `_kern_dup_foreign`, a syscall from X512's own Haiku tree), and
+  RadeonGfx's kernel module (the server will attach to radeon_hd).
+  Buffer/syncobj fd export returns B_NOT_SUPPORTED for now.
+- The server is not run yet: it still contains Southern Islands init code.
