@@ -133,3 +133,21 @@ missing from the mode list (EDID extension not read).
   skipped, no AUX errors), shutdown fix (no crash on reboot).
 - Local, not yet in `patches/`: shutdown fix, HPD pin lookup fix, cursor
   diagnostics (dev branch `radeon_hd-polaris`).
+
+## 2026-09-30 — HPD lookup and boot glitch
+
+- The DP connector was never skipped: `connector_pick_atom_hpdid` compared
+  the GPIO table's byte offset (`usGpioPin_AIndex * 4`) with the DCE 8+
+  register index, so no HPD pin ever matched. The VBIOS GPIO_Pin_LUT lists
+  all HPD pins at 0x488d (shift 0/8/16/24/26/28). Fixed by comparing
+  `targetReg * 4` on DCE 8+. HPD1–5 enabled by the VBIOS, only HPD3 (HDMI)
+  senses a display.
+- Result: `dp_setup_connectors: connector(0): nothing attached`, no AUX
+  errors, no pause at boot. Encoder/transmitter tables now get the real
+  HPD ID; HDMI 2560x1440 unaffected.
+- Boot glitch (old splash laid out at the new pitch for ~0.5 s): the
+  visible frame buffer is now cleared before the display is enabled;
+  the screen blanks instead.
+- Cursor crash (PC 0x1 in "cursor loop") after a KVM switch: followed an
+  in-place `cp` install over the loaded accelerant/driver. The install
+  script now renames new files into place. Watch whether the crash recurs.
