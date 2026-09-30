@@ -1,4 +1,4 @@
-From 8ebac57c56e7d1625c0f6cf0536f5333dbc3f0a5 Mon Sep 17 00:00:00 2001
+From 647f29adb5025c6d6844faae1506cd45bddf0611 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
 Date: Tue, 29 Sep 2026 18:45:07 +0000
 Subject: [PATCH 08/11] radeon_hd: add hardware cursor support for DCE 4+
@@ -12,12 +12,13 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
 Claude-Session: https://claude.ai/code/session_01NqrEBcidivS5BSWVfbLqvu
 ---
  src/add-ons/accelerants/radeon_hd/Jamfile     |   1 +
+ .../accelerants/radeon_hd/accelerant.cpp      |  28 +-
  .../accelerants/radeon_hd/accelerant.h        |   5 +
  .../accelerants/radeon_hd/accelerant_protos.h |   9 +
- src/add-ons/accelerants/radeon_hd/cursor.cpp  | 253 ++++++++++++++++++
- src/add-ons/accelerants/radeon_hd/cursor.h    |  15 ++
+ src/add-ons/accelerants/radeon_hd/cursor.cpp  | 274 ++++++++++++++++++
+ src/add-ons/accelerants/radeon_hd/cursor.h    |  15 +
  src/add-ons/accelerants/radeon_hd/hooks.cpp   |  11 +
- 6 files changed, 294 insertions(+)
+ 7 files changed, 334 insertions(+), 9 deletions(-)
  create mode 100644 src/add-ons/accelerants/radeon_hd/cursor.cpp
  create mode 100644 src/add-ons/accelerants/radeon_hd/cursor.h
 
@@ -33,6 +34,57 @@ index bdc5c4f038..7c839fadbc 100644
  	display.cpp
  	displayport.cpp
  	encoder.cpp
+diff --git a/src/add-ons/accelerants/radeon_hd/accelerant.cpp b/src/add-ons/accelerants/radeon_hd/accelerant.cpp
+index 0cd1df72ca..bc446abaac 100644
+--- a/src/add-ons/accelerants/radeon_hd/accelerant.cpp
++++ b/src/add-ons/accelerants/radeon_hd/accelerant.cpp
+@@ -164,6 +164,18 @@ init_common(int device, bool isClone)
+ static void
+ uninit_common(void)
+ {
++	// app_server threads (like the cursor) may still call hooks during
++	// shutdown, so clear the display data first and don't leave dangling
++	// pointers behind
++	for (uint32 id = 0; id < MAX_DISPLAY; id++) {
++		if (gDisplay[id] != NULL) {
++			display_info* display = gDisplay[id];
++			gDisplay[id] = NULL;
++			free(display->regs);
++			free(display);
++		}
++	}
++
+ 	if (gInfo != NULL) {
+ 		delete_area(gInfo->regs_area);
+ 		delete_area(gInfo->shared_info_area);
+@@ -176,20 +188,18 @@ uninit_common(void)
+ 			close(gInfo->device);
+ 
+ 		free(gInfo);
++		gInfo = NULL;
+ 	}
+ 
+-	for (uint32 id = 0; id < MAX_DISPLAY; id++) {
+-		if (gDisplay[id] != NULL) {
+-			free(gDisplay[id]->regs);
+-			free(gDisplay[id]);
+-		}
+-	}
+-
+-	for (uint32 id = 0; id < ATOM_MAX_SUPPORTED_DEVICE; id++)
++	for (uint32 id = 0; id < ATOM_MAX_SUPPORTED_DEVICE; id++) {
+ 		free(gConnector[id]);
++		gConnector[id] = NULL;
++	}
+ 
+-	for (uint32 id = 0; id < MAX_GPIO_PINS; id++)
++	for (uint32 id = 0; id < MAX_GPIO_PINS; id++) {
+ 		free(gGPIOInfo[id]);
++		gGPIOInfo[id] = NULL;
++	}
+ }
+ 
+ 
 diff --git a/src/add-ons/accelerants/radeon_hd/accelerant.h b/src/add-ons/accelerants/radeon_hd/accelerant.h
 index cf8a254f46..2c852d198a 100644
 --- a/src/add-ons/accelerants/radeon_hd/accelerant.h
@@ -71,10 +123,10 @@ index 324d005f13..a82888d749 100644
  status_t radeon_acquire_engine(uint32 capabilities, uint32 maxWait,
 diff --git a/src/add-ons/accelerants/radeon_hd/cursor.cpp b/src/add-ons/accelerants/radeon_hd/cursor.cpp
 new file mode 100644
-index 0000000000..e583ea9fc8
+index 0000000000..be2f0dd74e
 --- /dev/null
 +++ b/src/add-ons/accelerants/radeon_hd/cursor.cpp
-@@ -0,0 +1,253 @@
+@@ -0,0 +1,274 @@
 +/*
 + * Copyright 2026, Haiku, Inc. All Rights Reserved.
 + * Distributed under the terms of the MIT License.
@@ -142,6 +194,17 @@ index 0000000000..e583ea9fc8
 +cursor_image()
 +{
 +	return (uint32*)(gInfo->shared_info->frame_buffer + cursor_offset());
++}
++
++
++/*! Returns false once the accelerant has been uninitialized; app_server's
++	cursor thread can still call the hooks while it shuts down.
++*/
++static bool
++cursor_available(uint8 crtcID)
++{
++	return gInfo != NULL && gDisplay[crtcID] != NULL
++		&& gDisplay[crtcID]->regs != NULL;
 +}
 +
 +
@@ -220,6 +283,8 @@ index 0000000000..e583ea9fc8
 +
 +	if (width > kCursorSize || height > kCursorSize)
 +		return B_BAD_VALUE;
++	if (!cursor_available(0))
++		return B_NO_INIT;
 +
 +	uint32* image = cursor_image();
 +	uint32 pitch = cursor_pitch();
@@ -269,6 +334,8 @@ index 0000000000..e583ea9fc8
 +		return B_BAD_VALUE;
 +	if (colorSpace != B_RGBA32)
 +		return B_BAD_VALUE;
++	if (!cursor_available(0))
++		return B_NO_INIT;
 +
 +	uint32* image = cursor_image();
 +	uint32 pitch = cursor_pitch();
@@ -307,6 +374,9 @@ index 0000000000..e583ea9fc8
 +void
 +radeon_move_cursor(uint16 x, uint16 y)
 +{
++	if (!cursor_available(0))
++		return;
++
 +	gInfo->cursorX = x;
 +	gInfo->cursorY = y;
 +
@@ -323,6 +393,9 @@ index 0000000000..e583ea9fc8
 +	TRACE("%s: %s\n", __func__, isVisible ? "true" : "false");
 +
 +	uint8 crtcID = 0;
++	if (!cursor_available(crtcID))
++		return;
++
 +	cursor_lock(crtcID, true);
 +	cursor_enable(crtcID, isVisible);
 +	cursor_set_position(crtcID);

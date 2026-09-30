@@ -1,4 +1,4 @@
-From 145ab112585caaa2b7f173eb6d369c695e305721 Mon Sep 17 00:00:00 2001
+From 082be10096aaf66579d36e69fad8e31a6cff8fd6 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
 Date: Tue, 29 Sep 2026 19:14:52 +0000
 Subject: [PATCH 09/11] radeon_hd: skip DisplayPort connectors without a
@@ -12,12 +12,12 @@ slowing down detection and filling the syslog.
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
 Claude-Session: https://claude.ai/code/session_01NqrEBcidivS5BSWVfbLqvu
 ---
- headers/private/graphics/radeon_hd/vol_reg.h  |  5 +++++
- .../accelerants/radeon_hd/connector.cpp       | 21 +++++++++++++++++++
+ headers/private/graphics/radeon_hd/vol_reg.h  |  5 ++++
+ .../accelerants/radeon_hd/connector.cpp       | 25 +++++++++++++++++--
  src/add-ons/accelerants/radeon_hd/connector.h |  1 +
- src/add-ons/accelerants/radeon_hd/display.cpp |  7 +++++++
- .../accelerants/radeon_hd/displayport.cpp     |  8 +++++++
- 5 files changed, 42 insertions(+)
+ src/add-ons/accelerants/radeon_hd/display.cpp |  7 ++++++
+ .../accelerants/radeon_hd/displayport.cpp     |  8 ++++++
+ 5 files changed, 44 insertions(+), 2 deletions(-)
 
 diff --git a/headers/private/graphics/radeon_hd/vol_reg.h b/headers/private/graphics/radeon_hd/vol_reg.h
 index e694284810..331c426c0a 100644
@@ -36,9 +36,23 @@ index e694284810..331c426c0a 100644
  
  #endif /* DCE_10_0_D_H */
 diff --git a/src/add-ons/accelerants/radeon_hd/connector.cpp b/src/add-ons/accelerants/radeon_hd/connector.cpp
-index 720391e42f..75702f661c 100644
+index 720391e42f..64d5167e70 100644
 --- a/src/add-ons/accelerants/radeon_hd/connector.cpp
 +++ b/src/add-ons/accelerants/radeon_hd/connector.cpp
+@@ -132,11 +132,11 @@ connector_pick_atom_hpdid(uint32 connectorIndex)
+ 		if (info.dceMajor >= 13) {
+ 			ERROR("WARNING: CHECK NEW DCE mmDC_GPIO_HPD_A value!\n");
+ 			targetReg = POL_mmDC_GPIO_HPD_A;
+-		} else if (info.dceMajor >= 12
+-			|| (info.dceMajor == 11 && info.dceMinor == 2))
++		} else if (info.dceMajor >= 12)
+ 			targetReg = POL_mmDC_GPIO_HPD_A;
+ 		else if (info.dceMajor >= 11)
+ 			targetReg = CAR_mmDC_GPIO_HPD_A;
++				// also DCE 11.2 (Polaris), mmDC_GPIO_HPD_A is 0x488d
+ 		else if (info.dceMajor >= 10)
+ 			targetReg = VOL_mmDC_GPIO_HPD_A;
+ 		else if (info.dceMajor >= 8)
 @@ -174,6 +174,27 @@ connector_pick_atom_hpdid(uint32 connectorIndex)
  }
  

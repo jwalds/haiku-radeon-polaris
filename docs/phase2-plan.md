@@ -1,5 +1,9 @@
 # Phase 2 plan: 2D acceleration
 
+**Status: shelved.** Decision: the desktop stays with app_server's software
+rendering. This document is kept as a reference in case GPU offload is
+revisited.
+
 ## What the desktop does today
 
 app_server does not use the accelerant 2D hooks any more:

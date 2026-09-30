@@ -1,4 +1,4 @@
-From 5ed0d69f674cf887c8bacf5a6532f0ed555b9fcd Mon Sep 17 00:00:00 2001
+From 515d4d8c0af50a89c2d49052cd0346e70027a6a8 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
 Date: Tue, 29 Sep 2026 19:17:20 +0000
 Subject: [PATCH 10/11] radeon_hd: enable Polaris 11

@@ -1,4 +1,4 @@
-From b7c35a66a3cce6820126a137b5d123e34c933453 Mon Sep 17 00:00:00 2001
+From 5cd0a29718a37664307b7fc05bbb762660a2b60f Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
 Date: Tue, 29 Sep 2026 19:17:28 +0000
 Subject: [PATCH 11/11] radeon_hd: debug output for DCE 10+ bring-up
@@ -18,10 +18,10 @@ Claude-Session: https://claude.ai/code/session_01NqrEBcidivS5BSWVfbLqvu
  5 files changed, 47 insertions(+)
 
 diff --git a/src/add-ons/accelerants/radeon_hd/accelerant.cpp b/src/add-ons/accelerants/radeon_hd/accelerant.cpp
-index 0cd1df72ca..e70cfd8fd6 100644
+index bc446abaac..8c89c789a4 100644
 --- a/src/add-ons/accelerants/radeon_hd/accelerant.cpp
 +++ b/src/add-ons/accelerants/radeon_hd/accelerant.cpp
-@@ -257,6 +257,7 @@ radeon_init_accelerant(int device)
+@@ -267,6 +267,7 @@ radeon_init_accelerant(int device)
  
  	// print found displays
  	debug_displays();

@@ -25,8 +25,10 @@ Known issues: after a runtime mode change the output falls back from HDMI
 to DVI signalling (picture unaffected); the DisplayPort path doesn't read
 EDID extension blocks yet.
 
-- **Phase 2 – acceleration:** firmware loading, GART/VM, interrupts, SDMA,
-  then Mesa through an amdgpu-style interface.
+- **Phase 2 – acceleration:** not planned for the desktop. app_server
+  renders in software and doesn't use accelerant 2D hooks, so the desktop
+  is left to app_server. See `docs/phase2-plan.md` for the shelved SDMA
+  plan. 3D (Mesa) would be a separate project.
 
 See `docs/test-log.md` for test results and `docs/findings-linux-capture.md`
 for register findings.
