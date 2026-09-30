@@ -53,7 +53,7 @@ ln -sfn ../../Locks libdrm2/subprojects/Locks
 ln -sfn ../../ThreadLink libdrm2/subprojects/ThreadLink
 
 build_package accelerant2
-build_package libdrm -Dintel=disabled
+build_package libdrm -Dintel=false
 build_package libdrm2
 build_package VideoStreams
 build_package RadeonGfx
