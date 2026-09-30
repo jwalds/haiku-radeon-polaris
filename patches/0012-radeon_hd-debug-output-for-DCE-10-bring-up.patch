@@ -1,7 +1,7 @@
-From 5cd0a29718a37664307b7fc05bbb762660a2b60f Mon Sep 17 00:00:00 2001
+From fceb368bf456109a8ce426191fe9cd087a058903 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
 Date: Tue, 29 Sep 2026 19:17:28 +0000
-Subject: [PATCH 11/11] radeon_hd: debug output for DCE 10+ bring-up
+Subject: [PATCH 12/12] radeon_hd: debug output for DCE 10+ bring-up
 
 * Dump the non-zero display registers before and after the mode set in
   the same format as Linux amdgpu register captures.
@@ -108,10 +108,10 @@ index 84f43db71a..463590f609 100644
  		case ENCODER_OBJECT_ID_INTERNAL_DAC1:
  		case ENCODER_OBJECT_ID_INTERNAL_KLDSCP_DAC1:
 diff --git a/src/add-ons/accelerants/radeon_hd/mode.cpp b/src/add-ons/accelerants/radeon_hd/mode.cpp
-index 664e3fe9d3..efc7a97ef1 100644
+index 9ddedc2b66..35deb133c1 100644
 --- a/src/add-ons/accelerants/radeon_hd/mode.cpp
 +++ b/src/add-ons/accelerants/radeon_hd/mode.cpp
-@@ -236,6 +236,7 @@ radeon_set_display_mode(display_mode* mode)
+@@ -242,6 +242,7 @@ radeon_set_display_mode(display_mode* mode)
  
  	#ifdef TRACE_MODE
  	// for debugging

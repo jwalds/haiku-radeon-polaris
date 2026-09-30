@@ -1,0 +1,32 @@
+From 7e05bb57ae4c39886793ba45b3bedfe9a970887f Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
+Date: Wed, 30 Sep 2026 16:33:21 +0000
+Subject: [PATCH 11/12] radeon_hd: clear the visible frame buffer before
+ enabling the display
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01NqrEBcidivS5BSWVfbLqvu
+---
+ src/add-ons/accelerants/radeon_hd/mode.cpp | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/src/add-ons/accelerants/radeon_hd/mode.cpp b/src/add-ons/accelerants/radeon_hd/mode.cpp
+index 664e3fe9d3..9ddedc2b66 100644
+--- a/src/add-ons/accelerants/radeon_hd/mode.cpp
++++ b/src/add-ons/accelerants/radeon_hd/mode.cpp
+@@ -223,6 +223,12 @@ radeon_set_display_mode(display_mode* mode)
+ 	display_crtc_set_dtd(crtcID, mode);
+ 
+ 	display_crtc_fb_set(crtcID, mode);
++
++	// Don't show what's left in the frame buffer (e.g. the boot splash
++	// laid out for the previous mode) until app_server draws
++	memset((void*)gInfo->shared_info->frame_buffer, 0,
++		(size_t)gInfo->shared_info->bytes_per_row * mode->virtual_height);
++
+ 	// atombios_overscan_setup
+ 	display_crtc_scale(crtcID, mode);
+ 
+-- 
+2.34.1
+

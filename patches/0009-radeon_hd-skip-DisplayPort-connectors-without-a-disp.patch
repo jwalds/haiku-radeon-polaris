@@ -1,7 +1,7 @@
-From 082be10096aaf66579d36e69fad8e31a6cff8fd6 Mon Sep 17 00:00:00 2001
+From 47686bb8c7d9b2c43f4c3ff99f344482a86930fa Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
 Date: Tue, 29 Sep 2026 19:14:52 +0000
-Subject: [PATCH 09/11] radeon_hd: skip DisplayPort connectors without a
+Subject: [PATCH 09/12] radeon_hd: skip DisplayPort connectors without a
  display on DCE 10/11
 
 Check the connector's hot plug detect sense bit (DC_HPD_INT_STATUS, as
@@ -13,11 +13,11 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
 Claude-Session: https://claude.ai/code/session_01NqrEBcidivS5BSWVfbLqvu
 ---
  headers/private/graphics/radeon_hd/vol_reg.h  |  5 ++++
- .../accelerants/radeon_hd/connector.cpp       | 25 +++++++++++++++++--
+ .../accelerants/radeon_hd/connector.cpp       | 29 +++++++++++++++++--
  src/add-ons/accelerants/radeon_hd/connector.h |  1 +
- src/add-ons/accelerants/radeon_hd/display.cpp |  7 ++++++
- .../accelerants/radeon_hd/displayport.cpp     |  8 ++++++
- 5 files changed, 44 insertions(+), 2 deletions(-)
+ src/add-ons/accelerants/radeon_hd/display.cpp |  7 +++++
+ .../accelerants/radeon_hd/displayport.cpp     |  8 +++++
+ 5 files changed, 48 insertions(+), 2 deletions(-)
 
 diff --git a/headers/private/graphics/radeon_hd/vol_reg.h b/headers/private/graphics/radeon_hd/vol_reg.h
 index e694284810..331c426c0a 100644
@@ -36,7 +36,7 @@ index e694284810..331c426c0a 100644
  
  #endif /* DCE_10_0_D_H */
 diff --git a/src/add-ons/accelerants/radeon_hd/connector.cpp b/src/add-ons/accelerants/radeon_hd/connector.cpp
-index 720391e42f..64d5167e70 100644
+index 720391e42f..7f3227cfd7 100644
 --- a/src/add-ons/accelerants/radeon_hd/connector.cpp
 +++ b/src/add-ons/accelerants/radeon_hd/connector.cpp
 @@ -132,11 +132,11 @@ connector_pick_atom_hpdid(uint32 connectorIndex)
@@ -53,7 +53,18 @@ index 720391e42f..64d5167e70 100644
  		else if (info.dceMajor >= 10)
  			targetReg = VOL_mmDC_GPIO_HPD_A;
  		else if (info.dceMajor >= 8)
-@@ -174,6 +174,27 @@ connector_pick_atom_hpdid(uint32 connectorIndex)
+@@ -146,6 +146,10 @@ connector_pick_atom_hpdid(uint32 connectorIndex)
+ 		else if (info.dceMajor >= 4)
+ 			targetReg = EVERGREEN_DC_GPIO_HPD_A;
+ 
++		// The DCE 8+ values are register indices, hwReg is a byte offset
++		if (info.dceMajor >= 8)
++			targetReg *= 4;
++
+ 		// You're drunk AMD, go home. (this makes no sense)
+ 		if (gGPIOInfo[hpdPinIndex]->hwReg == targetReg) {
+ 			switch(gGPIOInfo[hpdPinIndex]->hwMask) {
+@@ -174,6 +178,27 @@ connector_pick_atom_hpdid(uint32 connectorIndex)
  }
  
  
