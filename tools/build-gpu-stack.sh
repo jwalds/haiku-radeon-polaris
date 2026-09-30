@@ -46,6 +46,9 @@ clone RadeonGfx "$RADEONGFX_REPO" -b "$RADEONGFX_BRANCH"
 clone libdrm https://github.com/X547/mesa-drm.git --depth 1
 clone libdrm2 https://github.com/X547/libdrm2.git
 clone accelerant2 https://github.com/X547/accelerant2.git
+# libdrm2 and RadeonGfx use the interface from before "adjust interface
+# declarations" (796cc4c)
+git -C accelerant2 checkout -q 61baaa6
 
 mkdir -p SADomains/subprojects RadeonGfx/subprojects libdrm2/subprojects
 ln -sfn ../../Locks SADomains/subprojects/Locks
