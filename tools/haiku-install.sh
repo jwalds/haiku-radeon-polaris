@@ -30,9 +30,13 @@ acc=$(find "$GEN/objects" -type f -name radeon_hd.accelerant | head -1)
 [ -n "$drv" ] && [ -n "$acc" ] || { echo "Build output not found under $GEN"; exit 1; }
 
 mkdir -p "$DRV_BIN" "$DRV_DEV" "$ACC"
-cp "$drv" "$DRV_BIN/radeon_hd"
+# Copy to a new file and rename it into place: cp would rewrite the file
+# app_server (and the kernel) have mapped, changing code under them
+cp "$drv" "$DRV_BIN/.radeon_hd.new"
+cp "$acc" "$ACC/.radeon_hd.accelerant.new"
+mv -f "$DRV_BIN/.radeon_hd.new" "$DRV_BIN/radeon_hd"
 ln -sf ../../bin/radeon_hd "$DRV_DEV/radeon_hd"
-cp "$acc" "$ACC/radeon_hd.accelerant"
+mv -f "$ACC/.radeon_hd.accelerant.new" "$ACC/radeon_hd.accelerant"
 # flush to disk: a KDL/hard reset before the next boot would otherwise
 # leave a corrupt accelerant, and app_server silently falls back to the
 # stock one
