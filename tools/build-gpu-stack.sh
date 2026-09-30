@@ -6,10 +6,16 @@
 #
 # Clones missing repositories, then builds and installs into <workdir>/install:
 # accelerant2, libdrm (mesa-drm), libdrm2, VideoStreams, RadeonGfx and its
-# kernel module. Mesa is not built yet.
+# kernel module. Mesa is not built yet. VideoStreams is not built: it needs a
+# syscall that isn't in upstream Haiku, and RadeonGfx is built without its
+# display code (meson option 'display').
+#
+# Fixes for the 2023 helper libraries against current Haiku are in
+# patches/gpu-stack/<name>.patch and applied after cloning.
 set -e
 
 WORK="${1:-$HOME/gpu}"
+PATCHES="$(cd "$(dirname "$0")/../patches/gpu-stack" && pwd)"
 INSTALL="$WORK/install"
 RADEONGFX_REPO="${RADEONGFX_REPO:-https://github.com/jwalds/RadeonGfx.git}"
 RADEONGFX_BRANCH="${RADEONGFX_BRANCH:-polaris}"
@@ -29,6 +35,17 @@ clone() {
 	[ -d "$dir/.git" ] || git clone -q "$@" "$url" "$dir"
 }
 
+apply_patch() {
+	# apply patches/gpu-stack/<dir>.patch unless it is already applied
+	local dir=$1 patch="$PATCHES/$1.patch"
+	[ -f "$patch" ] || return 0
+	if git -C "$dir" apply --reverse --check "$patch" 2>/dev/null; then
+		return 0
+	fi
+	git -C "$dir" apply "$patch"
+	echo "patched $dir"
+}
+
 build_package() {
 	local name=$1; shift
 	local buildDir="$name/build.$(getarch)"
@@ -41,7 +58,6 @@ build_package() {
 clone Locks https://github.com/X547/Locks.git
 clone SADomains https://github.com/X547/SADomains.git
 clone ThreadLink https://github.com/X547/ThreadLink.git
-clone VideoStreams https://github.com/X547/VideoStreams.git
 clone RadeonGfx "$RADEONGFX_REPO" -b "$RADEONGFX_BRANCH"
 clone libdrm https://github.com/X547/mesa-drm.git --depth 1
 clone libdrm2 https://github.com/X547/libdrm2.git
@@ -49,6 +65,10 @@ clone accelerant2 https://github.com/X547/accelerant2.git
 # libdrm2 and RadeonGfx use the interface from before "adjust interface
 # declarations" (796cc4c)
 git -C accelerant2 checkout -q 61baaa6
+
+for dir in Locks ThreadLink SADomains libdrm2; do
+	apply_patch $dir
+done
 
 mkdir -p SADomains/subprojects RadeonGfx/subprojects libdrm2/subprojects
 ln -sfn ../../Locks SADomains/subprojects/Locks
@@ -61,7 +81,6 @@ ln -sfn ../../ThreadLink libdrm2/subprojects/ThreadLink
 build_package accelerant2
 build_package libdrm -Dintel=false
 build_package libdrm2
-build_package VideoStreams
 build_package RadeonGfx
 echo "=== radeon_gfx kernel module"
 (cd RadeonGfx/kernel/radeon_gfx && make)

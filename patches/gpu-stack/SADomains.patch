@@ -1,0 +1,26 @@
+diff --git a/SADomains/DomainCondVars.h b/SADomains/DomainCondVars.h
+index ce93983..41d8e73 100644
+--- a/SADomains/DomainCondVars.h
++++ b/SADomains/DomainCondVars.h
+@@ -1,7 +1,7 @@
+ #pragma once
+ 
+ #include "Domains.h"
+-#include <private/kernel/util/DoublyLinkedList.h>
++#include <private/util/DoublyLinkedList.h>
+ 
+ 
+ class DomainCondVar {
+diff --git a/Tests/Syncobj.h b/Tests/Syncobj.h
+index 8358714..ddebf9d 100644
+--- a/Tests/Syncobj.h
++++ b/Tests/Syncobj.h
+@@ -4,7 +4,7 @@
+ #include "SADomains/Domains.h"
+ #include "SADomains/DomainCondVars.h"
+ #include <private/shared/AutoDeleter.h>
+-#include <private/kernel/util/DoublyLinkedList.h>
++#include <private/util/DoublyLinkedList.h>
+ 
+ #include <set>
+ 

@@ -1,0 +1,43 @@
+diff --git a/amdgpu/amdgpu_device.c b/amdgpu/amdgpu_device.c
+index fb5e78c..caa77a7 100644
+--- a/amdgpu/amdgpu_device.c
++++ b/amdgpu/amdgpu_device.c
+@@ -134,13 +134,13 @@ drm_public int amdgpu_device_initialize_haiku(struct accelerant_base *acc,
+ 
+ 	acc->vt->AcquireReference(acc);
+ 	dev->acc_base = acc;
+-	dev->acc_drm = (accelerant_drm*)dev->acc_base->vt->QueryInterface(dev->acc_base, B_ACCELERANT_IFACE_DRM);
++	dev->acc_drm = (accelerant_drm*)dev->acc_base->vt->QueryInterface(dev->acc_base, B_ACCELERANT_IFACE_DRM, 0);
+ 	if (!dev->acc_drm) {
+ 		fprintf(stderr, "%s: Accelerant don't provide DRM interface\n", __func__);
+ 		r = EBADF;
+ 		goto cleanup;
+ 	}
+-	dev->acc_amdgpu = (accelerant_amdgpu*)dev->acc_base->vt->QueryInterface(dev->acc_base, B_ACCELERANT_IFACE_AMDGPU);
++	dev->acc_amdgpu = (accelerant_amdgpu*)dev->acc_base->vt->QueryInterface(dev->acc_base, B_ACCELERANT_IFACE_AMDGPU, 0);
+ 	if (!dev->acc_amdgpu) {
+ 		fprintf(stderr, "%s: Accelerant don't provide AMDGPU interface\n", __func__);
+ 		r = EBADF;
+diff --git a/libdrm_device.cpp b/libdrm_device.cpp
+index 6397d60..e4699aa 100644
+--- a/libdrm_device.cpp
++++ b/libdrm_device.cpp
+@@ -2,7 +2,6 @@
+ 
+ #include <xf86drm.h>
+ #include "libdrm_macros.h"
+-#include "util_math.h"
+ #include <errno.h>
+ #include <unistd.h>
+ #include <stdio.h>
+@@ -17,6 +16,10 @@
+ 
+ #include "Poke.h"
+ 
++// <sys/param.h> defines a one argument ALIGN()
++#undef ALIGN
++#include "util_math.h"
++
+ #define memclear(s) memset(&s, 0, sizeof(s))
+ 
+ static const char sDevPath[] = "/dev/graphics/";

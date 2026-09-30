@@ -1,0 +1,46 @@
+diff --git a/Locks/Timer.h b/Locks/Timer.h
+index 4e74b64..1dc2836 100644
+--- a/Locks/Timer.h
++++ b/Locks/Timer.h
+@@ -7,7 +7,7 @@
+ 
+ #include <stdlib.h>
+ #include <OS.h>
+-#include <private/kernel/util/DoublyLinkedList.h>
++#include <private/util/DoublyLinkedList.h>
+ #include "RecursiveLock.h"
+ #include "Sem.h"
+ #include <AutoDeleterOS.h>
+diff --git a/Mutex.cpp b/Mutex.cpp
+index 8bd6f60..71ad99d 100644
+--- a/Mutex.cpp
++++ b/Mutex.cpp
+@@ -39,7 +39,7 @@ void Mutex::Release(bool releaseAll)
+ 		(oldValue & B_USER_MUTEX_DISABLED) == 0
+ 	) {
+ 		// will set B_USER_MUTEX_LOCKED
+-		_kern_mutex_unlock(&fValue, releaseAll ? B_USER_MUTEX_UNBLOCK_ALL : 0);
++		_kern_mutex_unblock(&fValue, releaseAll ? B_USER_MUTEX_UNBLOCK_ALL : 0);
+ 	}
+ }
+ 
+@@ -59,7 +59,7 @@ ATOMIC {
+ 	return Acquire(flags, timeout);
+ }
+ #endif
+-	status_t res = _kern_mutex_switch_lock(&src.fValue, &fValue, NULL /* name */, flags, timeout);
++	status_t res = _kern_mutex_switch_lock(&src.fValue, 0, &fValue, NULL /* name */, flags, timeout);
+ 	while (res == B_INTERRUPTED) {
+ 		res = _kern_mutex_lock(&fValue, NULL /* name */, flags, timeout);
+ 	}
+diff --git a/Sem.cpp b/Sem.cpp
+index a0ad9c8..6c74af2 100644
+--- a/Sem.cpp
++++ b/Sem.cpp
+@@ -43,5 +43,5 @@ void Sem::Release()
+ 	if (oldValue > -1)
+ 		return;
+ 
+-	_kern_mutex_sem_release(sem);
++	_kern_mutex_sem_release(sem, 0);
+ }

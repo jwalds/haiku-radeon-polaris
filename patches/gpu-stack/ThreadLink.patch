@@ -1,0 +1,13 @@
+diff --git a/ClientThreadLink.h b/ClientThreadLink.h
+index 863cc50..3e8a54c 100644
+--- a/ClientThreadLink.h
++++ b/ClientThreadLink.h
+@@ -4,7 +4,7 @@
+ #include <AutoDeleterOS.h>
+ #include <Messenger.h>
+ #include <pthread.h>
+-#include <DoublyLinkedList.h>
++#include <private/util/DoublyLinkedList.h>
+ 
+ 
+ enum {
