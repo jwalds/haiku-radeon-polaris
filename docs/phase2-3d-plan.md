@@ -1,6 +1,7 @@
 # Phase 2 plan: 3D acceleration on Polaris (RadeonGfx route)
 
 Status: proposed, 2026-09-30. Nothing here touches the GPU yet.
+Code: [jwalds/RadeonGfx](https://github.com/jwalds/RadeonGfx), branch `polaris`.
 
 ## Starting point: X512's RadeonGfx stack
 

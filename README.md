@@ -28,7 +28,11 @@ EDID extension blocks yet.
 - **Phase 2 – acceleration:** not planned for the desktop. app_server
   renders in software and doesn't use accelerant 2D hooks, so the desktop
   is left to app_server. See `docs/phase2-plan.md` for the shelved SDMA
-  plan. 3D (Mesa) would be a separate project.
+  plan.
+- **Phase 3 – 3D acceleration (in progress):** Vulkan through Mesa RADV on
+  a Polaris port of X512's RadeonGfx GPU server, developed in
+  [jwalds/RadeonGfx](https://github.com/jwalds/RadeonGfx) (branch
+  `polaris`). Plan: `docs/phase2-3d-plan.md`.
 
 See `docs/test-log.md` for test results and `docs/findings-linux-capture.md`
 for register findings.
