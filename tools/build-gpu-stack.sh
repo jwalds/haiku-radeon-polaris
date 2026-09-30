@@ -5,8 +5,8 @@
 # usage: build-gpu-stack.sh [workdir]      default workdir: ~/gpu
 #
 # Clones missing repositories, then builds and installs into <workdir>/install:
-# accelerant2, libdrm (mesa-drm), libdrm2, VideoStreams, RadeonGfx and its
-# kernel module. Mesa is not built yet. VideoStreams is not built: it needs a
+# accelerant2, libdrm (mesa-drm), libdrm2 and RadeonGfx (server and client
+# accelerant). Mesa is not built yet. VideoStreams is not built: it needs a
 # syscall that isn't in upstream Haiku, and RadeonGfx is built without its
 # display code (meson option 'display').
 #
@@ -82,7 +82,7 @@ build_package accelerant2
 build_package libdrm -Dintel=false
 build_package libdrm2
 build_package RadeonGfx
-echo "=== radeon_gfx kernel module"
-(cd RadeonGfx/kernel/radeon_gfx && make)
+# RadeonGfx's own kernel module (kernel/radeon_gfx) is not built: the server
+# attaches to the radeon_hd driver instead.
 
 echo "Built into $INSTALL"
