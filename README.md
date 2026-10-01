@@ -52,7 +52,8 @@ for register findings.
 | 0009 | skip empty DisplayPort connectors (HPD) |
 | 0010 | enable the Polaris 11 PCI IDs |
 | 0011 | clear the frame buffer before enabling the display |
-| 0012 | optional: debug register dump and traces |
+| 0012 | render device for a userland GPU server (Phase 3) |
+| 0013 | optional: debug register dump and traces |
 
 Patch numbers in `docs/test-log.md` refer to the development order and
 don't match this list.
