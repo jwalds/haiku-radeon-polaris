@@ -292,3 +292,17 @@ missing from the mode list (EDID extension not read).
   TOC also lists MEC_JT1/JT2 (the MEC jump table, copied page aligned after
   the MEC code by amdgpu_ucode_patch_jt()), though not in the load mask.
   The loader now does exactly that; retry after a reboot.
+
+## 2026-10-01 — Phase 3 step 5a: graphics command processor runs
+
+- After a reboot, `RadeonGfx gfxtest` with the Linux-style firmware load:
+  SMC firmware started, one LoadUcodes with RLC, CE, PFP, ME, MEC (+ JT1/JT2
+  in the TOC), SDMA0, SDMA1 (mask 0x47e): UcodeLoadStatus 0x5fe (the SMU
+  also marks the jump tables), no hang.
+- GFX ring 0 (golden registers, RLC stop/reset/start, cp_gfx_resume,
+  cp_gfx_start):
+  0. clear state preamble processed
+  1. SET_UCONFIG_REG SCRATCH_REG0 = 0xdeadbeef (Linux's ring test)
+  2. WRITE_DATA to VRAM and to system memory through the GART
+  3. EVENT_WRITE_EOP fence + interrupt: IH source 181 (CP end of pipe)
+- CP, MEC and RLC halted and registers restored afterwards; 22 °C.
