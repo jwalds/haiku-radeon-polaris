@@ -280,3 +280,15 @@ missing from the mode list (EDID extension not read).
   - SDMA halted, registers, GART and IH restored afterwards; the SMC
     firmware keeps running until reboot. Temperature 22 °C before and after;
     screen and fan unchanged (observed).
+
+## 2026-10-01 — Phase 3 step 5, first attempt: SMU hangs loading the MEC
+
+- `RadeonGfx gfxtest`: second LoadUcodes in the same boot (after the SDMA
+  test) with RLC, CE, PFP, ME, MEC. No response to LoadUcodes; afterwards
+  SMC_RESP_0 0, PC stuck at 0x33588, UcodeLoadStatus 0x38 (CE/PFP/ME
+  loaded, MEC and RLC not). CP, MEC, RLC and SDMA still halted; GART/IH
+  restored; display unaffected. The SMU stays hung until reboot.
+- Differences to Linux: Linux loads everything in one LoadUcodes and its
+  TOC also lists MEC_JT1/JT2 (the MEC jump table, copied page aligned after
+  the MEC code by amdgpu_ucode_patch_jt()), though not in the load mask.
+  The loader now does exactly that; retry after a reboot.
