@@ -39,4 +39,10 @@ git -C haiku-radeon-polaris config receive.denyCurrentBranch updateInstead
 git -C "$ROOT/haiku" push -f "ssh://$HOST/boot/home/haiku" radeon_hd-polaris
 $SSH "cd ~/haiku && git checkout -q radeon_hd-polaris && git log --oneline -1"
 git -C "$ROOT/haiku-radeon-polaris" push -f "ssh://$HOST/boot/home/haiku-radeon-polaris" main
+# RadeonGfx fork (Phase 3), if checked out next to this repository; the
+# Haiku machine's clone lives in ~/gpu (see build-gpu-stack.sh)
+if [ -d "$ROOT/RadeonGfx/.git" ]; then
+	$SSH "[ -d ~/gpu/RadeonGfx/.git ] && git -C ~/gpu/RadeonGfx config receive.denyCurrentBranch updateInstead" \
+		&& git -C "$ROOT/RadeonGfx" push -f "ssh://$HOST/boot/home/gpu/RadeonGfx" polaris
+fi
 echo "Synced to $HOST"
