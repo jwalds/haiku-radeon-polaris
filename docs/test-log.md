@@ -209,3 +209,19 @@ missing from the mode list (EDID extension not read).
     freeing (66568 KB visible = reservations + dummy and scratch page).
   - 4 MB of locked system memory: 593 physical runs, all below 4 GB, so the
     GART needs per-page entries.
+
+## 2026-10-01 — Phase 3 step 3a: GART (first register writes)
+
+- `RadeonGfx garttest` (fork): follows Linux gmc_v8_0_mc_program() and
+  gart_enable() for VM context 0, keeping the VBIOS FB_LOCATION.
+  - System aperture 0xF4_0000_0000–0xF4_FFFF_FFFF (was 0–0), AGP off,
+    MC_VM_MX_L1_TLB_CNTL 0x503 → 0x55b (system access mode 3), L2 cache
+    on with 64 KB fragments (VM_L2_CNTL 0x0c0b8602 → 0x0c0b8e03).
+  - GART 512 MB at 0xFF_0000_0000, page table in VRAM at 0xF4_0400_2000;
+    TLB invalidate acknowledged (VM_INVALIDATE_RESPONSE 1).
+  - 256 KB of system memory mapped: 64 PTEs, all correct
+    (e.g. 0xFF_0000_0000 → 0x32F61000, PTE 0x32f61067); no protection
+    faults, VM_L2_STATUS 0.
+  - Held 5 s: display unchanged. All saved registers restored to the VBIOS
+    values afterwards.
+- Translation itself is only exercised once an engine (SDMA, step 4) uses it.
