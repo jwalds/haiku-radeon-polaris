@@ -306,3 +306,20 @@ missing from the mode list (EDID extension not read).
   2. WRITE_DATA to VRAM and to system memory through the GART
   3. EVENT_WRITE_EOP fence + interrupt: IH source 181 (CP end of pipe)
 - CP, MEC and RLC halted and registers restored afterwards; 22 °C.
+
+## 2026-10-01 — Phase 3 step 5b, attempts: repeated GFX runs
+
+- A second gfxtest in the same boot stalled: the CP consumed the ring but
+  GRBM_STATUS stayed busy (CP_BUSY, CPF_BUSY), later without EOP
+  interrupts. CP_CPF_STATUS showed INTERRUPT_BUSY: restoring the VBIOS
+  CP_INT_CNTL_RING0 (0x003c0000, GUI busy/idle interrupts) after a test,
+  with the IH ring off, left a CP interrupt pending, surviving GRBM/SRBM
+  soft resets. Fix: CP interrupts off at start and at the end.
+- A firmware reload through the SMU in an already running SMU works
+  (with the MEC jump table entries).
+- A GFX soft reset (gfx_v8_0_soft_reset(): GMCON stall, GRBM
+  RLC/GFX/CP/CPF/CPC/CPG, SRBM GRBM/SEM) during Init right after a fresh
+  firmware load hung the machine twice (hard reset needed; the syslog of
+  that boot lost its last minutes). Removed; Linux only resets to recover.
+- Bring-up tests now write unbuffered output, captured on the
+  development machine, so a hang still shows the last step.
