@@ -192,3 +192,20 @@ missing from the mode list (EDID extension not read).
 - Fixed before the run: ~RadeonDevice() touched registers even when not
   initialized (would have written GFX6 registers); the server and test
   modes now refuse to run without `--si`.
+
+## 2026-10-01 — Phase 3 step 2: memory
+
+- Patch 0012 now maps the frame buffer area with B_CLONEABLE_AREA so the
+  GPU server can clone it (the accelerant uses the kernel address).
+- `RadeonGfx memtest` (registers read-only):
+  - VRAM 0xF4_0000_0000–0xF4_FFFF_FFFF (4096 MB), CPU visible first 256 MB.
+  - Reserved for radeon_hd: 0xF4_0000_0000 +64 MB (screen) and the last
+    1 MB of visible VRAM (cursor). Check against the hardware: CRTC 0
+    scans out at 0xF4_0000_0000, cursor at 0xF4_0FFF_8000 — both inside.
+    CRTCs 2–4 have GRPH_ENABLE set with address 0 but aren't running
+    (CRTC_MASTER_EN clear); the check now skips them.
+  - 4 KB / 1 MB / 16 MB visible buffers, 64 KB aligned, CPU write/read OK;
+    1 GB invisible buffer at 0xF4_1000_0000; usage back to baseline after
+    freeing (66568 KB visible = reservations + dummy and scratch page).
+  - 4 MB of locked system memory: 593 physical runs, all below 4 GB, so the
+    GART needs per-page entries.
