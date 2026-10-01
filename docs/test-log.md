@@ -242,3 +242,21 @@ missing from the mode list (EDID extension not read).
   ring/write pointer writeback consistent (0x960). All registers restored.
 - PCI command register 0x0007 (bus master already on); tools/pci_config.cpp
   reads/writes PCI config through the poke driver.
+
+## 2026-10-01 — Phase 3 step 4, first attempt: direct SDMA firmware load
+
+- `RadeonGfx sdmatest`: SDMA0 set up as in Linux sdma_v3_0_gfx_resume()
+  with the firmware written through SDMA0_UCODE_ADDR/DATA (Linux 4.7's
+  direct load). Engine unhalted (F32_CNTL 0), ring not empty, but RB_RPTR
+  stayed 0; SDMA0_STATUS_REG 0x46dc7042 (RB_MC_RREQ_IDLE clear). Halted and
+  restored after the 1 s timeout; display unaffected.
+- Writes to SDMA0_UCODE_DATA are ignored on this card: UCODE_ADDR doesn't
+  advance and the data doesn't change (reads back 0xbbbb2fbd...). Direct
+  loading is locked; Linux never used it for Polaris (powerplay/SMU loads
+  the SDMA, CP and RLC firmware).
+- SMU state after the VBIOS (SMC indirect registers via 0x1ac/0x1ad):
+  SMC_PC_C 0x2ac8 (< 0x20100: boot ROM, no SMC firmware running),
+  SMC_SYSCON_CLOCK_CNTL_0 0x01000000 (clock on), SMU_FIRMWARE 0x00030006
+  (protection mode), SMU_STATUS 0.
+- Next: start the SMC firmware (polaris11_smc.bin, protection mode) and
+  have the SMU load the SDMA firmware (Linux smu7_smumgr/polaris10_smumgr).
