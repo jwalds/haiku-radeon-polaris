@@ -1,7 +1,7 @@
 From e915a61311fee5e25fab1f9559d3c48f032c9797 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
 Date: Sun, 27 Sep 2026 20:23:50 +0000
-Subject: [PATCH 03/12] radeon_hd: fix Polaris HDMI transmitter setup and DCE
+Subject: [PATCH 03/13] radeon_hd: fix Polaris HDMI transmitter setup and DCE
  clocks
 
 * Only use dual link (8 lanes) in UNIPHYTransmitterControl v1.5/v1.6

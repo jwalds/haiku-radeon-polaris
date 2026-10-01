@@ -1,7 +1,7 @@
-From fceb368bf456109a8ce426191fe9cd087a058903 Mon Sep 17 00:00:00 2001
+From 5d453d46529a82f21f4c9874fef56a79fc4a03fa Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
 Date: Tue, 29 Sep 2026 19:17:28 +0000
-Subject: [PATCH 12/12] radeon_hd: debug output for DCE 10+ bring-up
+Subject: [PATCH 13/13] radeon_hd: debug output for DCE 10+ bring-up
 
 * Dump the non-zero display registers before and after the mode set in
   the same format as Linux amdgpu register captures.

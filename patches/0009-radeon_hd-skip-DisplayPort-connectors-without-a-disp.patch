@@ -1,7 +1,7 @@
 From 47686bb8c7d9b2c43f4c3ff99f344482a86930fa Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
 Date: Tue, 29 Sep 2026 19:14:52 +0000
-Subject: [PATCH 09/12] radeon_hd: skip DisplayPort connectors without a
+Subject: [PATCH 09/13] radeon_hd: skip DisplayPort connectors without a
  display on DCE 10/11
 
 Check the connector's hot plug detect sense bit (DC_HPD_INT_STATUS, as

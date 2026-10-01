@@ -1,7 +1,7 @@
 From d6a5fbf268b770922a5086eb9a79d88a090c3bde Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
 Date: Tue, 29 Sep 2026 19:16:50 +0000
-Subject: [PATCH 01/12] radeon_hd: DCE 10/11 register fixes for Polaris
+Subject: [PATCH 01/13] radeon_hd: DCE 10/11 register fixes for Polaris
 
 * Fix the chip name table order (Polaris 10/11 names were swapped).
 * Read the VRAM size from CONFIG_MEMSIZE (0x5428) on Tahiti..Polaris,

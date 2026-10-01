@@ -1,0 +1,307 @@
+From b247f20b9821ca4e59b757dfd7d94479ac1c9df5 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
+Date: Thu, 1 Oct 2026 14:55:42 +0000
+Subject: [PATCH 12/13] radeon_hd: publish a render device for a userland GPU
+ server
+
+Publish graphics/radeon_hd_render_<pci address> next to each display
+device. It reports the radeon_gfx.accelerant signature, which app_server
+skips (no get_accelerant_hook()), and answers RADEON_GET_GPU_INFO with the
+register, ROM and frame buffer areas and the chip identification, so a GPU
+server doesn't depend on the shared info layout.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01NqrEBcidivS5BSWVfbLqvu
+---
+ .../private/graphics/radeon_hd/radeon_hd.h    | 30 ++++++-
+ .../drivers/graphics/radeon_hd/device.cpp     | 79 ++++++++++++++++++-
+ .../drivers/graphics/radeon_hd/device.h       |  1 +
+ .../drivers/graphics/radeon_hd/driver.cpp     | 24 +++++-
+ .../drivers/graphics/radeon_hd/driver.h       |  1 +
+ .../drivers/graphics/radeon_hd/radeon_hd.cpp  |  1 +
+ .../graphics/radeon_hd/radeon_hd_private.h    |  1 +
+ 7 files changed, 134 insertions(+), 3 deletions(-)
+
+diff --git a/headers/private/graphics/radeon_hd/radeon_hd.h b/headers/private/graphics/radeon_hd/radeon_hd.h
+index a53907158d..b3b4b1cf2f 100644
+--- a/headers/private/graphics/radeon_hd/radeon_hd.h
++++ b/headers/private/graphics/radeon_hd/radeon_hd.h
+@@ -45,6 +45,12 @@
+ #define DEVICE_NAME				"radeon_hd"
+ #define RADEON_ACCELERANT_NAME	"radeon_hd.accelerant"
+ 
++// The render device is published next to each display device for a userland
++// GPU server (RadeonGfx) and Mesa's libdrm. Its accelerant has no
++// get_accelerant_hook(), so app_server skips it.
++#define RENDER_DEVICE_NAME				"radeon_hd_render"
++#define RADEON_RENDER_ACCELERANT_NAME	"radeon_gfx.accelerant"
++
+ #define MAX_NAME_LENGTH		32
+ 
+ // Used to collect EDID from boot loader
+@@ -263,7 +269,29 @@ enum {
+ 
+ 	RADEON_GET_DEVICE_NAME,
+ 	RADEON_ALLOCATE_GRAPHICS_MEMORY,
+-	RADEON_FREE_GRAPHICS_MEMORY
++	RADEON_FREE_GRAPHICS_MEMORY,
++	RADEON_GET_GPU_INFO
++};
++
++#define RADEON_GPU_INFO_VERSION		1
++
++// retrieve the resources a GPU server needs (render device only)
++struct radeon_gpu_info {
++	uint32	magic;					// magic number
++	uint32	version;				// RADEON_GPU_INFO_VERSION
++	area_id	registers_area;			// memory mapped registers
++	uint64	registers_size;
++	area_id	rom_area;				// copy of the AtomBIOS
++	uint32	rom_size;
++	area_id	frame_buffer_area;		// mapped part of VRAM (PCI BAR)
++	uint64	frame_buffer_phys;
++	uint64	frame_buffer_size;		// in bytes
++	uint64	graphics_memory_size;	// VRAM, in bytes
++	uint16	pci_id;
++	uint8	pci_revision;
++	uint8	dce_major;
++	uint8	dce_minor;
++	uint16	chipset_id;
+ };
+ 
+ // retrieve the area_id of the kernel/accelerant shared info
+diff --git a/src/add-ons/kernel/drivers/graphics/radeon_hd/device.cpp b/src/add-ons/kernel/drivers/graphics/radeon_hd/device.cpp
+index aa94b11d08..3f317a35a3 100644
+--- a/src/add-ons/kernel/drivers/graphics/radeon_hd/device.cpp
++++ b/src/add-ons/kernel/drivers/graphics/radeon_hd/device.cpp
+@@ -43,6 +43,8 @@ static status_t device_close(void* data);
+ static status_t device_free(void* data);
+ static status_t device_ioctl(void* data, uint32 opcode,
+ 	void* buffer, size_t length);
++static status_t render_device_ioctl(void* data, uint32 opcode,
++	void* buffer, size_t length);
+ static status_t device_read(void* data, off_t offset,
+ 	void* buffer, size_t* length);
+ static status_t device_write(void* data, off_t offset,
+@@ -62,6 +64,19 @@ device_hooks gDeviceHooks = {
+ 	NULL
+ };
+ 
++device_hooks gRenderDeviceHooks = {
++	device_open,
++	device_close,
++	device_free,
++	render_device_ioctl,
++	device_read,
++	device_write,
++	NULL,
++	NULL,
++	NULL,
++	NULL
++};
++
+ 
+ #ifdef DEBUG_COMMANDS
+ static int
+@@ -112,7 +127,8 @@ device_open(const char* name, uint32 /*flags*/, void** _cookie)
+ 
+ 		// search for device name
+ 		for (id = 0; (thisName = gDeviceNames[id]) != NULL; id++) {
+-			if (!strcmp(name, thisName))
++			if (!strcmp(name, thisName)
++				|| !strcmp(name, gRenderDeviceNames[id]))
+ 				break;
+ 		}
+ 		if (!thisName)
+@@ -222,6 +238,67 @@ device_ioctl(void* data, uint32 op, void* buffer, size_t bufferLength)
+ }
+ 
+ 
++static status_t
++render_device_ioctl(void* data, uint32 op, void* buffer, size_t bufferLength)
++{
++	struct radeon_info* info = (radeon_info*)data;
++
++	switch (op) {
++		case B_GET_ACCELERANT_SIGNATURE:
++			TRACE("%s: accelerant: %s\n", __func__,
++				RADEON_RENDER_ACCELERANT_NAME);
++			if (user_strlcpy((char*)buffer, RADEON_RENDER_ACCELERANT_NAME,
++					bufferLength) < B_OK)
++				return B_BAD_ADDRESS;
++			return B_OK;
++
++		case RADEON_GET_GPU_INFO:
++		{
++			radeon_gpu_info gpuInfo;
++			if (bufferLength < sizeof(radeon_gpu_info)
++				|| user_memcpy(&gpuInfo, buffer, sizeof(uint32)) < B_OK)
++				return B_BAD_ADDRESS;
++			if (gpuInfo.magic != RADEON_PRIVATE_DATA_MAGIC)
++				break;
++
++			radeon_shared_info &sharedInfo = *info->shared_info;
++			memset(&gpuInfo, 0, sizeof(radeon_gpu_info));
++			gpuInfo.magic = RADEON_PRIVATE_DATA_MAGIC;
++			gpuInfo.version = RADEON_GPU_INFO_VERSION;
++			gpuInfo.registers_area = info->registers_area;
++			gpuInfo.registers_size = info->registers_size;
++			gpuInfo.rom_area = info->rom_area;
++			gpuInfo.rom_size = sharedInfo.rom_size;
++			gpuInfo.frame_buffer_area = info->framebuffer_area;
++			gpuInfo.frame_buffer_phys = sharedInfo.frame_buffer_phys;
++			gpuInfo.frame_buffer_size
++				= (uint64)sharedInfo.frame_buffer_size * 1024;
++			gpuInfo.graphics_memory_size
++				= (uint64)sharedInfo.graphics_memory_size * 1024;
++			gpuInfo.pci_id = info->pciID;
++			gpuInfo.pci_revision = info->pci->revision;
++			gpuInfo.dce_major = info->dceMajor;
++			gpuInfo.dce_minor = info->dceMinor;
++			gpuInfo.chipset_id = info->chipsetID;
++			return user_memcpy(buffer, &gpuInfo, sizeof(radeon_gpu_info));
++		}
++
++		case RADEON_GET_DEVICE_NAME:
++			if (user_strlcpy((char*)buffer, gRenderDeviceNames[info->id],
++					bufferLength) < B_OK)
++				return B_BAD_ADDRESS;
++			return B_OK;
++
++		default:
++			TRACE("%s: ioctl() unknown message %" B_PRIu32 " (length = %ld)\n",
++				__func__, op, bufferLength);
++			break;
++	}
++
++	return B_DEV_INVALID_IOCTL;
++}
++
++
+ static status_t
+ device_read(void* /*data*/, off_t /*pos*/,
+ 	void* /*buffer*/, size_t *_length)
+diff --git a/src/add-ons/kernel/drivers/graphics/radeon_hd/device.h b/src/add-ons/kernel/drivers/graphics/radeon_hd/device.h
+index 97156d2771..ac5ddb1477 100644
+--- a/src/add-ons/kernel/drivers/graphics/radeon_hd/device.h
++++ b/src/add-ons/kernel/drivers/graphics/radeon_hd/device.h
+@@ -14,6 +14,7 @@
+ 
+ /* The published PCI bus interface device hooks */
+ extern device_hooks gDeviceHooks;
++extern device_hooks gRenderDeviceHooks;
+ 
+ 
+ #endif	/* DEVICE_H */
+diff --git a/src/add-ons/kernel/drivers/graphics/radeon_hd/driver.cpp b/src/add-ons/kernel/drivers/graphics/radeon_hd/driver.cpp
+index b258671d96..e7af8b1ea7 100644
+--- a/src/add-ons/kernel/drivers/graphics/radeon_hd/driver.cpp
++++ b/src/add-ons/kernel/drivers/graphics/radeon_hd/driver.cpp
+@@ -666,6 +666,8 @@ int32 api_version = B_CUR_DRIVER_API_VERSION;
+ 
+ 
+ char* gDeviceNames[MAX_CARDS + 1];
++char* gRenderDeviceNames[MAX_CARDS + 1];
++static char* sPublishedNames[2 * MAX_CARDS + 1];
+ radeon_info* gDeviceInfo[MAX_CARDS];
+ pci_module_info* gPCI;
+ mutex gLock;
+@@ -704,7 +706,7 @@ extern "C" const char**
+ publish_devices(void)
+ {
+ 	TRACE("%s\n", __func__);
+-	return (const char**)gDeviceNames;
++	return (const char**)sPublishedNames;
+ }
+ 
+ 
+@@ -769,9 +771,19 @@ init_driver(void)
+ 		if (gDeviceNames[found] == NULL)
+ 			break;
+ 
++		sprintf(name, "graphics/%s_%02x%02x%02x", RENDER_DEVICE_NAME,
++			info->bus, info->device, info->function);
++
++		gRenderDeviceNames[found] = strdup(name);
++		if (gRenderDeviceNames[found] == NULL) {
++			free(gDeviceNames[found]);
++			break;
++		}
++
+ 		gDeviceInfo[found] = (radeon_info*)malloc(sizeof(radeon_info));
+ 		if (gDeviceInfo[found] == NULL) {
+ 			free(gDeviceNames[found]);
++			free(gRenderDeviceNames[found]);
+ 			break;
+ 		}
+ 
+@@ -796,6 +808,13 @@ init_driver(void)
+ 	}
+ 
+ 	gDeviceNames[found] = NULL;
++	gRenderDeviceNames[found] = NULL;
++
++	for (int32 index = 0; index < found; index++) {
++		sPublishedNames[2 * index] = gDeviceNames[index];
++		sPublishedNames[2 * index + 1] = gRenderDeviceNames[index];
++	}
++	sPublishedNames[2 * found] = NULL;
+ 
+ 	if (found == 0) {
+ 		mutex_destroy(&gLock);
+@@ -820,6 +839,7 @@ uninit_driver(void)
+ 	char* name;
+ 	for (int32 index = 0; (name = gDeviceNames[index]) != NULL; index++) {
+ 		free(gDeviceInfo[index]);
++		free(gRenderDeviceNames[index]);
+ 		free(name);
+ 	}
+ 
+@@ -837,6 +857,8 @@ find_device(const char* name)
+ 	for (index = 0; gDeviceNames[index] != NULL; index++) {
+ 		if (!strcmp(name, gDeviceNames[index]))
+ 			return &gDeviceHooks;
++		if (!strcmp(name, gRenderDeviceNames[index]))
++			return &gRenderDeviceHooks;
+ 	}
+ 
+ 	ERROR("%s: %s wasn't found!\n", __func__, name);
+diff --git a/src/add-ons/kernel/drivers/graphics/radeon_hd/driver.h b/src/add-ons/kernel/drivers/graphics/radeon_hd/driver.h
+index 226f2ff7be..cdb2646745 100644
+--- a/src/add-ons/kernel/drivers/graphics/radeon_hd/driver.h
++++ b/src/add-ons/kernel/drivers/graphics/radeon_hd/driver.h
+@@ -31,6 +31,7 @@
+ 
+ 
+ extern char* gDeviceNames[];
++extern char* gRenderDeviceNames[];
+ extern radeon_info* gDeviceInfo[];
+ extern pci_module_info* gPCI;
+ extern mutex gLock;
+diff --git a/src/add-ons/kernel/drivers/graphics/radeon_hd/radeon_hd.cpp b/src/add-ons/kernel/drivers/graphics/radeon_hd/radeon_hd.cpp
+index 9cdc2fc283..44ce5d1575 100644
+--- a/src/add-ons/kernel/drivers/graphics/radeon_hd/radeon_hd.cpp
++++ b/src/add-ons/kernel/drivers/graphics/radeon_hd/radeon_hd.cpp
+@@ -705,6 +705,7 @@ radeon_hd_init(radeon_info &info)
+ 		return info.registers_area;
+ 	}
+ 	mmioMapper.Detach();
++	info.registers_size = mmioSize;
+ 
+ 	// *** Populate frame buffer information
+ 	if (info.chipsetID >= RADEON_VEGAM) {
+diff --git a/src/add-ons/kernel/drivers/graphics/radeon_hd/radeon_hd_private.h b/src/add-ons/kernel/drivers/graphics/radeon_hd/radeon_hd_private.h
+index 8bcf77c2c4..9d31d5d7fd 100644
+--- a/src/add-ons/kernel/drivers/graphics/radeon_hd/radeon_hd_private.h
++++ b/src/add-ons/kernel/drivers/graphics/radeon_hd/radeon_hd_private.h
+@@ -38,6 +38,7 @@ struct radeon_info {
+ 	uint8*			atom_buffer;	// buffer for atombios
+ 
+ 	area_id			registers_area;
++	uint64			registers_size;
+ 	area_id			framebuffer_area;
+ 	area_id			rom_area;
+ 
+-- 
+2.34.1
+

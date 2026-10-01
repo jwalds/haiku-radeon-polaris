@@ -1,7 +1,7 @@
 From 5d69b16a301e30394f077737ccdb7f7eb1a750ee Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
 Date: Tue, 29 Sep 2026 19:16:57 +0000
-Subject: [PATCH 02/12] radeon_hd: keep the VBIOS memory controller setup on
+Subject: [PATCH 02/13] radeon_hd: keep the VBIOS memory controller setup on
  Volcanic Islands+
 
 * Polaris VBIOS places VRAM at 0xF400000000 (MC_VM_FB_LOCATION

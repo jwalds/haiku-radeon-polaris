@@ -1,7 +1,7 @@
 From 2b2be0bf10b7b24ccb04621d41aa1ec863dd2b60 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
 Date: Tue, 29 Sep 2026 19:17:20 +0000
-Subject: [PATCH 10/12] radeon_hd: enable Polaris 11
+Subject: [PATCH 10/13] radeon_hd: enable Polaris 11
 
 Radeon RX 460/560 and Radeon Pro WX 4100/4130/4170 (DCE 11.2). Tested on
 an RX 560 (1002:67ef) over HDMI up to 2560x1440@75.
