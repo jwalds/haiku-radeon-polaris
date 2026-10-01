@@ -323,3 +323,17 @@ missing from the mode list (EDID extension not read).
   that boot lost its last minutes). Removed; Linux only resets to recover.
 - Bring-up tests now write unbuffered output, captured on the
   development machine, so a hang still shows the last step.
+
+## 2026-10-01 — Phase 3 step 5b: first shader dispatch hangs in instruction fetch
+
+- Fresh boot, without the soft reset: tests 0–3 pass again (EOP interrupt
+  arrives), no machine hang.
+- Test 4 (gfx803 buffer_store shader in GTT, 16 x 64 threads,
+  DISPATCH_DIRECT on the gfx ring): no output, no fence. GRBM_STATUS
+  SPI_BUSY, CP_STALLED_STAT2 ME_WAITING_ON_PARTIAL_FLUSH.
+- Wave state through SQ_IND_INDEX/DATA: 32 valid waves, all at their first
+  instruction (PC 0xFF_0000_1000 = the shader in GTT), INST_DW0 0xff336698
+  instead of the shader's 0x8e058604: the instruction fetch from system
+  memory through the GART doesn't complete. No VM protection fault logged.
+- Next (after a reboot to clear the waves): empty shader in VRAM, then the
+  store shader in VRAM writing VRAM, then writing GTT, with a wave dump.
