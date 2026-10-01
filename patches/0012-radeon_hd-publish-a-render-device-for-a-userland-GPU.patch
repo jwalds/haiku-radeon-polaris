@@ -1,4 +1,4 @@
-From b247f20b9821ca4e59b757dfd7d94479ac1c9df5 Mon Sep 17 00:00:00 2001
+From 17a5041bd32c702bd530db31f77d904fa5edf2f1 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
 Date: Thu, 1 Oct 2026 14:55:42 +0000
 Subject: [PATCH 12/13] radeon_hd: publish a render device for a userland GPU
@@ -18,9 +18,9 @@ Claude-Session: https://claude.ai/code/session_01NqrEBcidivS5BSWVfbLqvu
  .../drivers/graphics/radeon_hd/device.h       |  1 +
  .../drivers/graphics/radeon_hd/driver.cpp     | 24 +++++-
  .../drivers/graphics/radeon_hd/driver.h       |  1 +
- .../drivers/graphics/radeon_hd/radeon_hd.cpp  |  1 +
+ .../drivers/graphics/radeon_hd/radeon_hd.cpp  |  4 +-
  .../graphics/radeon_hd/radeon_hd_private.h    |  1 +
- 7 files changed, 134 insertions(+), 3 deletions(-)
+ 7 files changed, 136 insertions(+), 4 deletions(-)
 
 diff --git a/headers/private/graphics/radeon_hd/radeon_hd.h b/headers/private/graphics/radeon_hd/radeon_hd.h
 index a53907158d..b3b4b1cf2f 100644
@@ -279,7 +279,7 @@ index 226f2ff7be..cdb2646745 100644
  extern pci_module_info* gPCI;
  extern mutex gLock;
 diff --git a/src/add-ons/kernel/drivers/graphics/radeon_hd/radeon_hd.cpp b/src/add-ons/kernel/drivers/graphics/radeon_hd/radeon_hd.cpp
-index 9cdc2fc283..44ce5d1575 100644
+index 9cdc2fc283..e57cc1ef11 100644
 --- a/src/add-ons/kernel/drivers/graphics/radeon_hd/radeon_hd.cpp
 +++ b/src/add-ons/kernel/drivers/graphics/radeon_hd/radeon_hd.cpp
 @@ -705,6 +705,7 @@ radeon_hd_init(radeon_info &info)
@@ -290,6 +290,16 @@ index 9cdc2fc283..44ce5d1575 100644
  
  	// *** Populate frame buffer information
  	if (info.chipsetID >= RADEON_VEGAM) {
+@@ -799,7 +800,8 @@ radeon_hd_init(radeon_info &info)
+ 	AreaKeeper frambufferMapper;
+ 	info.framebuffer_area = frambufferMapper.Map("radeon hd frame buffer",
+ 		fbAddr, info.shared_info->frame_buffer_size * 1024,
+-		B_ANY_KERNEL_ADDRESS, B_READ_AREA | B_WRITE_AREA,
++		B_ANY_KERNEL_ADDRESS,
++		B_READ_AREA | B_WRITE_AREA | B_CLONEABLE_AREA,
+ 		(void**)&info.shared_info->frame_buffer);
+ 
+ 	if (frambufferMapper.InitCheck() < B_OK) {
 diff --git a/src/add-ons/kernel/drivers/graphics/radeon_hd/radeon_hd_private.h b/src/add-ons/kernel/drivers/graphics/radeon_hd/radeon_hd_private.h
 index 8bcf77c2c4..9d31d5d7fd 100644
 --- a/src/add-ons/kernel/drivers/graphics/radeon_hd/radeon_hd_private.h

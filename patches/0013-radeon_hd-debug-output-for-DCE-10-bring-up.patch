@@ -1,4 +1,4 @@
-From 5d453d46529a82f21f4c9874fef56a79fc4a03fa Mon Sep 17 00:00:00 2001
+From cb6b138737ebdabfc1018f392166eb4f828def91 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Jonathan=20Waldsj=C3=B6?= <jonathan.waldsjo@gmail.com>
 Date: Tue, 29 Sep 2026 19:17:28 +0000
 Subject: [PATCH 13/13] radeon_hd: debug output for DCE 10+ bring-up
