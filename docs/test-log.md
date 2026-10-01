@@ -337,3 +337,27 @@ missing from the mode list (EDID extension not read).
   memory through the GART doesn't complete. No VM protection fault logged.
 - Next (after a reboot to clear the waves): empty shader in VRAM, then the
   store shader in VRAM writing VRAM, then writing GTT, with a wave dump.
+
+## 2026-10-01 — Phase 3 step 5b: first compute dispatches work (waves were in VMID 9)
+
+- Staged test (RadeonGfx 9a595b6): 4a empty shader in VRAM OK, 4b store
+  shader in VRAM writing VRAM OK (1024 values), 4c writing system memory
+  through the GART: dispatch and fence complete, but the output stays 0.
+  No VM fault in context 0, PTE correct (valid, system, snooped, R/W).
+- Not a CPU cache problem: clflush of the output before the dispatch and
+  before reading changes nothing; the GPU (CP COPY_DATA, from memory and
+  through the TC L2) also reads 0 at the output.
+- The CP through the TC L2 reads and writes system memory through the GART
+  correctly (COPY_DATA src_sel 2, WRITE_DATA dst_sel 2): the TC L2 to GART
+  path works, the shader's requests were the problem.
+- `gfxtest --all-vm-contexts` (GART also mapped by VM contexts 1-15): now
+  4b failed too; VM_CONTEXT1_PROTECTION_FAULT_STATUS 0x13004001 = range
+  fault, write, client TC ("TC3"), **VMID 9**, at the 4b output in VRAM.
+  The waves ran in VMID 9 (stale COMPUTE_VMID; the register reads back as
+  junk): VRAM worked only because disabled contexts pass addresses through,
+  GART addresses went nowhere, and the earlier hang fetched garbage
+  instructions the same way. SH_MEM_CONFIG was also never set for VMID 9.
+- Fix: SET_SH_REG COMPUTE_VMID = 0 with every dispatch (RadeonGfx
+  c12732e). 4a, 4b and 4c all pass, with and without --all-vm-contexts,
+  several runs in the same boot; no hang, 22 °C.
+- Next: step 6, DRM ioctl emulation for VI so that libdrm2/RADV can run.
