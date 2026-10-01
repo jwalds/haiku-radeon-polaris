@@ -225,3 +225,20 @@ missing from the mode list (EDID extension not read).
   - Held 5 s: display unchanged. All saved registers restored to the VBIOS
     values afterwards.
 - Translation itself is only exercised once an engine (SDMA, step 4) uses it.
+
+## 2026-10-01 — Phase 3 step 3b: interrupt (IH) ring
+
+- `RadeonGfx ihtest` (fork): GART on, then the IH ring (Linux
+  tonga_ih_irq_init()), CPU interrupt left off (no handler in radeon_hd),
+  ring polled. Source: D1 vblank (LB_INTERRUPT_MASK), acknowledged per
+  vector through LB_VBLANK_STATUS.
+- First two attempts: IH_RB_WPTR advanced to 0x10 but nothing reached the
+  ring, with the ring in VRAM and then in GART mapped memory. The IH
+  doesn't go through the GPU VM; like Linux (use_bus_addr) it needs bus
+  addresses. Those two attempts sent one 16 byte vector and a write pointer
+  to bus addresses 0xF4_0401_0000 / 0xFF_0000_0000, where there is no RAM.
+- With a contiguous system memory ring at bus 0xb5c000: 150 vblank vectors
+  in 2.00 s = 75.0 per second (the 2560x1440@75 mode), source 1 data 0,
+  ring/write pointer writeback consistent (0x960). All registers restored.
+- PCI command register 0x0007 (bus master already on); tools/pci_config.cpp
+  reads/writes PCI config through the poke driver.
