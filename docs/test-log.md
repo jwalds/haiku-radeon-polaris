@@ -260,3 +260,22 @@ missing from the mode list (EDID extension not read).
   (protection mode), SMU_STATUS 0.
 - Next: start the SMC firmware (polaris11_smc.bin, protection mode) and
   have the SMU load the SDMA firmware (Linux smu7_smumgr/polaris10_smumgr).
+
+## 2026-10-01 — Phase 3 step 4: SMU firmware and first GPU work (SDMA)
+
+- `RadeonGfx sdmatest` (fork) with PolarisSmu (Linux
+  polaris10_start_smu_in_protection_mode() / smu7_request_smu_load_fw()):
+  - SMC firmware polaris11_smc.bin 0x1d1f00 (129940 bytes), protection mode,
+    hard key: accepted (SMU_STATUS 0x3 = done + pass), PC 0x2994 → 0x20498.
+  - SDMA0/SDMA1 firmware (0x3a) loaded by the SMU from VRAM through a TOC:
+    soft registers at 0x3fa14, UcodeLoadStatus 0x6.
+  - SDMA0 ring in VRAM, VMID 0:
+    1. WRITE_LINEAR to VRAM: 0xdeadbeef OK
+    2. 1 MB CONST_FILL + fence OK
+    3. 1 MB copy VRAM → VRAM OK
+    4. 1 MB copy VRAM → system memory through the GART (0xFF_0000_0000) OK
+    5. 1 MB copy system memory → VRAM OK
+    6. fence + trap: IH vector source 224 (SDMA trap) OK
+    7. 63 MB fill: 11.3 ms, 5.8 GB/s (boot clocks)
+  - SDMA halted, registers, GART and IH restored afterwards; the SMC
+    firmware keeps running until reboot. Temperature 22 °C before and after.
