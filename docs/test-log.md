@@ -171,3 +171,24 @@ missing from the mode list (EDID extension not read).
   RadeonGfx's kernel module (the server will attach to radeon_hd).
   Buffer/syncobj fd export returns B_NOT_SUPPORTED for now.
 - The server is not run yet: it still contains Southern Islands init code.
+
+## 2026-10-01 — Phase 3 step 1: render device and read-only probe
+
+- radeon_hd patch "publish a render device": `/dev/graphics/` now has
+  `radeon_hd_010000`, `radeon_hd_render_010000` and `vesa`. app_server
+  still uses radeon_hd.accelerant (skips the render node); desktop normal.
+- `RadeonGfx info` (fork) maps the registers read-only via
+  RADEON_GET_GPU_INFO:
+  - 1002:67ef rev 0xcf, DCE 11.2, 4096 MB GDDR5 (MC_SEQ_MISC0 type 5),
+    256 MB visible at 0xe0000000, MMIO 256 KB, AtomBIOS 128 KB.
+  - All engines idle and halted after the VBIOS: CP ME/PFP/CE and MEC
+    halted, RLC off, both SDMA halted, IH ring off, VM L2 and context 0 off.
+  - GB_ADDR_CONFIG 0x22011002 (= Linux POLARIS11_GB_ADDR_CONFIG_GOLDEN):
+    4 pipes, 2 shader engines, 256 B interleave, 4 KB rows.
+  - SE0/SH0: 7 active CUs (inactive mask 0xff80); no render backends
+    disabled. Per-SE values need GRBM_GFX_INDEX writes (later).
+  - VRAM at MC 0xF4_0000_0000–0xF4_FFFF_FFFF, FB offset 0, AGP and system
+    aperture unset.
+- Fixed before the run: ~RadeonDevice() touched registers even when not
+  initialized (would have written GFX6 registers); the server and test
+  modes now refuse to run without `--si`.
