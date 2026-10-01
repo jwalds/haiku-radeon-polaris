@@ -278,4 +278,5 @@ missing from the mode list (EDID extension not read).
     6. fence + trap: IH vector source 224 (SDMA trap) OK
     7. 63 MB fill: 11.3 ms, 5.8 GB/s (boot clocks)
   - SDMA halted, registers, GART and IH restored afterwards; the SMC
-    firmware keeps running until reboot. Temperature 22 °C before and after.
+    firmware keeps running until reboot. Temperature 22 °C before and after;
+    screen and fan unchanged (observed).
