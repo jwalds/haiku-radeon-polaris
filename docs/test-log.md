@@ -407,3 +407,34 @@ missing from the mode list (EDID extension not read).
   no errors (4851 blocks could be freed) and the link worked afterwards.
 - Next: first command submission through Vulkan (vkCmdFillBuffer, then a
   compute dispatch), read back.
+
+## 2026-10-02 — Phase 3 step 6: first GPU work through Vulkan (vkfill)
+
+- `tools/vktest/vkfill`: vkCmdFillBuffer on the graphics queue, fence wait,
+  CPU check. All three pass, twice (server restarted in between):
+  1. 4 KB in system memory (CP DMA)
+  2. 1 MB in system memory (RADV compute shader)
+  3. 1 MB in CPU visible VRAM (compute shader)
+- The way there:
+  - libdrm2 handled drmSyncobj*() (Mesa's vk_drm_syncobj) in a local stub
+    with made-up handles; the server rejected the CS ("signal syncobj 2
+    unknown"). drmIoctl() now sends sync object, GEM close and PRIME
+    ioctls to the accelerant of the fd.
+  - A rejected CS crashed the server (~CommandSubmission freed IB
+    addresses that were never remapped): fixed, plus messages for every
+    rejection and a chunk trace (RADEONGFX_TRACE).
+  - A crashed server left the GPU writing into freed memory (machine hang
+    after the core dump): crash signals now halt the CPs and the IH ring
+    first. The SignaledFence singleton crashed at exit (destroyed while
+    referenced): never destroyed now.
+  - First accepted CS: ring fetched, nothing executed (PFP/CE "waiting on
+    buffer data"). Server ring self test at start showed the cause: the GFX
+    ring in system memory with CP_RB0_CNTL.MTYPE = UC never returns data;
+    without MTYPE the data flowed but the CE/DE got stuck and nothing
+    executed. A stuck CP survives halt/restart (gfxtest failed afterwards),
+    only a reboot clears it. The server's GFX ring now lives in VRAM like
+    in the bring-up tests (MTYPE UC, HDP flush before WPTR); RADV's IBs in
+    system memory fetch fine.
+  - VM page directory entries hold MC addresses, page table entries for
+    VRAM the offset in VRAM (as Linux).
+- Next: an off-screen render (triangle) read back to a PNG.

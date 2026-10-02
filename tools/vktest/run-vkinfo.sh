@@ -1,5 +1,6 @@
 #!/bin/bash
-# Starts the RadeonGfx server on Polaris, runs vkinfo against RADV, then stops
+# Starts the RadeonGfx server on Polaris, runs vkinfo (or VKTEST with
+# VKTEST_ARGS) against RADV, then stops
 # the server cleanly (SIGINT). Logs: ~/server.log, ~/vkinfo.log
 GPU=${GPU:-$HOME/gpu}
 cd /tmp
@@ -15,7 +16,7 @@ if grep -q "Polaris ready" ~/server.log; then
 	# libdrm2 replaces libdrm (only for vkinfo); VKINFO_ENV adds variables, VKINFO_WRAP a wrapper (gdb)
 	env VK_DRIVER_FILES="$GPU/install/data/vulkan/icd.d/radeon_icd.x86_64.json" \
 		LIBRARY_PATH="$GPU/install/lib:%A/lib:$HOME/config/non-packaged/lib:$HOME/config/lib:/boot/system/non-packaged/lib:/boot/system/lib" \
-		$VKINFO_ENV $VKINFO_WRAP "$GPU/vktest/vkinfo" > ~/vkinfo.log 2>&1 &
+		$VKINFO_ENV $VKINFO_WRAP "$GPU/vktest/${VKTEST:-vkinfo}" $VKTEST_ARGS > ~/vkinfo.log 2>&1 &
 	vk=$!
 	for i in $(seq 100); do kill -0 $vk 2>/dev/null || break; sleep 0.2; done
 	if kill -0 $vk 2>/dev/null; then
