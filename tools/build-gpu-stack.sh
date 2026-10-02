@@ -66,7 +66,7 @@ clone accelerant2 https://github.com/X547/accelerant2.git
 # declarations" (796cc4c)
 git -C accelerant2 checkout -q 61baaa6
 
-for dir in Locks ThreadLink SADomains libdrm2; do
+for dir in Locks ThreadLink SADomains libdrm libdrm2; do
 	apply_patch $dir
 done
 

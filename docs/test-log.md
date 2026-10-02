@@ -361,3 +361,20 @@ missing from the mode list (EDID extension not read).
   c12732e). 4a, 4b and 4c all pass, with and without --all-vm-contexts,
   several runs in the same boot; no hang, 22 °C.
 - Next: step 6, DRM ioctl emulation for VI so that libdrm2/RADV can run.
+
+## 2026-10-02 — Phase 3 step 6: RADV builds, Polaris server mode written
+
+- Mesa 23.3.6 (newest release accepting libdrm_amdgpu 2.4.110), RADV only,
+  ACO, no LLVM: `tools/build-mesa.sh`, fixes in `patches/gpu-stack/`
+  (mesa: `major()`/`minor()` on Haiku, link libdrm2 for vk_drm_syncobj;
+  libdrm: `_IOWR` fallback in libsync.h; libdrm2: project version 2.4.110,
+  `amdgpu_device_get_fd()`). Builds on the i5-2320 in about 25 minutes.
+- `tools/vktest/vkinfo.c`: small vulkaninfo (Vulkan-Tools isn't packaged).
+- RadeonGfx `server` on Polaris (RadeonGfx c143699 and later): GART + VM
+  contexts 1-15 (two level, 512 entry tables, fault interrupts), VRAM PTEs
+  relative to the start of VRAM (Linux amdgpu_gmc_vram_mc2pa()), polled IH
+  dispatcher (250 µs), firmware through the SMU, GFX v8 ring as a server
+  unit (IB with VMID, VM flush, EOP fences), Polaris 11 tiling tables (the
+  VBIOS leaves GB_TILE_MODE uninitialized), SH_MEM for all VMIDs, DRM info
+  replies for VI (PCIE_EFUSE4 rev 1, external 0x5b).
+- Not run on the GPU yet.

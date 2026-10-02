@@ -1,5 +1,5 @@
 diff --git a/amdgpu/amdgpu_device.c b/amdgpu/amdgpu_device.c
-index fb5e78c..caa77a7 100644
+index fb5e78c..5d6c671 100644
 --- a/amdgpu/amdgpu_device.c
 +++ b/amdgpu/amdgpu_device.c
 @@ -134,13 +134,13 @@ drm_public int amdgpu_device_initialize_haiku(struct accelerant_base *acc,
@@ -18,6 +18,42 @@ index fb5e78c..caa77a7 100644
  	if (!dev->acc_amdgpu) {
  		fprintf(stderr, "%s: Accelerant don't provide AMDGPU interface\n", __func__);
  		r = EBADF;
+@@ -257,3 +257,8 @@ drm_public int amdgpu_query_sw_info(amdgpu_device_handle dev,
+ 	}
+ 	return EINVAL;
+ }
++
++drm_public int amdgpu_device_get_fd(amdgpu_device_handle device_handle)
++{
++	return device_handle->fd;
++}
+diff --git a/amdgpu/amdgpu_device_haiku.cpp b/amdgpu/amdgpu_device_haiku.cpp
+index 4f23640..b8d0d04 100644
+--- a/amdgpu/amdgpu_device_haiku.cpp
++++ b/amdgpu/amdgpu_device_haiku.cpp
+@@ -19,5 +19,8 @@ drm_public int amdgpu_device_initialize(int fd,
+ 	BReference<Accelerant> accDeleter(acc, true);
+ 	accelerant_base *acc_base = (accelerant_base*)static_cast<AccelerantBase*>(acc);
+ 
+-	return amdgpu_device_initialize_haiku(acc_base, major_version, minor_version, device_handle);
++	int r = amdgpu_device_initialize_haiku(acc_base, major_version, minor_version, device_handle);
++	if (r == 0 && (*device_handle)->fd == 0)
++		(*device_handle)->fd = fd;
++	return r;
+ }
+diff --git a/amdgpu/amdgpu_internal.h b/amdgpu/amdgpu_internal.h
+index 62cf731..d40c0ae 100644
+--- a/amdgpu/amdgpu_internal.h
++++ b/amdgpu/amdgpu_internal.h
+@@ -74,6 +74,8 @@ struct amdgpu_device {
+ 	atomic_t refcount;
+ 	struct amdgpu_device *next;
+ 	accelerant_base *acc_base;
++	/** fd the device was opened with (amdgpu_device_get_fd()) */
++	int fd;
+ 	accelerant_drm *acc_drm;
+ 	accelerant_amdgpu *acc_amdgpu;
+ 	unsigned major_version;
 diff --git a/libdrm_device.cpp b/libdrm_device.cpp
 index 6397d60..e4699aa 100644
 --- a/libdrm_device.cpp
@@ -41,3 +77,13 @@ index 6397d60..e4699aa 100644
  #define memclear(s) memset(&s, 0, sizeof(s))
  
  static const char sDevPath[] = "/dev/graphics/";
+diff --git a/meson.build b/meson.build
+index 70fe6fa..33a2c2f 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1,4 +1,4 @@
+-project('libdrm', 'c', 'cpp')
++project('libdrm', 'c', 'cpp', version: '2.4.110')
+ 
+ cc = meson.get_compiler('c')
+ 

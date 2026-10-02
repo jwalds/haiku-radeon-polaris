@@ -1,0 +1,17 @@
+diff --git a/libsync.h b/libsync.h
+index f1a2f96..e54306a 100644
+--- a/libsync.h
++++ b/libsync.h
+@@ -40,6 +40,12 @@
+ extern "C" {
+ #endif
+ 
++#ifndef _IOWR
++/* Haiku: Linux ioctl number encoding */
++#define _IOWR(type, nr, size) ((3U << 30) | ((sizeof(size) & 0x3fff) << 16) \
++	| (((type) & 0xff) << 8) | ((nr) & 0xff))
++#endif
++
+ #ifndef SYNC_IOC_MERGE
+ /* duplicated from linux/sync_file.h to avoid build-time dependency
+  * on new (v4.7) kernel headers.  Once distro's are mostly using

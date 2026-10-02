@@ -1,0 +1,52 @@
+diff --git a/meson.build b/meson.build
+index 9b89206..1561042 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1643,6 +1643,9 @@ if system_has_kms_drm
+     # GNU/Hurd includes egl_dri2, without drm.
+     required : (with_dri2 and host_machine.system() != 'gnu') or with_dri3
+   )
++elif host_machine.system() == 'haiku' and with_amd_vk
++  # Haiku: libdrm2 emulates libdrm for the RadeonGfx server
++  dep_libdrm = dependency('libdrm', version : '>=' + _drm_ver)
+ else
+   # We should prevent libdrm from being available when the target doesn't have it to avoid transitive
+   # dependencies (such as vk-runtime) linking to it
+diff --git a/src/amd/vulkan/radv_device.c b/src/amd/vulkan/radv_device.c
+index 247192d..43a2669 100644
+--- a/src/amd/vulkan/radv_device.c
++++ b/src/amd/vulkan/radv_device.c
+@@ -39,6 +39,14 @@
+ #include <sys/sysmacros.h>
+ #endif
+ 
++#ifdef __HAIKU__
++/* no sys/sysmacros.h: glibc dev_t encoding, as libdrm uses on Haiku */
++#ifndef major
++#define major(dev) ((unsigned)((((dev) >> 8) & 0xfff) | (((dev) >> 32) & ~0xfff)))
++#define minor(dev) ((unsigned)(((dev) & 0xff) | (((dev) >> 12) & ~0xff)))
++#endif
++#endif
++
+ #ifdef __linux__
+ #include <sys/inotify.h>
+ #endif
+diff --git a/src/amd/vulkan/radv_physical_device.c b/src/amd/vulkan/radv_physical_device.c
+index 3042737..1c6415d 100644
+--- a/src/amd/vulkan/radv_physical_device.c
++++ b/src/amd/vulkan/radv_physical_device.c
+@@ -31,6 +31,14 @@
+ #include <sys/sysmacros.h>
+ #endif
+ 
++#ifdef __HAIKU__
++/* no sys/sysmacros.h: glibc dev_t encoding, as libdrm uses on Haiku */
++#ifndef major
++#define major(dev) ((unsigned)((((dev) >> 8) & 0xfff) | (((dev) >> 32) & ~0xfff)))
++#define minor(dev) ((unsigned)(((dev) & 0xff) | (((dev) >> 12) & ~0xff)))
++#endif
++#endif
++
+ #include "util/disk_cache.h"
+ #include "util/hex.h"
+ #include "util/u_debug.h"
