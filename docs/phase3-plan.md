@@ -75,3 +75,21 @@ Each step ends in a test on the Haiku machine. Steps 1–3 cannot hang the GPU.
 - RadeonGfx has no license file; fine for personal use, needs clarifying
   before publishing modified copies of its code.
 - GPU at boot clocks until step 8, so early performance is not meaningful.
+
+## Open issues
+
+- **GFX command ring in system memory doesn't work** (found 2026-10-02,
+  see test-log). Linux keeps the ring in GTT; RadeonGfx now puts it in
+  CPU-visible VRAM (`RadeonRingBufferGfxV8::RingDomain()`), which works.
+  Observed with the ring in GTT (mapped through the GART, snooped PTEs):
+  - `CP_RB0_CNTL.MTYPE = 3` (UC): the CP fetches up to WPTR, but PFP and CE
+    wait on buffer data forever; no VM fault.
+  - MTYPE 0 (Linux' value): data arrives (PFP header shows the last NOP),
+    but nothing visibly executes (SET_UCONFIG_REG, WRITE_DATA, EOP fence
+    all missing), CE stuck in `CE_WAITING_ON_DE_COUNTER_UNDERFLOW`.
+  - The CP stays stuck through halt/restart; only a reboot clears it, so
+    each variant needs a fresh boot.
+  - The CP reads system memory fine otherwise: COPY_DATA from GTT, and
+    RADV's IBs in GTT. Ideas: CPU cache/snoop coherency of the ring writes
+    (try clflush before WPTR), MTYPE 2 (CC), the rptr write-back address,
+    or the CE needing its own setup (Linux' gfx_v8_0_cp_gfx_start() order).
