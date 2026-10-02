@@ -50,3 +50,19 @@ index 3042737..1c6415d 100644
  #include "util/disk_cache.h"
  #include "util/hex.h"
  #include "util/u_debug.h"
+diff --git a/src/amd/vulkan/radv_sqtt.c b/src/amd/vulkan/radv_sqtt.c
+index 979b9f9..f4c0c2f 100644
+--- a/src/amd/vulkan/radv_sqtt.c
++++ b/src/amd/vulkan/radv_sqtt.c
+@@ -623,6 +623,11 @@ radv_sqtt_finish(struct radv_device *device)
+    struct ac_sqtt *sqtt = &device->sqtt;
+    struct radeon_winsys *ws = device->ws;
+ 
++   /* Not initialized (no thread trace): the locks are zeroed memory, which
++    * is not a valid mutex everywhere (Haiku asserts). */
++   if (!sqtt->bo)
++      return;
++
+    radv_sqtt_finish_bo(device);
+ 
+    for (unsigned i = 0; i < 2; i++) {

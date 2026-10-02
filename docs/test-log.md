@@ -378,3 +378,32 @@ missing from the mode list (EDID extension not read).
   VBIOS leaves GB_TILE_MODE uninitialized), SH_MEM for all VMIDs, DRM info
   replies for VI (PCIE_EFUSE4 rev 1, external 0x5b).
 - Not run on the GPU yet.
+
+## 2026-10-02 — Phase 3 step 6: RADV sees the RX 560 (vkinfo)
+
+- `RadeonGfx server` on Polaris starts and stops cleanly (CP/RLC halted,
+  all registers restored), several runs. 14 CUs (SE0/SE1 0x7f), RB mask
+  0xf, PCIE_EFUSE4 revision 1 (external 0x5b).
+- vkinfo through RADV: "AMD Radeon RX 460 Graphics (RADV POLARIS11)"
+  (libdrm's amdgpu.ids names 67EF:CF so), discrete GPU, Vulkan 1.3.267,
+  timestamp period 40 ns, heaps 3840 MB VRAM + 256 MB visible VRAM + 512 MB
+  GTT, one graphics/compute queue family. vkCreateDevice and vkDestroyDevice
+  succeed; no command submission yet (server trace: INFO, GEM_CREATE,
+  GEM_VA, GEM_CLOSE).
+- Fixes on the way:
+  - libdrm2 listed the radeon_hd display device: drmGetDevices2() now only
+    returns devices with the radeon_gfx.accelerant signature.
+  - RADV couldn't map visible VRAM (meta shaders failed, NULL shader
+    crash): the server's frame buffer clone wasn't B_CLONEABLE_AREA.
+  - Kernel panic (VMCache.cpp:1363, ASSERT UNREACHABLE) in
+    amdgpu_bo_cpu_unmap(): munmap() of part of the cloned 256 MB VRAM area;
+    Haiku can't split a device memory area. libdrm2 now deletes the clone
+    (one clone per CPU map).
+  - RADV asserted in vkDestroyDevice: radv_sqtt_finish() locks mutexes
+    radv_sqtt_init() never initialized (zeroed memory is no valid mutex on
+    Haiku); skipped without a thread trace buffer.
+- After the panic the linker failed with "No space left on device" for
+  libvulkan_radeon.so although 665 GB were free; `checkfs -c /boot` found
+  no errors (4851 blocks could be freed) and the link worked afterwards.
+- Next: first command submission through Vulkan (vkCmdFillBuffer, then a
+  compute dispatch), read back.
