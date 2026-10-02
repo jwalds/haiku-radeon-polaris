@@ -1,3 +1,35 @@
+diff --git a/amdgpu/amdgpu_bo.c b/amdgpu/amdgpu_bo.c
+index a0ff8f0..4e346a5 100644
+--- a/amdgpu/amdgpu_bo.c
++++ b/amdgpu/amdgpu_bo.c
+@@ -32,6 +32,9 @@
+ #include <sys/ioctl.h>
+ #include <sys/mman.h>
+ #include <sys/time.h>
++#ifdef __HAIKU__
++#include <OS.h>
++#endif
+ 
+ #include <inttypes.h>
+ 
+@@ -336,7 +339,17 @@ drm_public int amdgpu_bo_cpu_unmap(amdgpu_bo_handle bo)
+ 		return 0;
+ 	}
+ 
++#ifdef __HAIKU__
++	/* every CPU map is its own clone of the server area (which can be the
++	 * whole CPU visible VRAM): delete that clone. A partial munmap() of a
++	 * device memory area panics the kernel (VMCache::Commit()). */
++	{
++		area_id area = area_for(bo->cpu_ptr);
++		r = (area >= 0 && delete_area(area) == B_OK) ? 0 : -EINVAL;
++	}
++#else
+ 	r = drm_munmap(bo->cpu_ptr, bo->alloc_size) == 0 ? 0 : -errno;
++#endif
+ 	bo->cpu_ptr = NULL;
+ 	pthread_mutex_unlock(&bo->cpu_access_mutex);
+ 	return r;
 diff --git a/amdgpu/amdgpu_device.c b/amdgpu/amdgpu_device.c
 index fb5e78c..5d6c671 100644
 --- a/amdgpu/amdgpu_device.c
@@ -55,7 +87,7 @@ index 62cf731..d40c0ae 100644
  	accelerant_amdgpu *acc_amdgpu;
  	unsigned major_version;
 diff --git a/libdrm_device.cpp b/libdrm_device.cpp
-index 6397d60..e4699aa 100644
+index 6397d60..d363444 100644
 --- a/libdrm_device.cpp
 +++ b/libdrm_device.cpp
 @@ -2,7 +2,6 @@
@@ -66,7 +98,15 @@ index 6397d60..e4699aa 100644
  #include <errno.h>
  #include <unistd.h>
  #include <stdio.h>
-@@ -17,6 +16,10 @@
+@@ -13,10 +12,18 @@
+ #include <algorithm>
+ 
+ #include <Entry.h>
++#include <fcntl.h>
++#include <sys/ioctl.h>
++#include <Drivers.h>
++#include <graphic_driver.h>
+ #include <Directory.h>
  
  #include "Poke.h"
  
@@ -77,6 +117,39 @@ index 6397d60..e4699aa 100644
  #define memclear(s) memset(&s, 0, sizeof(s))
  
  static const char sDevPath[] = "/dev/graphics/";
+@@ -121,6 +128,15 @@ static int drmGetDeviceInt(drmDevicePtr *device, const char *name)
+ 	char path[MAXPATHLEN];
+ 	sprintf(path, "%s%s", sDevPath, name);
+ 
++	// only devices served by the RadeonGfx server; with radeon_hd the
++	// display device has its own accelerant next to the render device
++	int fd = open(path, O_RDWR);
++	if (fd < 0) return ENOENT;
++	char signature[B_FILE_NAME_LENGTH] = "";
++	ioctl(fd, B_GET_ACCELERANT_SIGNATURE, signature, sizeof(signature));
++	close(fd);
++	if (strcmp(signature, "radeon_gfx.accelerant") != 0) return ENOENT;
++
+ 	drmDevicePtr dev = drmDeviceAlloc(DRM_NODE_RENDER, path, sizeof(drmPciBusInfo), sizeof(drmPciDeviceInfo));
+ 	if (dev == NULL) return B_NO_MEMORY;
+ 
+@@ -150,10 +166,12 @@ drm_public int drmGetDevices2(uint32_t flags, drmDevicePtr devices[], int max_de
+ 	for (deviceCnt = 0; deviceCnt < max_devices;) {
+ 		BEntry entry;
+ 		if (dir.GetNextEntry(&entry, true) < B_OK) break;
+-		if (devices != NULL) {
+-			drmGetDeviceInt(&devices[deviceCnt], entry.Name());
+-			if (devices[deviceCnt] != NULL) deviceCnt++;
+-		}
++		drmDevicePtr device = NULL;
++		drmGetDeviceInt(&device, entry.Name());
++		if (device == NULL) continue;
++		if (devices != NULL) devices[deviceCnt] = device;
++		else drmFreeDevice(&device);
++		deviceCnt++;
+ 	}
+ 	return deviceCnt;
+ }
 diff --git a/meson.build b/meson.build
 index 70fe6fa..33a2c2f 100644
 --- a/meson.build

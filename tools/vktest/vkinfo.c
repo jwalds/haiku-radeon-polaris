@@ -28,6 +28,7 @@ DeviceType(VkPhysicalDeviceType type)
 int
 main(void)
 {
+	setvbuf(stdout, NULL, _IONBF, 0);
 	VkApplicationInfo app = {
 		.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
 		.pApplicationName = "vkinfo",
