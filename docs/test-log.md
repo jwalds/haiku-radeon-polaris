@@ -438,3 +438,14 @@ missing from the mode list (EDID extension not read).
   - VM page directory entries hold MC addresses, page table entries for
     VRAM the offset in VRAM (as Linux).
 - Next: an off-screen render (triangle) read back to a PNG.
+
+## 2026-10-02 — Phase 3 step 6 done: first rendered triangle
+
+- `tools/vktest/vktri`: render pass into a 256x256 RGBA8 image (optimal
+  tiling, VRAM), vertex colors from gl_VertexIndex, vkCmdCopyImageToBuffer
+  into system memory, PNG written on the CPU. One submission (24 + 576
+  dwords), fence signaled; pixels as expected (clear color 25/25/51, red top
+  vertex, interpolated middle). See `docs/images/first-triangle.png`.
+- The full path works: RADV (ACO shaders) -> libdrm2 -> radeon_gfx
+  accelerant -> RadeonGfx server -> GFX ring (VMID 1) on the RX 560.
+- Next: step 7, presenting on screen (Vulkan WSI on Haiku).

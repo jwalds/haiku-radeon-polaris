@@ -3,7 +3,7 @@
 # VKTEST_ARGS) against RADV, then stops
 # the server cleanly (SIGINT). Logs: ~/server.log, ~/vkinfo.log
 GPU=${GPU:-$HOME/gpu}
-cd /tmp
+cd "$GPU/vktest"
 "$GPU/RadeonGfx/build.x86_64/RadeonGfx" server > ~/server.log 2>&1 &
 pid=$!
 for i in $(seq 100); do

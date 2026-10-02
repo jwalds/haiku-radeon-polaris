@@ -61,7 +61,7 @@ Each step ends in a test on the Haiku machine. Steps 1–3 cannot hang the GPU.
    work; hang risk from here on (every wait gets a timeout).
 5. **GFX v8:** RLC + CP firmware, gfx ring NOP + fence, then a compute
    dispatch that writes a buffer.
-6. **DRM emulation for VI** + libdrm2 + RADV: `vulkaninfo`, then an
+6. **DRM emulation for VI** + libdrm2 + RADV: `vulkaninfo`, then an (done 2026-10-02)
    off-screen render read back to a PNG.
 7. **Presenting:** Vulkan WSI on Haiku (VideoStreamsWsi, or a copy into a
    BBitmap first), then Zink for OpenGL.
