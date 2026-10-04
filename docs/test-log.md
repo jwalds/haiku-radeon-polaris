@@ -536,3 +536,12 @@ missing from the mode list (EDID extension not read).
   memory clock switches from 300 to 1500 MHz within half a second and
   stays there; engine clock back at 214 MHz idle, 24 C. No flicker on
   screen during the switch.
+- The server starts DPM itself now (`PolarisStartPowerManagement()` after
+  the units are up: engine clock DPM, then the memory clock to its highest
+  level; `RADEONGFX_DPM=0` keeps the boot clocks). It prints "DPM: already
+  running" when `clocks start` already did it.
+- `tools/vktest/vkbench` (VRAM fill and copy, 20 x 64 MB per submission,
+  best of 3), engine 214-1200 MHz, memory 1500 MHz: fill 16.0 GB/s,
+  copy 9.6 GB/s (19.2 GB/s of memory traffic). Far below the card's
+  96 GB/s; to look into later (RADV's compute fill/copy path, barriers
+  between the 20 operations).
