@@ -589,3 +589,30 @@ missing from the mode list (EDID extension not read).
     atomic_test_and_set like libroot (Locks.patch).
 - vkwl (74.9 fps) and vkbench (26.0 / 13.5 GB/s) unchanged after the
   fixes.
+
+## 2026-10-04 — glmark2 on Zink
+
+- glmark2 (git 22c527c) built for wayland-glesv2 and wayland-gl
+  (`tools/build-glmark2.sh`, glmark2.patch: evdev key codes without
+  linux/input.h, no RTLD_NODELETE, desktop GL entry points from
+  libGLESv2/eglGetProcAddress instead of Haiku's own libGL, a pause before
+  wl_display_disconnect() because Haiku's in-process Wayland server quits a
+  surface's BWindow asynchronously and the window thread crashed when the
+  library was unloaded).
+- `glmark2-es2-wayland --size 800x600` (vsync): all 32 scenes, score 74
+  (every scene at 70-76 fps, the display's refresh rate).
+- Server bugs found:
+  - use after free in the interrupt thread: a FenceGroup could lose its last
+    reference in another thread while Fence::Signal() ran its handler
+    outside the fence's lock (crash in FenceGroup::GroupHandler::Do).
+    Handlers can now keep their object alive (Handler::Retain()).
+  - `--off-screen` (unthrottled, about 2700-2800 fps in the first scenes):
+    hang after the bump scenes. The client waited on a syncobj; the GFX
+    ring was empty (rptr == wptr), no VM fault. Most likely a lost end of
+    pipe interrupt: the interrupt thread now checks the fences every 10 ms
+    without interrupts and reports passed fences (untested yet).
+  - the hang left the CP unusable for the next server (ring self test
+    failed) because the server ran under gdb and was killed without the
+    emergency stop: reboot needed.
+- `tools/vktest/gdbserver.sh`: starts the server under gdb in the
+  background (backtraces in ~/server-gdb.log).

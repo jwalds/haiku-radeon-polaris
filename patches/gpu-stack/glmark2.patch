@@ -1,0 +1,65 @@
+diff --git a/src/gl-state-egl.cpp b/src/gl-state-egl.cpp
+index 61d7f06..5c95623 100644
+--- a/src/gl-state-egl.cpp
++++ b/src/gl-state-egl.cpp
+@@ -649,7 +649,13 @@ GLStateEGL::gotValidDisplay()
+ #endif
+ #elif GLMARK2_USE_GL
+     EGLenum apiType(EGL_OPENGL_API);
++#ifdef __HAIKU__
++    /* Haiku's libGL is its own OpenGL; with Mesa's EGL all entry points
++     * come from eglGetProcAddress() and the library is only a fallback */
++    std::initializer_list<const char *> libNames = { "libGLESv2.so.2" };
++#else
+     std::initializer_list<const char *> libNames = { "libGL.so", "libGL.so.1" };
++#endif
+     if (!GLAD_EGL_VERSION_1_4) {
+         Log::error("EGL version %d.%d does not support the OpenGL API\n",
+                    egl_major, egl_minor);
+diff --git a/src/native-state-wayland.cpp b/src/native-state-wayland.cpp
+index e1d1d41..424abba 100644
+--- a/src/native-state-wayland.cpp
++++ b/src/native-state-wayland.cpp
+@@ -23,7 +23,14 @@
+ #include "native-state-wayland.h"
+ #include "log.h"
+ 
++#ifdef __HAIKU__
++/* evdev codes, as Wayland sends them */
++#define BTN_LEFT 0x110
++#define KEY_ESC 1
++#define KEY_Q 16
++#else
+ #include <linux/input.h>
++#endif
+ #include <cstring>
+ #include <csignal>
+ #include <unistd.h>
+@@ -126,6 +133,13 @@ NativeStateWayland::~NativeStateWayland()
+             wl_registry_destroy(display_->registry);
+         if (display_->display) {
+             wl_display_flush(display_->display);
++#ifdef __HAIKU__
++            /* Haiku's in-process Wayland server quits the BWindow of a
++             * destroyed surface asynchronously; disconnecting unloads its
++             * code, which crashes a window thread that is still running */
++            wl_display_roundtrip(display_->display);
++            usleep(200000);
++#endif
+             wl_display_disconnect(display_->display);
+         }
+         delete display_;
+diff --git a/src/shared-library.cpp b/src/shared-library.cpp
+index 8fd6292..19dd286 100644
+--- a/src/shared-library.cpp
++++ b/src/shared-library.cpp
+@@ -44,6 +44,9 @@ bool SharedLibrary::open(const char *libName)
+ #if defined(WIN32)
+     handle_ = LoadLibraryA(libName);
+ #else
++    #ifndef RTLD_NODELETE
++#define RTLD_NODELETE 0 /* Haiku */
++#endif
+     handle_ = dlopen(libName, RTLD_NOW | RTLD_NODELETE);
+ #endif
+     return (handle_ != nullptr);
