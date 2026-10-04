@@ -211,7 +211,7 @@ index e5d44cf..b45bf50 100644
  	return drmIoctlStub(fd, request, arg);
  }
 diff --git a/libdrm_device.cpp b/libdrm_device.cpp
-index 6397d60..d363444 100644
+index 6397d60..3616aae 100644
 --- a/libdrm_device.cpp
 +++ b/libdrm_device.cpp
 @@ -2,7 +2,6 @@
@@ -274,6 +274,31 @@ index 6397d60..d363444 100644
  	}
  	return deviceCnt;
  }
+@@ -266,3 +284,24 @@ drm_public char *drmGetRenderDeviceNameFromFd(int fd)
+ 	}
+ 	return NULL;
+ }
++
++
++// No DRM device nodes on Haiku: Mesa uses these for render node lookups
++// (loader, EGL wayland-drm), which it does without.
++drm_public int drmGetDeviceFromDevId(dev_t devId, uint32_t flags,
++	drmDevicePtr *device)
++{
++	return -ENODEV;
++}
++
++
++drm_public char *drmGetDeviceNameFromFd2(int fd)
++{
++	return NULL;
++}
++
++
++drm_public int drmGetMagic(int fd, drm_magic_t *magic)
++{
++	return -EINVAL;
++}
 diff --git a/meson.build b/meson.build
 index 70fe6fa..33a2c2f 100644
 --- a/meson.build

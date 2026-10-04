@@ -1,8 +1,56 @@
+diff --git a/bin/install_megadrivers.py b/bin/install_megadrivers.py
+index 60ee457..448fda2 100644
+--- a/bin/install_megadrivers.py
++++ b/bin/install_megadrivers.py
+@@ -24,6 +24,7 @@
+ 
+ import argparse
+ import os
++import shutil
+ 
+ 
+ def main():
+@@ -55,7 +56,11 @@ def main():
+         if os.path.lexists(abs_driver):
+             os.unlink(abs_driver)
+         print('installing {} to {}'.format(args.megadriver, abs_driver))
+-        os.link(master, abs_driver)
++        try:
++            os.link(master, abs_driver)
++        except OSError:
++            # no hard links on Haiku's BFS
++            shutil.copy2(master, abs_driver)
+ 
+         try:
+             ret = os.getcwd()
 diff --git a/meson.build b/meson.build
-index 9b89206..1561042 100644
+index 9b89206..d9f9ea9 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -1643,6 +1643,9 @@ if system_has_kms_drm
+@@ -259,8 +259,12 @@ if freedreno_kmds.length() != 0 and freedreno_kmds != [ 'msm' ] and with_freedre
+   endif
+ endif
+ 
++# Haiku with the Wayland platform: EGL through DRI drivers (Zink) without
++# DRM/KMS, as on GNU/Hurd
++with_haiku_dri = host_machine.system() == 'haiku' and get_option('platforms').contains('wayland')
++
+ with_dri = false
+-if with_gallium and system_has_kms_drm
++if with_gallium and (system_has_kms_drm or with_haiku_dri)
+   _glx = get_option('glx')
+   _egl = get_option('egl')
+   if _glx == 'dri' or _egl.enabled() or (_glx == 'disabled' and _egl.allowed())
+@@ -519,7 +523,7 @@ endif
+ 
+ # GNU/Hurd includes egl_dri2, without drm.
+ with_dri2 = (with_dri or with_any_vk) and (with_dri_platform == 'drm' or
+-  host_machine.system() == 'gnu')
++  host_machine.system() == 'gnu' or with_haiku_dri)
+ with_dri3 = get_option('dri3').disable_auto_if(not (system_has_kms_drm and with_dri2)).allowed()
+ 
+ if with_any_vk and (with_platform_x11 and not with_dri3)
+@@ -1643,6 +1647,9 @@ if system_has_kms_drm
      # GNU/Hurd includes egl_dri2, without drm.
      required : (with_dri2 and host_machine.system() != 'gnu') or with_dri3
    )
@@ -66,6 +114,50 @@ index 979b9f9..f4c0c2f 100644
     radv_sqtt_finish_bo(device);
  
     for (unsigned i = 0; i < 2; i++) {
+diff --git a/src/gallium/drivers/zink/zink_screen.c b/src/gallium/drivers/zink/zink_screen.c
+index b5597d1..2b59e6b 100644
+--- a/src/gallium/drivers/zink/zink_screen.c
++++ b/src/gallium/drivers/zink/zink_screen.c
+@@ -23,6 +23,14 @@
+ 
+ #include "zink_screen.h"
+ 
++#ifdef __HAIKU__
++/* no sys/sysmacros.h: glibc dev_t encoding, as libdrm uses on Haiku */
++#ifndef major
++#define major(dev) ((unsigned)((((dev) >> 8) & 0xfff) | (((dev) >> 32) & ~0xfff)))
++#define minor(dev) ((unsigned)(((dev) & 0xff) | (((dev) >> 12) & ~0xff)))
++#endif
++#endif
++
+ #include "zink_kopper.h"
+ #include "zink_compiler.h"
+ #include "zink_context.h"
+diff --git a/src/gallium/targets/dri/meson.build b/src/gallium/targets/dri/meson.build
+index 66619bb..32c4a4f 100644
+--- a/src/gallium/targets/dri/meson.build
++++ b/src/gallium/targets/dri/meson.build
+@@ -124,6 +124,11 @@ endforeach
+ 
+ # This only works on Unix-like oses, which is probably fine for dri
+ prog_ln = find_program('ln', required : false)
++_ln_command = [prog_ln, '-f', '@INPUT@', '@OUTPUT@']
++if host_machine.system() == 'haiku'
++  # no hard links on BFS
++  _ln_command = [find_program('cp'), '-f', '@INPUT@', '@OUTPUT@']
++endif
+ if prog_ln.found()
+   devenv.set('LIBGL_DRIVERS_PATH', meson.current_build_dir())
+ 
+@@ -132,7 +137,7 @@ if prog_ln.found()
+       'devenv_@0@'.format(d),
+       input : libgallium_dri,
+       output : d,
+-      command : [prog_ln, '-f', '@INPUT@', '@OUTPUT@'],
++      command : _ln_command,
+       build_by_default : true,
+     )
+   endforeach
 diff --git a/src/util/anon_file.c b/src/util/anon_file.c
 index 983ff75..20632d9 100644
 --- a/src/util/anon_file.c
