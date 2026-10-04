@@ -496,3 +496,13 @@ missing from the mode list (EDID extension not read).
     running; the GPU is at its boot clocks)
 - pptable_v1_0.h from Linux: `#pragma pack(push, 1)` must come after
   atombios.h, which resets the packing at its end.
+- Virtual voltages resolved (read-only): ATOM GetVoltageInfo in EVV mode
+  (`GET_VOLTAGE_INFO_INPUT_PARAMETER_V1_3`, result in 0.01 mV) for each ID
+  at the lowest engine clock that uses it, +50 MHz for levels without clock
+  stretching (clock stretch amount 2 in the PowerTune table), as Linux
+  smu7_get_evv_voltages does:
+  - engine clock 214/481/760/1020/1102/1138/1172/1200 MHz:
+    800/821/825/875/956/1000/1043/1081 mV
+  - memory clock 300/1500 MHz: vddc 800/850 mV
+  - `Atombios::Init(area_id)` runs the VBIOS interpreter on the Polaris
+    VBIOS copy (falls back to a read-only clone).
