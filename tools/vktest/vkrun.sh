@@ -1,6 +1,7 @@
 #!/bin/bash
-# Runs a Vulkan program on the RX 560 from a Terminal:
+# Runs a Vulkan or OpenGL (Zink) program on the RX 560 from a Terminal:
 #   vkrun.sh ./vkwl [args]
+#   vkrun.sh ./glwl [args]
 # Starts the RadeonGfx server if it isn't running (and stops it again at
 # the end), and points the program at RADV and libdrm2 in ~/gpu/install.
 GPU=${GPU:-$HOME/gpu}
@@ -21,6 +22,8 @@ if ! ps | grep -q "[R]adeonGfx server"; then
 	fi
 fi
 
+MESA_LOADER_DRIVER_OVERRIDE=zink \
+LIBGL_DRIVERS_PATH="$GPU/install/lib/dri" \
 VK_DRIVER_FILES="$GPU/install/data/vulkan/icd.d/radeon_icd.x86_64.json" \
 LIBRARY_PATH="$GPU/install/lib:%A/lib:$HOME/config/non-packaged/lib:$HOME/config/lib:/boot/system/non-packaged/lib:/boot/system/lib" \
 	"$@"

@@ -552,3 +552,40 @@ missing from the mode list (EDID extension not read).
     2.8x / 2.3x the boot clocks. Faster than the 16.0 / 9.6 GB/s with DPM
     started by `clocks start` before the server; unclear why (DPM after
     the GFX setup as in Linux, or the GPU state after many runs).
+
+## 2026-10-04 — Phase 3 step 7: OpenGL ES through Zink
+
+- Mesa 23.3.6 with `-Dgallium-drivers=zink -Degl=enabled -Dgles2=enabled
+  -Dplatforms=wayland`. mesa.patch additions:
+  - meson: DRI drivers and egl_dri2 on Haiku with the Wayland platform
+    (`with_haiku_dri`, as GNU/Hurd builds egl_dri2 without DRM/KMS)
+  - no hard links on BFS: the DRI megadriver is copied (build and install)
+  - `major()`/`minor()` for zink_screen.c
+  - EGL Wayland: Zink's kopper surface gets the EGL swap interval
+    (otherwise interval 0: no vsync)
+  - util_queue_finish() on a never initialized queue returns: Zink's exit
+    hit a zero-filled pthread mutex in the disk cache queue, which Haiku's
+    libroot asserts on (`mutex->owner == -1`)
+- libdrm2: drmGetDeviceFromDevId(), drmGetDeviceNameFromFd2(),
+  drmGetMagic() stubs (Mesa's loader, EGL wayland-drm).
+- EGL on Wayland with `MESA_LOADER_DRIVER_OVERRIDE=zink` uses the swrast
+  (wl_shm) path with kopper: Zink presents through RADV's Wayland WSI.
+- `tools/vktest/glwl` (EGL + GLES2 spinning triangle; `vkrun.sh` sets the
+  Zink variables): `GL_RENDERER: zink Vulkan 1.3(AMD Radeon RX 460 Graphics
+  (RADV POLARIS11))`, `GL_VERSION: OpenGL ES 3.2 Mesa 23.3.6`;
+  600 frames, 69 fps average (vsync, 75 Hz), clean exit.
+- Server bugs found on the way:
+  - RadeonServerDrm kept one buffer per CS chunk type: the first IB chunk's
+    data was freed when a second IB chunk came (RADV sends a preamble IB
+    and the main IB); garbage IB at address 0 after ~280 submissions.
+    Now one buffer per chunk.
+  - a CS with an unmapped IB aborted the server; now it is rejected
+    (EINVAL to the client) before getting a sequence number
+  - deadlock under FIFO presenting: Locks' Mutex::Acquire() set
+    B_USER_MUTEX_LOCKED with atomic_or even while a hand-off was pending;
+    current Haiku's _kern_mutex_unblock() hands the mutex over by setting
+    that bit and wakes nobody if it is already set: the domain lock stayed
+    locked by no one (fValue 1, three threads waiting). Acquire() now uses
+    atomic_test_and_set like libroot (Locks.patch).
+- vkwl (74.9 fps) and vkbench (26.0 / 13.5 GB/s) unchanged after the
+  fixes.

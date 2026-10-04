@@ -12,10 +12,34 @@ index 4e74b64..1dc2836 100644
  #include "Sem.h"
  #include <AutoDeleterOS.h>
 diff --git a/Mutex.cpp b/Mutex.cpp
-index 8bd6f60..71ad99d 100644
+index 8bd6f60..3730ea4 100644
 --- a/Mutex.cpp
 +++ b/Mutex.cpp
-@@ -39,7 +39,7 @@ void Mutex::Release(bool releaseAll)
+@@ -12,16 +12,14 @@ Mutex::Mutex(bool acquireFirst): fValue(acquireFirst? B_USER_MUTEX_LOCKED: 0)
+ 
+ status_t Mutex::Acquire(uint32 flags, bigtime_t timeout)
+ {
+-	int32 oldValue;
+-
+-	// can be repeated for spinlock
+-	oldValue = atomic_or(&fValue, B_USER_MUTEX_LOCKED);
+-	if (
+-		(oldValue & (B_USER_MUTEX_LOCKED | B_USER_MUTEX_WAITING)) == 0 ||
+-		(oldValue & B_USER_MUTEX_DISABLED) != 0
+-	) {
++	// Only take the mutex when nobody holds or waits for it, as libroot's
++	// pthread_mutex_lock() does: _kern_mutex_unblock() hands the mutex over
++	// to a waiter by setting B_USER_MUTEX_LOCKED and wakes nobody if it is
++	// already set, so setting it here while a hand-off is pending would leave
++	// the mutex locked by no one.
++	int32 oldValue = atomic_test_and_set(&fValue, B_USER_MUTEX_LOCKED, 0);
++	if (oldValue == 0 || (oldValue & B_USER_MUTEX_DISABLED) != 0)
+ 		return B_OK;
+-	}
+ 
+ 	status_t res;
+ 	do {
+@@ -39,7 +37,7 @@ void Mutex::Release(bool releaseAll)
  		(oldValue & B_USER_MUTEX_DISABLED) == 0
  	) {
  		// will set B_USER_MUTEX_LOCKED
@@ -24,7 +48,7 @@ index 8bd6f60..71ad99d 100644
  	}
  }
  
-@@ -59,7 +59,7 @@ ATOMIC {
+@@ -59,7 +57,7 @@ ATOMIC {
  	return Acquire(flags, timeout);
  }
  #endif

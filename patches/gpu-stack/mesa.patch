@@ -114,6 +114,20 @@ index 979b9f9..f4c0c2f 100644
     radv_sqtt_finish_bo(device);
  
     for (unsigned i = 0; i < 2; i++) {
+diff --git a/src/egl/drivers/dri2/platform_wayland.c b/src/egl/drivers/dri2/platform_wayland.c
+index 7e85dd6..2365ea0 100644
+--- a/src/egl/drivers/dri2/platform_wayland.c
++++ b/src/egl/drivers/dri2/platform_wayland.c
+@@ -2715,6 +2715,9 @@ kopperSetSurfaceCreateInfo(void *_draw, struct kopper_loader_info *out)
+    wlsci->flags = 0;
+    wlsci->display = dri2_dpy->wl_dpy;
+    wlsci->surface = dri2_surf->wl_surface_wrapper;
++   /* without it, Zink presents with interval 0 (no vsync) until the
++    * application calls eglSwapInterval() */
++   out->initial_swap_interval = dri2_surf->base.SwapInterval;
+ }
+ 
+ static const __DRIkopperLoaderExtension kopper_loader_extension = {
 diff --git a/src/gallium/drivers/zink/zink_screen.c b/src/gallium/drivers/zink/zink_screen.c
 index b5597d1..2b59e6b 100644
 --- a/src/gallium/drivers/zink/zink_screen.c
@@ -174,6 +188,24 @@ index 983ff75..20632d9 100644
     if (!path) {
        errno = ENOENT;
        return -1;
+diff --git a/src/util/u_queue.c b/src/util/u_queue.c
+index 750dd20..5eea3f3 100644
+--- a/src/util/u_queue.c
++++ b/src/util/u_queue.c
+@@ -702,6 +702,13 @@ util_queue_finish(struct util_queue *queue)
+    util_barrier barrier;
+    struct util_queue_fence *fences;
+ 
++   /* A queue that was never initialized (e.g. the disk cache queue when the
++    * cache has no files) is zero-filled; a zero-filled pthread mutex isn't a
++    * valid unlocked mutex everywhere (Haiku asserts on it).
++    */
++   if (!util_queue_is_initialized(queue))
++      return;
++
+    /* If 2 threads were adding jobs for 2 different barries at the same time,
+     * a deadlock would happen, because 1 barrier requires that all threads
+     * wait for it exclusively.
 diff --git a/src/vulkan/wsi/wsi_common.c b/src/vulkan/wsi/wsi_common.c
 index a7d8e1c..cb5be3b 100644
 --- a/src/vulkan/wsi/wsi_common.c

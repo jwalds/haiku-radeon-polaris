@@ -64,7 +64,9 @@ Each step ends in a test on the Haiku machine. Steps 1–3 cannot hang the GPU.
 6. **DRM emulation for VI** + libdrm2 + RADV: `vulkaninfo`, then an (done 2026-10-02)
    off-screen render read back to a PNG.
 7. **Presenting:** Vulkan WSI on Haiku (VideoStreamsWsi, or a copy into a
-   BBitmap first), then Zink for OpenGL.
+   BBitmap first), then Zink for OpenGL. (done 2026-10-04: Vulkan through
+   the Wayland WSI, OpenGL ES 3.2 through Zink and EGL on Wayland. Not done:
+   desktop OpenGL through Haiku's BGLView.)
 8. **Clocks/power:** SMC firmware so the GPU leaves boot clocks. (done
    2026-10-04: `RadeonGfx clocks start` and `clocks memory` enable engine
    clock DPM 214-1200 MHz with SVI2 voltage control and thermal throttling,

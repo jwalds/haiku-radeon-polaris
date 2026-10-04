@@ -1,15 +1,19 @@
 #!/bin/bash
-# Build Mesa's RADV Vulkan driver for the RadeonGfx stack on Haiku (Phase 3
-# step 6). Run after build-gpu-stack.sh.
+# Build Mesa's RADV Vulkan driver and Zink (OpenGL and OpenGL ES on Vulkan)
+# for the RadeonGfx stack on Haiku (Phase 3 steps 6 and 7). Run after
+# build-gpu-stack.sh.
 #
 # usage: build-mesa.sh [workdir]      default workdir: ~/gpu
 #
 # Mesa 23.3.6 is the newest release that accepts libdrm_amdgpu 2.4.110, the
-# version of the stack's libdrm. Only RADV is built, with ACO (no LLVM) and no
-# OpenGL. Haiku fixes are in patches/gpu-stack/mesa.patch, applied after
-# cloning. The Vulkan ICD manifest is installed into <workdir>/install too;
-# point the loader at it with
+# version of the stack's libdrm. RADV is built with ACO (no LLVM); OpenGL comes
+# from Zink through EGL on Wayland (libEGL, libGLESv2, lib/dri/zink_dri.so).
+# Haiku fixes are in patches/gpu-stack/mesa.patch, applied after cloning.
+# The Vulkan ICD manifest is installed into <workdir>/install too; point the
+# loader at it with
 #   VK_DRIVER_FILES=<workdir>/install/data/vulkan/icd.d/radeon_icd.x86_64.json
+# and EGL at Zink with
+#   MESA_LOADER_DRIVER_OVERRIDE=zink LIBGL_DRIVERS_PATH=<workdir>/install/lib/dri
 set -e
 
 WORK="${1:-$HOME/gpu}"
@@ -40,13 +44,13 @@ NATIVE
 	--prefix "$INSTALL" \
 	--buildtype debugoptimized \
 	-Dplatforms=wayland \
-	-Dgallium-drivers= \
+	-Dgallium-drivers=zink \
 	-Dvulkan-drivers=amd \
 	-Dllvm=disabled \
-	-Dopengl=false \
-	-Dgles1=disabled -Dgles2=disabled \
-	-Degl=disabled -Dglx=disabled -Dgbm=disabled \
-	-Dshared-glapi=disabled \
+	-Dopengl=true \
+	-Dgles1=disabled -Dgles2=enabled \
+	-Degl=enabled -Dglx=disabled -Dgbm=disabled \
+	-Dshared-glapi=enabled \
 	-Dxmlconfig=disabled \
 	-Dzstd=disabled \
 	-Dvalgrind=disabled \
