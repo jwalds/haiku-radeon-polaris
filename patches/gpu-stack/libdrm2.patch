@@ -284,3 +284,27 @@ index 70fe6fa..33a2c2f 100644
  
  cc = meson.get_compiler('c')
  
+diff --git a/stub/libdrmStub.cpp b/stub/libdrmStub.cpp
+index 619b6a8..8c7a47f 100644
+--- a/stub/libdrmStub.cpp
++++ b/stub/libdrmStub.cpp
+@@ -558,8 +558,7 @@ static int HandleAmdgpuIoctl(int fd, unsigned long request, void *arg)
+ 			return 0;
+ 		}
+ 	}
+-	printf("HandleAmdgpuIoctl(): not implemented\n");
+-	printf("[WAIT]"); fgetc(stdin);
++	printf("[!] libdrm2 stub: ioctl %#lx not implemented\n", (unsigned long)request);
+ 	return -1;
+ }
+ 
+@@ -652,8 +651,7 @@ int drmIoctlStub(int fd, unsigned long request, void *arg)
+ 		}
+ 		default:;
+ 	}
+-	printf("HandleAmdgpuIoctl(): not implemented\n");
+-	printf("[WAIT]"); fgetc(stdin);
++	printf("[!] libdrm2 stub: ioctl %#lx not implemented\n", (unsigned long)request);
+ 
+ 	return -1;
+ }

@@ -66,3 +66,119 @@ index 979b9f9..f4c0c2f 100644
     radv_sqtt_finish_bo(device);
  
     for (unsigned i = 0; i < 2; i++) {
+diff --git a/src/util/anon_file.c b/src/util/anon_file.c
+index 983ff75..20632d9 100644
+--- a/src/util/anon_file.c
++++ b/src/util/anon_file.c
+@@ -136,6 +136,11 @@ os_create_anonymous_file(int64_t size, const char *debug_name)
+    char *name;
+ 
+    path = getenv("XDG_RUNTIME_DIR");
++#ifdef __HAIKU__
++   /* no XDG_RUNTIME_DIR; mmap()ed files in /tmp work for wl_shm */
++   if (!path)
++      path = "/tmp";
++#endif
+    if (!path) {
+       errno = ENOENT;
+       return -1;
+diff --git a/src/vulkan/wsi/wsi_common_wayland.c b/src/vulkan/wsi/wsi_common_wayland.c
+index 5fd9aaf..36b6cab 100644
+--- a/src/vulkan/wsi/wsi_common_wayland.c
++++ b/src/vulkan/wsi/wsi_common_wayland.c
+@@ -32,6 +32,13 @@
+ #include <pthread.h>
+ #include <poll.h>
+ #include <sys/mman.h>
++#ifdef __HAIKU__
++/* no sys/sysmacros.h: glibc dev_t encoding, as libdrm uses on Haiku */
++#ifndef major
++#define major(dev) ((unsigned)((((dev) >> 8) & 0xfff) | (((dev) >> 32) & ~0xfff)))
++#define minor(dev) ((unsigned)(((dev) & 0xff) | (((dev) >> 12) & ~0xff)))
++#endif
++#endif
+ #include <sys/types.h>
+ 
+ #include "drm-uapi/drm_fourcc.h"
+@@ -137,6 +144,20 @@ struct wsi_wl_image {
+    unsigned shm_size;
+ };
+ 
++
++/* Haiku: the in-process Wayland server has wl_shm but no dmabuf, so
++ * hardware drivers present like software ones: render into a device image,
++ * blit into host memory and copy that into a wl_shm buffer. */
++static inline bool
++wsi_wl_use_shm(const struct wsi_device *wsi_device)
++{
++#ifdef __HAIKU__
++   return true;
++#else
++   return wsi_device->sw;
++#endif
++}
++
+ enum wsi_wl_buffer_type {
+    WSI_WL_BUFFER_NATIVE,
+    WSI_WL_BUFFER_GPU_SHM,
+@@ -998,7 +1019,7 @@ wsi_GetPhysicalDeviceWaylandPresentationSupportKHR(VkPhysicalDevice physicalDevi
+ 
+    struct wsi_wl_display display;
+    VkResult ret = wsi_wl_display_init(wsi, &display, wl_display, false,
+-                                      wsi_device->sw);
++                                      wsi_wl_use_shm(wsi_device));
+    if (ret == VK_SUCCESS)
+       wsi_wl_display_finish(&display);
+ 
+@@ -1198,7 +1219,7 @@ wsi_wl_surface_get_formats(VkIcdSurfaceBase *icd_surface,
+ 
+    struct wsi_wl_display display;
+    if (wsi_wl_display_init(wsi, &display, surface->display, true,
+-                           wsi_device->sw))
++                           wsi_wl_use_shm(wsi_device)))
+       return VK_ERROR_SURFACE_LOST_KHR;
+ 
+    VK_OUTARRAY_MAKE_TYPED(VkSurfaceFormatKHR, out,
+@@ -1237,7 +1258,7 @@ wsi_wl_surface_get_formats2(VkIcdSurfaceBase *icd_surface,
+ 
+    struct wsi_wl_display display;
+    if (wsi_wl_display_init(wsi, &display, surface->display, true,
+-                           wsi_device->sw))
++                           wsi_wl_use_shm(wsi_device)))
+       return VK_ERROR_SURFACE_LOST_KHR;
+ 
+    VK_OUTARRAY_MAKE_TYPED(VkSurfaceFormat2KHR, out,
+@@ -1275,7 +1296,7 @@ wsi_wl_surface_get_present_modes(VkIcdSurfaceBase *icd_surface,
+ 
+    struct wsi_wl_display display;
+    if (wsi_wl_display_init(wsi, &display, surface->display, true,
+-                           wsi_device->sw))
++                           wsi_wl_use_shm(wsi_device)))
+       return VK_ERROR_SURFACE_LOST_KHR;
+ 
+    VkPresentModeKHR present_modes[3];
+@@ -1569,7 +1590,7 @@ static VkResult wsi_wl_surface_init(struct wsi_wl_surface *wsi_wl_surface,
+       return VK_SUCCESS;
+ 
+    result = wsi_wl_display_create(wsi, wsi_wl_surface->base.display,
+-                                  wsi_device->sw, &wsi_wl_surface->display);
++                                  wsi_wl_use_shm(wsi_device), &wsi_wl_surface->display);
+    if (result != VK_SUCCESS)
+       goto fail;
+ 
+@@ -2301,11 +2322,13 @@ wsi_wl_surface_create_swapchain(VkIcdSurfaceBase *icd_surface,
+    struct wsi_drm_image_params drm_image_params;
+    uint32_t num_drm_modifiers = 0;
+    const uint64_t *drm_modifiers = NULL;
+-   if (wsi_device->sw) {
++   if (wsi_wl_use_shm(wsi_device)) {
+       cpu_image_params = (struct wsi_cpu_image_params) {
+          .base.image_type = WSI_IMAGE_TYPE_CPU,
+       };
+-      if (wsi_device->has_import_memory_host &&
++      /* importing the wl_shm memory needs userptr buffers, which the
++       * Haiku driver stack doesn't have: copy instead */
++      if (wsi_device->has_import_memory_host && wsi_device->sw &&
+           !(WSI_DEBUG & WSI_DEBUG_NOSHM)) {
+          buffer_type = WSI_WL_BUFFER_GPU_SHM;
+          cpu_image_params.alloc_shm = wsi_wl_alloc_image_shm;

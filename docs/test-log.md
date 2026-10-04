@@ -449,3 +449,27 @@ missing from the mode list (EDID extension not read).
 - The full path works: RADV (ACO shaders) -> libdrm2 -> radeon_gfx
   accelerant -> RadeonGfx server -> GFX ring (VMID 1) on the RX 560.
 - Next: step 7, presenting on screen (Vulkan WSI on Haiku).
+
+## 2026-10-04 — Phase 3 step 7: Vulkan on screen (Wayland WSI)
+
+- Presenting through Haiku's packaged Wayland stack: `wayland`,
+  `wayland_devel`, `wayland_protocols`, `wayland_server` (the in-process
+  Wayland server shows a client's surfaces as native Haiku windows; it has
+  wl_shm, no dmabuf).
+- Mesa rebuilt with `-Dplatforms=wayland`; patches (mesa.patch):
+  - the Wayland WSI uses its wl_shm path on Haiku for hardware drivers too:
+    render into a device image, the WSI blits it on the GPU into host
+    memory, the CPU copies that into the wl_shm buffer (SHM_MEMCPY; the
+    GPU_SHM import path would need userptr buffers)
+  - `major()`/`minor()` for wsi_common_wayland.c
+  - os_create_anonymous_file(): /tmp when XDG_RUNTIME_DIR is unset (the
+    wl_shm pool is an mmap()ed file)
+- `tools/vktest/vkwl`: xdg-shell window, VK_KHR_wayland_surface, FIFO
+  swapchain (5 images, B8G8R8A8_UNORM), spinning triangle (push constant).
+  640x480 and 1600x1000: about 75 fps (the display's refresh rate, FIFO),
+  no errors; screenshot `docs/images/first-window.png`.
+- Harmless: `DMA_BUF_IOCTL_EXPORT_SYNC_FILE` (0xc0086202) on the swapchain's
+  memory fd isn't implemented (WSI falls back); libdrm2's stub no longer
+  waits on stdin for unknown ioctls but prints them.
+- The window has no title bar (no xdg-decoration); a client that doesn't
+  draw its own decorations gets a bare window.

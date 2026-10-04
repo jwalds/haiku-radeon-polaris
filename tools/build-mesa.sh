@@ -39,7 +39,7 @@ NATIVE
 	--native-file haiku-native.ini \
 	--prefix "$INSTALL" \
 	--buildtype debugoptimized \
-	-Dplatforms= \
+	-Dplatforms=wayland \
 	-Dgallium-drivers= \
 	-Dvulkan-drivers=amd \
 	-Dllvm=disabled \
