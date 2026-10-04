@@ -525,3 +525,9 @@ missing from the mode list (EDID extension not read).
   enables engine clock DPM with SVI2 voltage control and thermal
   throttling: "DPM running", idle at level 0 (214 MHz engine, 300 MHz
   memory, 22 C), no flicker, the machine keeps running.
+- Load test (watched): `vkrun.sh ./vkwl 1000 1600 1000` with
+  `RadeonGfx clocks watch` alongside: the engine clock goes to 1200 MHz
+  (the top level, 1081 mV) for the whole run, 26-29 C, and steps back
+  down (1133, 292, 611) to 214 MHz within 2 s after the window closes.
+  Still 74.9 fps (FIFO at the display's refresh rate). Memory stays at
+  300 MHz without memory clock DPM.
