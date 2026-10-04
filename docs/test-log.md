@@ -545,3 +545,10 @@ missing from the mode list (EDID extension not read).
   copy 9.6 GB/s (19.2 GB/s of memory traffic). Far below the card's
   96 GB/s; to look into later (RADV's compute fill/copy path, barriers
   between the 20 operations).
+- After a reboot, `vkbench` (watched):
+  - `RADEONGFX_DPM=0` (boot clocks): fill 9.3 GB/s, copy 5.9 GB/s
+  - server starting DPM itself from a fresh boot ("DPM: engine clock
+    214-1200 MHz, memory clock 1500 MHz"): fill 25.9 GB/s, copy 13.5 GB/s,
+    2.8x / 2.3x the boot clocks. Faster than the 16.0 / 9.6 GB/s with DPM
+    started by `clocks start` before the server; unclear why (DPM after
+    the GFX setup as in Linux, or the GPU state after many runs).
