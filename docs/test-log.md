@@ -531,3 +531,7 @@ missing from the mode list (EDID extension not read).
   down (1133, 292, 611) to 214 MHz within 2 s after the window closes.
   Still 74.9 fps (FIFO at the display's refresh rate). Memory stays at
   300 MHz without memory clock DPM.
+- `RadeonGfx clocks memory` (watched): memory clock DPM on top of the
+  running engine clock DPM, enabled mask = the highest level only: the
+  memory clock switches from 300 to 1500 MHz within half a second and
+  stays there; engine clock back at 214 MHz idle, 24 C.
