@@ -519,6 +519,9 @@ missing from the mode list (EDID extension not read).
     0x3fa14, MC arbiter table at 0x3f114
   - memory clock DPM only switches to the highest level (no vblank length
     check yet)
-- Next: `RadeonGfx clocks start` uploads the table (MC arbiter timings
-  through ATOM DynamicMemorySettings after switching the arbiter to F1)
-  and enables DPM; first run watched.
+- `RadeonGfx clocks start` (watched): uploads the table (MC arbiter
+  timings through ATOM DynamicMemorySettings after switching the arbiter
+  from F0 to F1; MC_ARB_CG.CG_ARB_REQ reads 0 after boot, meaning F0) and
+  enables engine clock DPM with SVI2 voltage control and thermal
+  throttling: "DPM running", idle at level 0 (214 MHz engine, 300 MHz
+  memory, 22 C), no flicker, the machine keeps running.
