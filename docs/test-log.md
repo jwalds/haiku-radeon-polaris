@@ -506,3 +506,19 @@ missing from the mode list (EDID extension not read).
   - memory clock 300/1500 MHz: vddc 800/850 mV
   - `Atombios::Init(area_id)` runs the VBIOS interpreter on the Polaris
     VBIOS copy (falls back to a read-only clone).
+- DPM table (polaris/PolarisDpm.cpp, a port of Linux polaris10_init_smc_table
+  without AVFS, clock stretching, BAPM, deep sleep, ULV and PCIe DPM), built
+  read-only by `RadeonGfx clocks`:
+  - boot state from the VBIOS firmware info: engine 214 MHz, memory 300 MHz,
+    vddc 800 mV, vddci 875 mV, mvdd 1500 mV; link PCIe gen 2 x8
+  - VDDC on SVI2, VDDCI and MVDD static (no VDDCI/MVDD control caps);
+    GDDR5, 128 bit; reference clock 25 MHz
+  - engine clock dividers from ATOM ComputeMemoryEnginePLL (v1.7, 100 MHz
+    PLL reference: 1200 MHz = fcw 48 / 4), SCLK range table from SMU_Info
+  - SMC firmware 0x1d1f00: DPM table at 0x3f294, soft registers at
+    0x3fa14, MC arbiter table at 0x3f114
+  - memory clock DPM only switches to the highest level (no vblank length
+    check yet)
+- Next: `RadeonGfx clocks start` uploads the table (MC arbiter timings
+  through ATOM DynamicMemorySettings after switching the arbiter to F1)
+  and enables DPM; first run watched.
