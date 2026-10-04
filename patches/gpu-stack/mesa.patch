@@ -82,6 +82,27 @@ index 983ff75..20632d9 100644
     if (!path) {
        errno = ENOENT;
        return -1;
+diff --git a/src/vulkan/wsi/wsi_common.c b/src/vulkan/wsi/wsi_common.c
+index a7d8e1c..cb5be3b 100644
+--- a/src/vulkan/wsi/wsi_common.c
++++ b/src/vulkan/wsi/wsi_common.c
+@@ -1439,7 +1439,15 @@ wsi_common_queue_present(const struct wsi_device *wsi,
+       assert(!has_signal_dma_buf);
+ #endif
+ 
+-      if (wsi->sw)
++#ifdef __HAIKU__
++      /* The Wayland WSI copies the blit result into the wl_shm buffer on
++       * the CPU (wsi_wl_use_shm()): the blit must have finished, or an
++       * older frame (or part of one) is shown. */
++      const bool cpu_wait = true;
++#else
++      const bool cpu_wait = wsi->sw;
++#endif
++      if (cpu_wait)
+ 	      wsi->WaitForFences(device, 1, &swapchain->fences[image_index],
+ 				 true, ~0ull);
+ 
 diff --git a/src/vulkan/wsi/wsi_common_wayland.c b/src/vulkan/wsi/wsi_common_wayland.c
 index 5fd9aaf..36b6cab 100644
 --- a/src/vulkan/wsi/wsi_common_wayland.c
