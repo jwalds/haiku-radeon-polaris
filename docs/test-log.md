@@ -480,3 +480,19 @@ missing from the mode list (EDID extension not read).
   still 75 fps.
 - `tools/vktest/vkrun.sh`: runs a Vulkan program from a Terminal (starts and
   stops the server, sets VK_DRIVER_FILES and LIBRARY_PATH).
+
+## 2026-10-04 — Phase 3 step 8 started: clocks
+
+- `RadeonGfx clocks` (read-only apart from starting the SMC firmware):
+  the VBIOS PowerPlay table (ATOM_Tonga_POWERPLAYTABLE format 7.1, Polaris
+  SCLK records) and the current clocks from the SMC
+  (PPSMC_MSG_API_GetSclkFrequency/GetMclkFrequency):
+  - engine clock levels 214, 481, 760, 1020, 1102, 1138, 1172, 1200 MHz;
+    voltages 800 mV for the lowest, the others are virtual voltage IDs
+    (0xff02-0xff08) to be resolved through the VBIOS (EVV/leakage)
+  - memory clock levels 300 and 1500 MHz (vddci 900/1000 mV, mvdd 1000 mV)
+  - overdrive limits 1800/2000 MHz, power limit 75 W
+  - now: engine 135 MHz, memory 150 MHz as reported by the SMC (DPM not
+    running; the GPU is at its boot clocks)
+- pptable_v1_0.h from Linux: `#pragma pack(push, 1)` must come after
+  atombios.h, which resets the packing at its end.
