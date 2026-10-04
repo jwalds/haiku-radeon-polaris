@@ -473,3 +473,10 @@ missing from the mode list (EDID extension not read).
   waits on stdin for unknown ioctls but prints them.
 - The window has no title bar (no xdg-decoration); a client that doesn't
   draw its own decorations gets a bare window.
+- Glitches (frames jumping between triangle positions): Mesa only waits
+  for the WSI blit before presenting with software drivers; the wl_shm
+  memcpy ran before the GPU's copy into host memory had finished, showing
+  older frames. Patched wsi_common.c to wait on Haiku; confirmed on screen,
+  still 75 fps.
+- `tools/vktest/vkrun.sh`: runs a Vulkan program from a Terminal (starts and
+  stops the server, sets VK_DRIVER_FILES and LIBRARY_PATH).
