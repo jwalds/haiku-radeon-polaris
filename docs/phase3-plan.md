@@ -65,7 +65,12 @@ Each step ends in a test on the Haiku machine. Steps 1–3 cannot hang the GPU.
    off-screen render read back to a PNG.
 7. **Presenting:** Vulkan WSI on Haiku (VideoStreamsWsi, or a copy into a
    BBitmap first), then Zink for OpenGL.
-8. **Clocks/power:** SMC firmware so the GPU leaves boot clocks.
+8. **Clocks/power:** SMC firmware so the GPU leaves boot clocks. (done
+   2026-10-04: `RadeonGfx clocks start` and `clocks memory` enable engine
+   clock DPM 214-1200 MHz with SVI2 voltage control and thermal throttling,
+   and the memory clock at 1500 MHz. Not done: starting it automatically,
+   AVFS, clock stretching, BAPM/power limit, deep sleep, ULV, PCIe link DPM,
+   memory clock switching with a vblank length check.)
 
 ## Risks
 

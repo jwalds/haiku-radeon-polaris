@@ -534,4 +534,5 @@ missing from the mode list (EDID extension not read).
 - `RadeonGfx clocks memory` (watched): memory clock DPM on top of the
   running engine clock DPM, enabled mask = the highest level only: the
   memory clock switches from 300 to 1500 MHz within half a second and
-  stays there; engine clock back at 214 MHz idle, 24 C.
+  stays there; engine clock back at 214 MHz idle, 24 C. No flicker on
+  screen during the switch.
