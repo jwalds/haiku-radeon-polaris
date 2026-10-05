@@ -646,3 +646,29 @@ missing from the mode list (EDID extension not read).
   live voltage reload, the mask changes or the hang caused it.
 - `tools/vktest/gmcase.sh`: one glmark2 case with a 20 s limit, restarts
   the server after a hang.
+
+## 2026-10-05 — glmark2 complete on Zink
+
+- After a reboot with the new voltages from the start:
+  - Zink assertion `fence->batch_id` in fence_wait() (buffer scene,
+    eglClientWaitSync): the batch state was already reset for reuse, which
+    only happens after it finished; Mesa's debugoptimized build keeps
+    assertions. fence_wait() now returns "done" for a reset batch
+    (mesa.patch).
+  - GTT and visible VRAM ran out at 64 / 96 MB used: RADV allocates every
+    buffer with its max_alignment, 16 MB here (addrlib's largest tile
+    alignment). The server now aligns GTT allocations to pages and VRAM to
+    at most 64 KB (the alignment only matters for the GPU virtual address,
+    which the client picks).
+  - "No space left on device" linking Mesa once (720 GB free); a retry
+    linked fine (seen before, transient).
+- `glmark2-es2-wayland --off-screen`: all 32 scenes, **score 2206**
+  (OpenGL ES 3.2): build 2184-2756, texture 2599-2711, shading ~2780,
+  bump 2534-2763, effect2d ~3060, pulsar 2331, desktop 1347/1486, buffer
+  128-205, ideas 966, jellyfish 2269, terrain 367, shadow 2131, refract
+  404, conditionals/function/loop ~2860-2900 fps.
+- `glmark2-wayland --off-screen` (desktop OpenGL): `GL_VERSION: 4.6
+  (Compatibility Profile) Mesa 23.3.6`, all scenes, **score 2236**. One
+  GL_INVALID_FRAMEBUFFER_OPERATION from glClear at start (glmark2's
+  off-screen setup).
+- No server errors, no GPU hang in either run.

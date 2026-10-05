@@ -128,6 +128,22 @@ index 7e85dd6..2365ea0 100644
  }
  
  static const __DRIkopperLoaderExtension kopper_loader_extension = {
+diff --git a/src/gallium/drivers/zink/zink_fence.c b/src/gallium/drivers/zink/zink_fence.c
+index 33ea9d7..9164132 100644
+--- a/src/gallium/drivers/zink/zink_fence.c
++++ b/src/gallium/drivers/zink/zink_fence.c
+@@ -133,6 +133,11 @@ fence_wait(struct zink_screen *screen, struct zink_fence *fence, uint64_t timeou
+       return true;
+    if (p_atomic_read(&fence->completed))
+       return true;
++   /* the batch state was reset for reuse, which only happens once it has
++    * finished (zink_reset_batch_state() clears batch_id); with assertions
++    * on, the assert below fired under glmark2 --off-screen */
++   if (!p_atomic_read(&fence->batch_id))
++      return true;
+ 
+    assert(fence->batch_id);
+    assert(fence->submitted);
 diff --git a/src/gallium/drivers/zink/zink_screen.c b/src/gallium/drivers/zink/zink_screen.c
 index b5597d1..2b59e6b 100644
 --- a/src/gallium/drivers/zink/zink_screen.c
