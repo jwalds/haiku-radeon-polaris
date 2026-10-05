@@ -616,3 +616,33 @@ missing from the mode list (EDID extension not read).
     emergency stop: reboot needed.
 - `tools/vktest/gdbserver.sh`: starts the server under gdb in the
   background (backtraces in ~/server-gdb.log).
+
+## 2026-10-05 — glmark2 off-screen hangs
+
+- GTT allocations failed with 125 of 512 MB used: ExternalAllocator's
+  AllocAligned() only looked at free blocks of size + alignment - 1 (RADV
+  asks for 8 MB alignment). It now takes any free block an aligned block
+  fits in; failures print the pool state.
+- The server now soft resets the graphics engine when it finds it busy at
+  startup (gfx_v8_0_check_soft_reset/soft_reset): a hung GPU no longer
+  needs a reboot (worked several times).
+- Ring: Begin() now reserves room for End()'s padding (a nearly full ring
+  could be overwritten by up to 3 dwords).
+- `glmark2 --off-screen -b bump:bump-render=height` (about 2700 fps) hung
+  the GPU intermittently (CP waiting on an end of pipe event, TC busy):
+  - engine clock fixed at 1200 MHz (`clocks sclk-mask=0x80`): 17 of 17 runs
+    fine; only 214 and 1200 MHz (0x81): 10 of 10 fine; all levels: 2 of
+    10 hung
+  - so switching through the middle levels: their EVV voltages assume the
+    clock stretcher, which isn't enabled. The voltages are now resolved at
+    sclk + 50 MHz for every level above 0 (as Linux does for levels without
+    clock stretching): 214/481/760/1020/1102/1138/1172/1200 MHz at
+    800/821/825/925/1012/1062/1112/1100 mV. Loaded into the running DPM
+    (`clocks reload`, new): all levels 10 of 10 fine.
+- The full off-screen run then hung in the texture scene with a strange
+  ring state (CP_RB0_WPTR 1, rptr 0x6d8); not understood yet. After that
+  server was stopped, the next server found the SMC firmware no longer
+  running (temperature reading 298 C): reboot needed. Unclear whether the
+  live voltage reload, the mask changes or the hang caused it.
+- `tools/vktest/gmcase.sh`: one glmark2 case with a 20 s limit, restarts
+  the server after a hang.
