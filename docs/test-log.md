@@ -672,3 +672,19 @@ missing from the mode list (EDID extension not read).
   GL_INVALID_FRAMEBUFFER_OPERATION from glClear at start (glmark2's
   off-screen setup).
 - No server errors, no GPU hang in either run.
+- Windowed glmark2 (vsync) hung for the user near the end ("function"
+  scenes). Reproduced with the server under gdb (second effect2d scene):
+  deadlock. A client thread's Fence::OnSignal() held the fence's lock and,
+  the fence being signaled already, ran the CS handler, which waits for the
+  GFX ring's domain; the interrupt thread held that domain in
+  UpdateFences() and waited for the same fence's lock in Signal() (the
+  flag was set between the two). OnSignal() now runs the handler of an
+  already signaled fence outside the lock. Full windowed run afterwards:
+  all scenes, score 74, no errors.
+- A lost end of pipe interrupt showed up once in the user's run
+  ("fence 9378 passed without an end of pipe interrupt"); the 10 ms check
+  covered it.
+- The GTT running full (507 MB) in an earlier windowed run came after
+  several glmark2 runs that gmcase.sh had killed (its 20 s limit was too
+  short for two scenes); clean exits leave 0 MB. Killed clients may leak;
+  to check.
