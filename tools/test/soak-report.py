@@ -5,13 +5,16 @@
 
 - idle samples (no client) after the warm-up and at the end: GPU memory
   in use must be the same, the server's semaphores, ports, threads and
-  areas must not have grown, its memory not by more than 8 MB (pools keep
-  their high-water mark), the system's semaphores and ports not by more
+  areas must not have grown (except empty heap areas: malloc keeps the
+  address space of a peak), its memory not by more than 8 MB, the system's semaphores and ports not by more
   than 20
 - trends while running: growth per hour over the second half
 - client runs and failures, server warnings by kind
-- glmark2 frame rate per scene: the last quarter of the run must reach
-  95% of the first quarter
+- checkpoints (load paused): idle GPU memory must stay the same, the
+  benchmark alone (glmark2 scenes, vkbench) must reach 95% of the first
+  checkpoint at the last; idle memory trends are listed
+- glmark2 under load per scene, medians of the first and last quarter
+  (information only: the other clients make it noisy)
 Exit code 1 if anything failed.
 """
 import collections
@@ -65,6 +68,23 @@ def names(path, kind):
     return counter
 
 
+def heap_high_water(out, idle):
+    """the server's areas grew only by heap areas while its memory didn't:
+    malloc keeps the address space of a peak"""
+    before = names(os.path.join(out, 'idle-start-areas.txt'), 'areas')
+    after = names(os.path.join(out, 'idle-end-areas.txt'), 'areas')
+    added = after - before
+    alloc = int(idle['idle-end']['server_alloc_kb']) \
+        - int(idle['idle-start']['server_alloc_kb'])
+    return set(added) == {'heap area'} and alloc <= 8192
+
+
+def median(values):
+    values = sorted(values)
+    n = len(values)
+    return values[n // 2] if n % 2 else (values[n // 2 - 1] + values[n // 2]) / 2
+
+
 def glmark2_series(path):
     """{scene: [fps, ...]} in run order, without values after a lost device"""
     series = collections.defaultdict(list)
@@ -101,20 +121,25 @@ def main():
         ('server_threads', 0, ''), ('server_areas', 0, ''),
         ('server_alloc_kb', 8192, 'KB'), ('sys_sems', 20, ''),
         ('sys_ports', 20, ''), ('sys_used_kb', None, 'KB'),
+        ('app_server_kb', None, 'KB'), ('kernel_kb', None, 'KB'),
     ]
     if 'idle-start' in idle and 'idle-end' in idle:
         for name, allowed, unit in rules:
             try:
                 before = int(idle['idle-start'][name])
                 after = int(idle['idle-end'][name])
-            except ValueError:
+            except (KeyError, TypeError, ValueError):
                 print('  %-16s missing' % name)
                 problems.append('%s not sampled' % name)
                 continue
             verdict = ''
             if allowed is not None and after - before > allowed:
-                verdict = '  LEAK'
-                problems.append('%s grew by %d %s' % (name, after - before, unit))
+                if name == 'server_areas' and heap_high_water(out, idle):
+                    verdict = '  heap high-water mark (empty heap areas)'
+                else:
+                    verdict = '  LEAK'
+                    problems.append('%s grew by %d %s' % (name,
+                        after - before, unit))
             print('  %-16s %12d %12d  %+d %s%s' % (name, before, after,
                 after - before, unit, verdict))
     else:
@@ -182,24 +207,67 @@ def main():
     for kind, count in kinds.most_common(12):
         print('  %5d  %s' % (count, kind[:100]))
 
-    # glmark2 drift
+    # checkpoints: idle memory and the benchmark alone, first vs last
+    checkpoints = sorted((row for row in rows
+        if re.match(r'idle-\d+$', row['label'])),
+        key=lambda row: int(row['label'][5:]))
+    if len(checkpoints) >= 2:
+        print('\nidle at the checkpoints (%d):' % len(checkpoints))
+        for name in ('server_alloc_kb', 'server_areas', 'vram', 'gtt',
+                'sys_used_kb', 'app_server_kb', 'kernel_kb'):
+            try:
+                values = [int(row[name]) for row in checkpoints]
+            except (KeyError, TypeError, ValueError):
+                continue
+            # rising at every checkpoint by more than noise (1 MB for KB
+            # values, one area)
+            noise = 1 if name == 'server_areas' else 1024 \
+                if name.endswith('_kb') else 0
+            rising = all(b >= a for a, b in zip(values, values[1:])) \
+                and values[-1] - values[0] > noise
+            print('  %-16s %s%s' % (name, ' '.join(str(v) for v in values),
+                '  (rising at every checkpoint)' if rising else ''))
+            if name in ('vram', 'gtt') and values[-1] != values[0]:
+                problems.append('idle %s %d -> %d' % (name, values[0],
+                    values[-1]))
+    bench = collections.defaultdict(list)
+    for n in range(0, 1000):
+        glmark2 = os.path.join(out, 'checkpoints', '%d-glmark2.log' % n)
+        vkbench = os.path.join(out, 'checkpoints', '%d-vkbench.log' % n)
+        if not os.path.exists(glmark2):
+            break
+        with open(glmark2, errors='replace') as f:
+            for scene, fps in re.findall(r'\[(\w+)\] [^:\n]*:.*?FPS:\s*(\d+)',
+                    f.read(), re.DOTALL):
+                bench[scene].append(float(fps))
+        if os.path.exists(vkbench):
+            with open(vkbench, errors='replace') as f:
+                for name, value in re.findall(r'^(fill|copy):.*?([\d.]+) GB/s',
+                        f.read(), re.MULTILINE):
+                    bench['vkbench ' + name].append(float(value))
+    if bench:
+        print('\nbenchmark alone at the checkpoints:')
+        for name, values in bench.items():
+            verdict = ''
+            if len(values) >= 2 and values[-1] < values[0] * 0.95:
+                verdict = '  DRIFT'
+                problems.append('%s: %g -> %g' % (name, values[0], values[-1]))
+            print('  %-14s %s%s' % (name, ' '.join('%g' % v for v in values),
+                verdict))
+
+    # glmark2 under load (information: the other clients make it noisy)
     series = glmark2_series(os.path.join(out, 'glmark2.log'))
     if series:
-        print('\nglmark2 FPS, first / last quarter of the run:')
+        print('\nglmark2 FPS under load, median of the first / last quarter:')
         for scene, values in series.items():
             if len(values) < 8:
                 print('  %-10s only %d values' % (scene, len(values)))
                 continue
             quarter = len(values) // 4
-            first = sum(values[:quarter]) / quarter
-            last = sum(values[-quarter:]) / quarter
-            verdict = ''
-            if last < first * 0.95:
-                verdict = '  DRIFT'
-                problems.append('glmark2 %s: %.0f -> %.0f FPS' % (scene, first,
-                    last))
-            print('  %-10s %8.0f %8.0f  (%d values, min %.0f)%s' % (scene,
-                first, last, len(values), min(values), verdict))
+            first = median(values[:quarter])
+            last = median(values[-quarter:])
+            print('  %-10s %8.0f %8.0f  (%d values, min %.0f)' % (scene,
+                first, last, len(values), min(values)))
 
     print('\n%s' % ('FAILED: ' + '; '.join(problems) if problems
         else 'no leaks, drift or failures found'))

@@ -11,6 +11,9 @@
 #   - every SOAK_HANG_EVERY minutes (10; 0: never) a GPU hang (vkhang
 #     detect: lockup timeout, reset, device lost); glmark2 is restarted
 #     after it, as it lost its device too
+# Every SOAK_CHECKPOINT_EVERY minutes (10) the load pauses: an idle sample
+# and a short benchmark alone (vkbench, glmark2 build/texture/refract) in
+# checkpoints/, for drift and memory trends without the noise of the load.
 # Every 30 s samples.csv gets the server's areas, memory, threads,
 # semaphores and ports, the system's memory, semaphores and ports, the GPU
 # memory in use (gpumem), the server's warnings and the client counts.
@@ -24,6 +27,7 @@
 
 MINUTES=${1:-60}
 HANG_EVERY=${SOAK_HANG_EVERY:-10}
+CHECKPOINT_EVERY=${SOAK_CHECKPOINT_EVERY:-10}
 KILL_EVERY=${SOAK_KILL_EVERY:-5}
 OUT=${OUT:-${GPU:-$HOME/gpu}/test-results/soak-$(date +%Y%m%d-%H%M%S)}
 . "$(dirname "$0")/common.sh"
@@ -57,12 +61,18 @@ sample()
 	# "... bytes free (used/max <used> / <max>)"
 	local sysUsed=$(sysinfo -mem | awk 'match($0, /used\/max +([0-9]+)/, m) {
 		print int(m[1] / 1024); exit}')
+	# other places memory can go: app_server (the clients' windows) and the
+	# kernel (drivers)
+	local appServer=$(listarea $(pid_of '^/boot/system/servers/[a]pp_server' | head -1) 2>/dev/null \
+		| awk '$1 ~ /^[0-9]+$/ && NF >= 10 {a += strtonum("0x" $(NF - 5))} END {print int(a / 1024)}')
+	local kernel=$(listarea 1 2>/dev/null \
+		| awk '$1 ~ /^[0-9]+$/ && NF >= 10 {a += strtonum("0x" $(NF - 5))} END {print int(a / 1024)}')
 	local vram vis gtt
 	read vram vis gtt <<< "$(gpumem | sed 's/[a-z_]*=//g')"
 	local warnings=$(grep -c '^\[!\]' "$SERVER_LOG")
 	local clients=$(wc -l < "$EVENTS")
 	local failures=$(awk '$4 != 0' "$EVENTS" | wc -l)
-	echo "$(date +%T),$(($(date +%s) - START)),$1,$areas,$alloc,$threads,$sems,$ports,$sysUsed,$sysSems,$sysPorts,$vram,$vis,$gtt,$warnings,$clients,$failures" \
+	echo "$(date +%T),$(($(date +%s) - START)),$1,$areas,$alloc,$threads,$sems,$ports,$sysUsed,$sysSems,$sysPorts,$appServer,$kernel,$vram,$vis,$gtt,$warnings,$clients,$failures" \
 		>> "$SAMPLES"
 }
 
@@ -101,6 +111,20 @@ event()
 	# event <name> <0|1>: a check that isn't a client run
 	echo "$(date +%T) $(($(date +%s) - START)) $1 $2 0" >> "$EVENTS"
 	[ "$2" = 0 ] || echo "$(date +%T) [!] $1 failed"
+}
+
+# checkpoint <n>: the load paused: an idle sample, then a short benchmark
+# alone (no other client), for drift and memory trends with little noise
+checkpoint()
+{
+	sleep 5
+	sample idle-$1
+	mkdir -p "$OUT/checkpoints"
+	(cd "$VKTEST" && timeout 30 ./vkbench) > "$OUT/checkpoints/$1-vkbench.log" 2>&1
+	(cd "$VKTEST" && timeout 60 "$GLMARK2" --off-screen -b build:duration=5 \
+		-b texture:duration=5 -b refract:duration=5) \
+		> "$OUT/checkpoints/$1-glmark2.log" 2>&1
+	echo "$(date +%T) checkpoint $1"
 }
 
 LONG_PID=
@@ -150,7 +174,7 @@ churn_round()
 }
 
 echo "soak: $MINUTES minutes, results in $OUT"
-echo "time,elapsed,label,server_areas,server_alloc_kb,server_threads,server_sems,server_ports,sys_used_kb,sys_sems,sys_ports,vram,vis_vram,gtt,server_warnings,clients,failures" \
+echo "time,elapsed,label,server_areas,server_alloc_kb,server_threads,server_sems,server_ports,sys_used_kb,sys_sems,sys_ports,app_server_kb,kernel_kb,vram,vis_vram,gtt,server_warnings,clients,failures" \
 	> "$SAMPLES"
 if ! start_server; then
 	echo "[!] the server didn't start"
@@ -173,6 +197,7 @@ stop_long_client
 sleep 5
 sample idle-start
 idle_dump idle-start
+checkpoint 0
 
 sampler()
 {
@@ -187,6 +212,8 @@ SAMPLER_PID=$!
 start_long_client
 DEADLINE=$((START + MINUTES * 60))
 LAST_HANG=$(date +%s)
+LAST_CHECKPOINT=$(date +%s)
+CHECKPOINT=0
 round=1
 while [ $(date +%s) -lt $DEADLINE ]; do
 	if ! kill -0 $LONG_PID 2>/dev/null; then
@@ -203,6 +230,13 @@ while [ $(date +%s) -lt $DEADLINE ]; do
 		stop_long_client
 		start_long_client
 	fi
+	if [ $(($(date +%s) - LAST_CHECKPOINT)) -ge $((CHECKPOINT_EVERY * 60)) ]; then
+		stop_long_client
+		CHECKPOINT=$((CHECKPOINT + 1))
+		checkpoint $CHECKPOINT
+		LAST_CHECKPOINT=$(date +%s)
+		start_long_client
+	fi
 	if ! server_running; then
 		event server-died 1
 		break
@@ -213,6 +247,7 @@ done
 stop_long_client
 touch "$OUT/stop"
 wait $SAMPLER_PID
+checkpoint $((CHECKPOINT + 1))
 sleep 5
 sample idle-end
 idle_dump idle-end
