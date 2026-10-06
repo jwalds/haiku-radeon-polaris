@@ -865,3 +865,34 @@ amdgpu_device_gpu_recover().
   a normal result now that waits honor them; the accelerant returns ETIME
   quietly, and the parser allows lines in between.
 - Full run: 34 of 34 passed.
+
+## 2026-10-06 — soak tests (quality step 5, part)
+
+- `tools/test/soak.sh [minutes]` + `soak-report.py`: glmark2 looping,
+  client churn with kills and image checks, a hang reset every 10 min,
+  samples every 30 s, quiet checkpoints (load paused: idle sample and a
+  short benchmark alone) every 10 min.
+- First hour: 3403 client runs, 109 kills, 6 hang resets, no failure. GTT
+  in use climbed to ~330 MB within each glmark2 instance and was freed when
+  it restarted: Zink's buffer cache (pb_cache, up to 1/8 of all heap
+  memory, entries released only when touched again), not a leak of ours;
+  confirmed with glmark2 alone (grows and shrinks, flat with build+texture
+  only). The server's 62 extra empty "heap area"s afterwards are malloc's
+  high-water mark of that peak (1.7 MB in use). Drift under load can't be
+  measured (±15% from the other clients): hence the quiet checkpoints.
+- Second hour (with checkpoints): 3265 client runs, no failure.
+  - GPU memory identical at all 8 idle samples.
+  - Server memory 14.3 -> 15.9 MB in the first 20 min, then flat
+    (15.9-16.1 MB): a high-water mark, not a leak.
+  - System memory used rises steadily: 501 -> 666 MB (+165 MB/h, about
+    30 MB per 10 min), but not in the server, app_server (+64 KB) or the
+    kernel team's areas (+2 MB). To find: sample the areas of every team
+    (registrar, launch_daemon, ...), the block/file cache, /tmp.
+  - Benchmark alone at the checkpoints, build: 2749 2736 2662 2743 2720
+    2773 2609; texture: 2714 2687 2543 2695 2705 2649 2593; refract
+    396-399. The last checkpoint is 5% below the first in build, but
+    checkpoint 2 was as low and recovered: probably noise of +-3%, to check
+    with more checkpoints before calling it drift.
+- Next: the system memory growth; then glmark2 on Linux on the same
+  machine (tools/linux-bench.sh: radeonsi and Zink on RADV) for a
+  performance comparison.
