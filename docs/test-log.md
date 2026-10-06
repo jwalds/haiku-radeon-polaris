@@ -759,3 +759,37 @@ missing from the mode list (EDID extension not read).
     cause in Haiku's in-process Wayland server is still open.
 - No leaks: VRAM and GTT use is back to the level before each client,
   also after SIGKILL.
+
+## 2026-10-06 — hang test
+
+- `tools/vktest/vkhang`: a command buffer that waits for a VkEvent (RADV:
+  CP WAIT_REG_MEM on the event's memory) and then fills a buffer. The
+  fence must not signal within 500 ms; `vkhang unblock` then sets the
+  event from the CPU and the fill must complete, `vkhang abandon` exits
+  with the GFX ring blocked.
+- First run: vkWaitForFences() with a 500 ms timeout never returned.
+  The server ignored wait timeouts: the syncobj and WAIT_CS ioctls waited
+  as domain waits without a timeout ("TODO: timeout"). With the GPU hung, a
+  killed client's server thread then blocked forever and kept its team
+  state. Now these waits honor the absolute timeout (ETIME / status 1 as
+  Linux) and don't hold the team's domain. Waiters that time out also
+  wait until a handler another thread is running has finished before
+  freeing it (the first version of that, for every cancel, deadlocked
+  glmark2: a FenceGroup destroyed in the team's domain waited for a CS
+  handler that needed that domain; now opt-in).
+- Results:
+  - hang-unblock: GPU blocked (fence times out after 500 ms), resumes
+    and fills the buffer when the event is set.
+  - hang-abandon: the client exits with the ring blocked; the server
+    waits 5 s for the submission ("team N: 1 submission(s) not done after
+    5 s, keeping its memory") and stays up; GRBM_STATUS 0xa0003028, CP
+    stalled.
+  - A new client meanwhile: its fence times out after 2 s (correct), but
+    it can't exit (vkDeviceWaitIdle() waits for the blocked ring). Linux
+    would reset the GPU after its job timeout and report device lost; the
+    server can't yet.
+  - hang-recover: stopping the server (CP halted) and starting it again:
+    "busy from an earlier run (GRBM_STATUS 0xa0003028, GRBM_STATUS2
+    0x50000008): soft reset", GRBM_STATUS 0x00003028 after; vkfill, vktri
+    and another vkhang unblock pass. No reboot needed.
+- The runner's new hang suite does all of this; full run 21 of 21 passed.

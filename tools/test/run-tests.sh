@@ -5,7 +5,10 @@
 #   smoke     Vulkan and OpenGL clients on the server: vkinfo, vkfill, vktri,
 #             vkbench, glwl, glmark2 (a few scenes), each with a leak check
 #   leak      clients killed at random points, then a leak check
-# Default: unit selftest smoke leak.
+#   hang      blocks the GFX ring on purpose (vkhang): the GPU resumes when
+#             unblocked; a client exiting with it blocked doesn't take the
+#             server down; a server restart recovers the GPU
+# Default: unit selftest smoke leak hang.
 #
 # Every case has a time limit. On a hang the register dump (RadeonGfx info)
 # goes into the case's log, the client is killed and the server restarted
@@ -322,7 +325,70 @@ suite_leak()
 		--off-screen -b refract:duration=30
 }
 
-suites=${*:-unit selftest smoke leak}
+# hang_abandon_case <name>: a client exits with the GFX ring blocked; the
+# server must survive and keep the client's memory (the CP still waits on
+# it)
+hang_abandon_case()
+{
+	selected "$1" || return
+	local name=$1
+	local log=$(log_for "$name")
+	if ! ensure_server; then
+		result FAIL "$name" 0 "server didn't start"
+		return
+	fi
+	local mark=$(server_lines)
+	local start=$(date +%s)
+	(cd "$VKTEST" && timeout -k 2 20 ./vkhang abandon) > "$log" 2>&1
+	local rc=$?
+	local kept=
+	for i in $(seq 20); do
+		kept=$(tail -n +$((mark + 1)) "$SERVER_LOG" | grep "keeping its memory")
+		[ -n "$kept" ] && break
+		sleep 0.5
+	done
+	local seconds=$(($(date +%s) - start))
+	if [ $rc != 0 ]; then
+		result FAIL "$name" $seconds "exit code $rc"
+	elif ! server_running; then
+		result CRASH "$name" $seconds "server died (see server.log)"
+	elif [ -z "$kept" ]; then
+		result FAIL "$name" $seconds "the server didn't keep the client's memory"
+	else
+		result PASS "$name" $seconds "GPU blocked, server kept the client's memory"
+	fi
+}
+
+# hang_recover_case <name>: a server restart must soft-reset the blocked GPU
+hang_recover_case()
+{
+	selected "$1" || return
+	local name=$1
+	local start=$(date +%s)
+	stop_server
+	local mark=$(server_lines)
+	start_server
+	local seconds=$(($(date +%s) - start))
+	local reset=$(tail -n +$((mark + 1)) "$SERVER_LOG" | grep -c "soft reset")
+	if ! server_running; then
+		result FAIL "$name" $seconds "server didn't start"
+	elif [ "$reset" = 0 ]; then
+		result FAIL "$name" $seconds "no soft reset: the GPU wasn't blocked"
+	else
+		result PASS "$name" $seconds "soft reset at server start"
+	fi
+}
+
+suite_hang()
+{
+	CHECK_LINE='resumed' client_case hang-unblock 30 ./vkhang unblock
+	hang_abandon_case hang-abandon
+	hang_recover_case hang-recover
+	CHECK_LINE='OK' client_case hang-after-vkfill 30 ./vkfill
+	CHECK_LINE='OK' client_case hang-after-vktri 30 ./vktri
+}
+
+suites=${*:-unit selftest smoke leak hang}
 echo "results: $OUT"
 for suite in $suites; do
 	echo "--- $suite"

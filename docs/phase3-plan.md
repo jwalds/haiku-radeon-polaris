@@ -120,8 +120,12 @@ Order:
    `tools/test/run-tests.sh` with unit, selftest, smoke and leak suites,
    16 cases in about 2.5 minutes; the self-test is the runner's selftest
    suite of the existing bring-up commands rather than a new RadeonGfx
-   command. Not done: recovery from a deliberately hung ring, as a hung CP
-   has needed a reboot before.)
+   command. The hang suite (vkhang) blocks the GFX ring on purpose:
+   the GPU resumes when unblocked, the server survives a client that exits
+   with it blocked, and a server restart recovers it. Not done: hang
+   detection and recovery inside the running server (Linux: job timeout,
+   GPU reset, VK_ERROR_DEVICE_LOST); until then a hung ring blocks every
+   later client until the server is restarted.)
 3. Image comparisons for vkfill, vktri and glwl; glmark2 score floors.
 4. VK-GL-CTS built for Haiku, must-pass lists.
 5. PowerPlay/DPM golden files; stress and soak suite.
