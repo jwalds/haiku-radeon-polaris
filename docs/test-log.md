@@ -689,7 +689,7 @@ missing from the mode list (EDID extension not read).
   short for two scenes); clean exits leave 0 MB. Killed clients may leak;
   to check.
 
-## 2026-10-06: host unit tests (quality step 1)
+## 2026-10-06 — host unit tests (quality step 1)
 
 - RadeonGfx `tests/`: 29 unit tests for Locks (Mutex, RecursiveLock,
   ConditionVariable), Fence, FenceGroup and ExternalAllocator;
