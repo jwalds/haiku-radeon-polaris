@@ -128,6 +128,9 @@ Order:
    otherwise GFX reset with the context guilty, VK_ERROR_DEVICE_LOST in
    RADV, new clients unaffected.)
 3. Image comparisons for vkfill, vktri and glwl; glmark2 score floors.
+   (done 2026-10-06: glref's seven OpenGL ES scenes and vktri compared
+   with reference images, floors for glmark2 scenes and vkbench; see
+   tests/README.md)
 4. VK-GL-CTS built for Haiku, must-pass lists.
 5. PowerPlay/DPM golden files; stress and soak suite.
 

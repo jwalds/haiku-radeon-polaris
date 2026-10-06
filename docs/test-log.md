@@ -840,3 +840,28 @@ amdgpu_device_gpu_recover().
   with RADV, which reports device lost to every context of the reset),
   SDMA ring hangs (RADV doesn't use SDMA on GFX8 by default), a full ASIC
   reset (BACO/PCI) when the GFX soft reset doesn't help.
+
+## 2026-10-06 — reference images and performance floors (quality step 3)
+
+- `tools/vktest/glref`: seven fixed OpenGL ES 3.1 scenes through Zink into
+  256x256 framebuffer objects, read back as PNG: gradient (interpolation),
+  texture (mipmapped floor in perspective, clipped), depth (two triangles
+  crossing in depth), blend, msaa (4x, resolved with a blit), instancing
+  (256 instances), compute (a compute shader writing the image). Plus
+  vktri's triangle. Checked by eye before they became references; the
+  first texture scene had a fold at the diagonal, from non-coplanar
+  corners in my geometry, not the GPU.
+- Rendering is bit exact from run to run (all 8 images, tolerance 0).
+  `imgcmp.py` (no libraries) accepts 0.1% of the pixels off by more than
+  2; checked that a changed 10x10 square fails (DIFF, with a diff image)
+  and a 5x5 square passes.
+- `perf-floors.txt` + `perfcheck.py`: floors at about 95% of the medians
+  of three runs (spread below 1%): glmark2 off-screen build 2540, texture
+  2465, shading 2535, refract 383, terrain 347; windowed score 60; vkbench
+  fill 24.5, copy 12.8 GB/s. The 8% regression of the reset-counter round
+  trip (build 2469) would have been SLOW. Checked with an impossible floor.
+- The parser first missed a scene: the accelerant printed a timed-out
+  syncobj wait as an error into the middle of glmark2's line. A timeout is
+  a normal result now that waits honor them; the accelerant returns ETIME
+  quietly, and the parser allows lines in between.
+- Full run: 34 of 34 passed.

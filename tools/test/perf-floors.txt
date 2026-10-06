@@ -1,0 +1,14 @@
+# Performance floors: run-tests.sh fails a case (SLOW) if a metric is below.
+# About 95% of the median of three runs on 2026-10-06 (RX 560, DPM on,
+# Mesa 23.3.6); run-to-run spread was below 1%. After a change that makes
+# things faster for good, raise them; never lower one to make a run pass.
+#
+# case               metric    floor     median then
+glmark2-offscreen    build     2540    # 2678 fps
+glmark2-offscreen    texture   2465    # 2596 fps
+glmark2-offscreen    shading   2535    # 2669 fps
+glmark2-offscreen    refract    383    # 404 fps
+glmark2-offscreen    terrain    347    # 365 fps
+glmark2-windowed     score       60    # 66 (vsync)
+vkbench              fill      24.5    # 25.8 GB/s
+vkbench              copy      12.8    # 13.5 GB/s

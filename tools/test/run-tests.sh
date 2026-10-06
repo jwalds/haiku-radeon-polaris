@@ -4,18 +4,23 @@
 #   selftest  the bring-up tests (GART, IH, SDMA, GFX) without the server
 #   smoke     Vulkan and OpenGL clients on the server: vkinfo, vkfill, vktri,
 #             vkbench, glwl, glmark2 (a few scenes), each with a leak check
+#   render    glref's OpenGL scenes and vktri's triangle compared with the
+#             reference images in tests/reference (imgcmp.py; DIFF with a
+#             diff image in render/)
 #   leak      clients killed at random points, then a leak check
 #   hang      hangs the GFX ring on purpose (vkhang): the GPU resumes when
 #             unblocked; a hang is detected after the lockup timeout and
 #             reset (device lost for the client), a shader that never ends
 #             soft-recovered; a client exiting with the GPU hung is freed
 #             after the reset; a server restart resets a hung GPU too
-# Default: unit selftest smoke leak hang.
+# Default: unit selftest smoke render leak hang.
 #
 # Every case has a time limit. On a hang the register dump (RadeonGfx info)
 # goes into the case's log, the client is killed and the server restarted
 # (its init soft-resets the GPU). New "[!]" lines in the server log mark a
 # case WARN. A hung client's thread backtraces (gdb) go into its log too.
+# Performance: cases with floors in perf-floors.txt (glmark2, vkbench) are
+# SLOW if a metric is below its floor (perfcheck.py).
 # After each client the server's VRAM/GTT use (gpumem) must be
 # back to where it was before, else LEAK.
 #
@@ -212,12 +217,19 @@ client_case()
 		return
 	fi
 
+	local perf
+	perf=$(python3 "$TEST/perfcheck.py" "$TEST/perf-floors.txt" "$name" "$log")
+	if [ $? != 0 ]; then
+		result SLOW "$name" $seconds "$perf"
+		return
+	fi
+
 	local warnings=$(tail -n +$((mark + 1)) "$SERVER_LOG" | grep -c '^\[!\]')
 	if [ "$warnings" != 0 ] && [ -z "$EXPECT_WARNINGS" ]; then
 		result WARN "$name" $seconds "$warnings server warnings: $(tail -n +$((mark + 1)) "$SERVER_LOG" | grep '^\[!\]' | head -1)"
 		return
 	fi
-	result PASS "$name" $seconds "$(grep -E "$CHECK_LINE" "$log" | tail -1)"
+	result PASS "$name" $seconds "${perf:-$(grep -E "$CHECK_LINE" "$log" | tail -1)}"
 }
 
 # standalone_case <name> <time limit> <RadeonGfx arguments...>: no server
@@ -327,6 +339,42 @@ suite_leak()
 		--off-screen -b refract:duration=30
 }
 
+# image_case <name> <image>: compares a rendered image with
+# tests/reference/<name>.png
+image_case()
+{
+	selected "image-$1" || return
+	local name=$1 image=$2
+	local reference=$TEST/reference/$name.png
+	local log=$(log_for "image-$name")
+	if [ ! -e "$image" ]; then
+		result FAIL "image-$name" 0 "not rendered"
+		return
+	fi
+	python3 "$TEST/imgcmp.py" compare "$image" "$reference" \
+		--diff "$OUT/render/$name-diff.png" > "$log" 2>&1
+	if [ $? = 0 ]; then
+		result PASS "image-$name" 0 "$(cat "$log")"
+	else
+		result DIFF "image-$name" 0 "$(cat "$log") (see render/$name-diff.png)"
+	fi
+}
+
+suite_render()
+{
+	mkdir -p "$OUT/render"
+	CHECK_LINE='all scenes' client_case glref 60 ./glref "$OUT/render"
+	local reference
+	for reference in "$TEST"/reference/gl-*.png; do
+		local name=$(basename "$reference" .png)
+		image_case "$name" "$OUT/render/$name.png"
+	done
+	rm -f "$VKTEST/triangle.png"
+	CHECK_LINE='triangle' client_case vktri-render 30 ./vktri
+	mv "$VKTEST/triangle.png" "$OUT/render/vk-triangle.png" 2>/dev/null
+	image_case vk-triangle "$OUT/render/vk-triangle.png"
+}
+
 # hang_abandon_case <name>: a client exits with the GFX ring blocked; the
 # server must keep its memory until the hang reset (lockup timeout) has
 # completed its submission, then free it
@@ -409,7 +457,7 @@ suite_hang()
 	CHECK_LINE='OK' client_case hang-restart-after 30 ./vkfill
 }
 
-suites=${*:-unit selftest smoke leak hang}
+suites=${*:-unit selftest smoke render leak hang}
 echo "results: $OUT"
 for suite in $suites; do
 	echo "--- $suite"
