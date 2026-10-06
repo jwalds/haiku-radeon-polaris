@@ -74,6 +74,53 @@ Each step ends in a test on the Haiku machine. Steps 1–3 cannot hang the GPU.
    AVFS, clock stretching, BAPM/power limit, deep sleep, ULV, PCIe link DPM,
    memory clock switching with a vblank length check.)
 
+## Quality: tests before new features
+
+Started 2026-10-06, before Quake III and further features. Four layers, the
+cheap deterministic ones run most often:
+
+1. **Host unit tests** (no GPU, seconds, every build): meson `test()`
+   targets in RadeonGfx (`meson test -C build.x86_64`).
+   - Sync: Locks Mutex/RecursiveLock, Fence, FenceGroup, Syncobj; signal,
+     cancel, OnSignal before/after signaling, Retain/holder lifetime,
+     multi-threaded stress with a timeout. (Would have caught the Mutex
+     lost wakeup, the FenceGroup use-after-free and the OnSignal deadlock.)
+   - ExternalAllocator: aligned allocation, fragmentation, free/merge,
+     exhaustion, a randomized test against a reference model.
+   - RingBuffer space accounting and wraparound on a memory-backed ring.
+   - CS chunk parsing (RadeonServerDrm) through a loopback.
+   - Golden files: PowerPlay parsing and the SMU74 DPM table built from a
+     saved VBIOS dump, compared byte for byte; needs register/SMC access
+     behind an interface.
+2. **Server self-tests** (GPU, about a minute): `RadeonGfx selftest` with a
+   pass/fail exit code: GFX/SDMA ring and IB execution, fences and EOP
+   interrupts, VM fault detection, DPM sanity (SMC running, all sclk levels
+   reachable), recovery from a deliberately hung ring, and a leak check
+   (GTT/VRAM back to the baseline after each client).
+3. **Functional API tests** (GPU, about 10 minutes): vkfill/vktri/glwl
+   output compared against reference images, vkbench and fixed glmark2
+   scenes with score floors (off-screen and windowed), must-pass subsets of
+   dEQP-VK and dEQP-GLES2/3 from VK-GL-CTS. Must-pass and known-failure
+   lists are kept in this repo.
+4. **Stress and soak** (on demand, an hour or more): glmark2
+   `--run-forever` with DPM, clients killed at random points plus the leak
+   check, repeated server restarts, several clients at once.
+
+Runner: `tools/test/run-all.sh [unit|smoke|func|soak]` on the Haiku
+machine, with a timeout per case; on a hang it saves the `info` register
+dump, kills the client, restarts the server (soft reset) and continues. It
+writes a summary that goes into test-log.md. Gate: unit + smoke before each
+RadeonGfx commit, functional tests before each push.
+
+Order:
+
+1. Unit test harness; Sync and allocator tests. (done 2026-10-06: 29
+   tests, two new bugs fixed, see test-log)
+2. Runner with watchdog; `selftest`; leak check.
+3. Image comparisons for vkfill, vktri and glwl; glmark2 score floors.
+4. VK-GL-CTS built for Haiku, must-pass lists.
+5. PowerPlay/DPM golden files; stress and soak suite.
+
 ## Risks
 
 - Months of work; steps 4–5 are where the GPU can hang and need reboots.

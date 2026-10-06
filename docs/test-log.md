@@ -688,3 +688,29 @@ missing from the mode list (EDID extension not read).
   several glmark2 runs that gmcase.sh had killed (its 20 s limit was too
   short for two scenes); clean exits leave 0 MB. Killed clients may leak;
   to check.
+
+## 2026-10-06: host unit tests (quality step 1)
+
+- RadeonGfx `tests/`: 29 unit tests for Locks (Mutex, RecursiveLock,
+  ConditionVariable), Fence, FenceGroup and ExternalAllocator;
+  `meson test -C build.x86_64`, about 1 s, no GPU. A watchdog reports a
+  hang or crash with the test's name; the tests run on the guarded heap
+  (`MALLOC_DEBUG=g` with libroot_debug), so a use-after-free crashes.
+- Each earlier bug has a test that fails on the old code: the Mutex lost
+  wakeup (Mutex.Contention and Mutex.HandOff hang, 3 of 3 runs), the
+  Fence::OnSignal deadlock (Fence.OnSignalLockOrder hangs) and the
+  FenceGroup use-after-free (FenceGroup.ReleasedInHandler crashes).
+  First versions of the last two passed on the old code (race windows too
+  narrow); they now hold the signaling thread inside a slow handler.
+- Two new bugs found and fixed:
+  - FenceGroup in "any" mode created with an already signaled fence:
+    the handler ran during construction and cancelled handlers whose fence
+    wasn't set yet (NULL dereference). Handlers are now set up before any
+    is registered.
+  - ExternalAllocator::AllocAligned() started at whichever of several
+    same-size free blocks FindClosest() returned and skipped the others:
+    an allocation could fail with an aligned fit free (randomized test
+    against a page bitmap).
+- 10 repeated full runs: no failures. glmark2 off-screen sanity on the
+  fixed server (build, texture, shading, refract, terrain): score 1791,
+  clean exit.
