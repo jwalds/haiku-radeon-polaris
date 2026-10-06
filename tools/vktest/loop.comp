@@ -1,0 +1,13 @@
+#version 450
+// vkhang shader: never ends, the CPU never sets the flag
+layout(local_size_x = 64) in;
+layout(std430, binding = 0) volatile buffer Data {
+	uint value[];
+} data;
+
+void main()
+{
+	while (data.value[0] == 0u) {
+	}
+	data.value[1 + gl_GlobalInvocationID.x] = 1u;
+}

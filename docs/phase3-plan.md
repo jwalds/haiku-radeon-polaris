@@ -122,10 +122,11 @@ Order:
    suite of the existing bring-up commands rather than a new RadeonGfx
    command. The hang suite (vkhang) blocks the GFX ring on purpose:
    the GPU resumes when unblocked, the server survives a client that exits
-   with it blocked, and a server restart recovers it. Not done: hang
-   detection and recovery inside the running server (Linux: job timeout,
-   GPU reset, VK_ERROR_DEVICE_LOST); until then a hung ring blocks every
-   later client until the server is restarted.)
+   with it blocked, and a server restart recovers it. Hang detection and
+   recovery in the running server as Linux does it (done 2026-10-06):
+   lockup timeout 10 s, soft recovery (killing the hung VMID's waves),
+   otherwise GFX reset with the context guilty, VK_ERROR_DEVICE_LOST in
+   RADV, new clients unaffected.)
 3. Image comparisons for vkfill, vktri and glwl; glmark2 score floors.
 4. VK-GL-CTS built for Haiku, must-pass lists.
 5. PowerPlay/DPM golden files; stress and soak suite.

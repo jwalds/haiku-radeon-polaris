@@ -793,3 +793,50 @@ missing from the mode list (EDID extension not read).
     0x50000008): soft reset", GRBM_STATUS 0x00003028 after; vkfill, vktri
     and another vkhang unblock pass. No reboot needed.
 - The runner's new hang suite does all of this; full run 21 of 21 passed.
+
+## 2026-10-06 — GPU hang detection and recovery
+
+Done as Linux: drm_sched's job timeout, amdgpu_job_timedout() and
+amdgpu_device_gpu_recover().
+- Detection: the interrupt thread checks the GFX ring every 100 ms; fences
+  pending and none passed for the lockup timeout (10 s;
+  `RADEONGFX_LOCKUP_TIMEOUT` in ms, as `amdgpu.lockup_timeout`).
+- Soft recovery first (amdgpu_ring_soft_recovery(),
+  gfx_v8_0_ring_soft_recovery()): SQ_CMD kills the waves of the hung job's
+  VMID for up to 10 ms. `vkhang shader` (a compute shader that never ends):
+  "ring timeout, but soft recovered (waves of VMID 1 killed)", the fence
+  signals after 10.0 s, no reset, the device keeps working.
+- Otherwise reset: the hung job's context is marked guilty and the reset
+  counted, GFX/CP/RLC soft-reset and the ring restarted empty (2.3 ms
+  including the ring self test), every pending fence completed.
+  `vkhang detect` (CP waiting for an event): vkWaitForFences() returns
+  VK_ERROR_DEVICE_LOST after 10.1 s, vkQueueSubmit() too (ECANCELED for a
+  guilty context); vkfill right after works.
+- Contexts now live in the server: the accelerant had answered
+  AMDGPU_CTX_OP_QUERY_STATE2 itself, so RADV never saw a reset. Every
+  context created before a reset reports AMDGPU_CTX_QUERY2_FLAGS_RESET,
+  the guilty one also _GUILTY; RADV turns both into device lost ("GPU hung
+  detected in this process" / "triggered by other process"), as on Linux.
+  With glmark2 running while vkhang hung the GPU: the hang was blamed on
+  vkhang (its VMID), glmark2 got "zink: DEVICE LOST!" and exited normally.
+- Performance regression found and fixed on the way: RADV queries the
+  context state after every wait. A server round trip per query cost 8%
+  in glmark2 (1623 instead of 1754; per frame +37 us). The server now
+  shares its reset counter in a read-only area and the accelerant only asks
+  after a reset. Two bugs made the shortcut miss for every client but the
+  first: the accelerant is opened several times per process (the map must
+  be per process), and drm_amdgpu_ctx is a union (the reply overwrote the
+  op: context 2 looked like FREE). Bisected by building 36a141c next to
+  the current tree. glmark2 build scene back to 2762-2775 fps for every
+  client.
+- A killed client with a hung submission: its team state waits up to the
+  lockup timeout + 5 s, the reset completes the submission and its memory
+  is freed ("submissions done after 9.6 s"). A stopping server doesn't
+  wait; the next start resets the hung GPU.
+- Runner hang suite: unblock, detect (+ a client after), shader (soft
+  recovery), abandon (+ a client after), restart (+ a client after). Full
+  run: 24 of 24 passed, glmark2 off-screen 1735.
+- Not done (Linux does): resubmitting innocent jobs after a reset (no use
+  with RADV, which reports device lost to every context of the reset),
+  SDMA ring hangs (RADV doesn't use SDMA on GFX8 by default), a full ASIC
+  reset (BACO/PCI) when the GFX soft reset doesn't help.

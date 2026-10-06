@@ -5,9 +5,11 @@
 #   smoke     Vulkan and OpenGL clients on the server: vkinfo, vkfill, vktri,
 #             vkbench, glwl, glmark2 (a few scenes), each with a leak check
 #   leak      clients killed at random points, then a leak check
-#   hang      blocks the GFX ring on purpose (vkhang): the GPU resumes when
-#             unblocked; a client exiting with it blocked doesn't take the
-#             server down; a server restart recovers the GPU
+#   hang      hangs the GFX ring on purpose (vkhang): the GPU resumes when
+#             unblocked; a hang is detected after the lockup timeout and
+#             reset (device lost for the client), a shader that never ends
+#             soft-recovered; a client exiting with the GPU hung is freed
+#             after the reset; a server restart resets a hung GPU too
 # Default: unit selftest smoke leak hang.
 #
 # Every case has a time limit. On a hang the register dump (RadeonGfx info)
@@ -211,7 +213,7 @@ client_case()
 	fi
 
 	local warnings=$(tail -n +$((mark + 1)) "$SERVER_LOG" | grep -c '^\[!\]')
-	if [ "$warnings" != 0 ]; then
+	if [ "$warnings" != 0 ] && [ -z "$EXPECT_WARNINGS" ]; then
 		result WARN "$name" $seconds "$warnings server warnings: $(tail -n +$((mark + 1)) "$SERVER_LOG" | grep '^\[!\]' | head -1)"
 		return
 	fi
@@ -326,8 +328,8 @@ suite_leak()
 }
 
 # hang_abandon_case <name>: a client exits with the GFX ring blocked; the
-# server must survive and keep the client's memory (the CP still waits on
-# it)
+# server must keep its memory until the hang reset (lockup timeout) has
+# completed its submission, then free it
 hang_abandon_case()
 {
 	selected "$1" || return
@@ -338,13 +340,19 @@ hang_abandon_case()
 		return
 	fi
 	local mark=$(server_lines)
+	local before=$(gpumem)
 	local start=$(date +%s)
 	(cd "$VKTEST" && timeout -k 2 20 ./vkhang abandon) > "$log" 2>&1
 	local rc=$?
-	local kept=
-	for i in $(seq 20); do
-		kept=$(tail -n +$((mark + 1)) "$SERVER_LOG" | grep "keeping its memory")
-		[ -n "$kept" ] && break
+	local done= after
+	for i in $(seq 60); do
+		done=$(tail -n +$((mark + 1)) "$SERVER_LOG" | grep "submissions done after")
+		[ -n "$done" ] && break
+		sleep 0.5
+	done
+	for i in $(seq 10); do
+		after=$(gpumem)
+		[ "$after" = "$before" ] && break
 		sleep 0.5
 	done
 	local seconds=$(($(date +%s) - start))
@@ -352,24 +360,30 @@ hang_abandon_case()
 		result FAIL "$name" $seconds "exit code $rc"
 	elif ! server_running; then
 		result CRASH "$name" $seconds "server died (see server.log)"
-	elif [ -z "$kept" ]; then
-		result FAIL "$name" $seconds "the server didn't keep the client's memory"
+	elif [ -z "$done" ]; then
+		result FAIL "$name" $seconds "the hang reset didn't complete the submission"
+	elif [ "$after" != "$before" ]; then
+		result LEAK "$name" $seconds "before: $before, after: $after"
 	else
-		result PASS "$name" $seconds "GPU blocked, server kept the client's memory"
+		result PASS "$name" $seconds "reset after the lockup timeout, memory freed"
 	fi
 }
 
-# hang_recover_case <name>: a server restart must soft-reset the blocked GPU
-hang_recover_case()
+# hang_restart_case <name>: a server stopped with the GFX ring blocked; the
+# next one must soft-reset the GPU at its start
+hang_restart_case()
 {
 	selected "$1" || return
 	local name=$1
+	local log=$(log_for "$name")
 	local start=$(date +%s)
+	ensure_server
+	(cd "$VKTEST" && timeout -k 2 20 ./vkhang abandon) > "$log" 2>&1
 	stop_server
 	local mark=$(server_lines)
 	start_server
 	local seconds=$(($(date +%s) - start))
-	local reset=$(tail -n +$((mark + 1)) "$SERVER_LOG" | grep -c "soft reset")
+	local reset=$(tail -n +$((mark + 1)) "$SERVER_LOG" | grep -c "earlier run.*soft reset")
 	if ! server_running; then
 		result FAIL "$name" $seconds "server didn't start"
 	elif [ "$reset" = 0 ]; then
@@ -382,10 +396,17 @@ hang_recover_case()
 suite_hang()
 {
 	CHECK_LINE='resumed' client_case hang-unblock 30 ./vkhang unblock
+	# no fence for the lockup timeout: GPU reset, the context guilty
+	CHECK_LINE='device lost' EXPECT_WARNINGS=1 client_case hang-detect 60 \
+		./vkhang detect
+	CHECK_LINE='OK' client_case hang-detect-after 30 ./vkfill
+	# a shader that never ends: soft recovery, no reset
+	CHECK_LINE='soft recovered' EXPECT_WARNINGS=1 client_case hang-shader 60 \
+		./vkhang shader
 	hang_abandon_case hang-abandon
-	hang_recover_case hang-recover
-	CHECK_LINE='OK' client_case hang-after-vkfill 30 ./vkfill
-	CHECK_LINE='OK' client_case hang-after-vktri 30 ./vktri
+	CHECK_LINE='OK' client_case hang-abandon-after 30 ./vktri
+	hang_restart_case hang-restart
+	CHECK_LINE='OK' client_case hang-restart-after 30 ./vkfill
 }
 
 suites=${*:-unit selftest smoke leak hang}
