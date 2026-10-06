@@ -9,6 +9,7 @@
  * usage: glwl [frames [width height]]
  */
 #include <stdio.h>
+#include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
@@ -266,6 +267,11 @@ main(int argc, char **argv)
 	xdg_toplevel_destroy(toplevel);
 	xdg_surface_destroy(xdgSurface);
 	wl_surface_destroy(surface);
+	// Haiku's in-process Wayland server quits the window of a destroyed
+	// surface asynchronously; disconnecting meanwhile can hang or crash (as
+	// in glmark2, see patches/gpu-stack/glmark2.patch)
+	wl_display_roundtrip(display);
+	usleep(200000);
 	wl_display_disconnect(display);
 	return 0;
 }

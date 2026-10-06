@@ -714,3 +714,48 @@ missing from the mode list (EDID extension not read).
 - 10 repeated full runs: no failures. glmark2 off-screen sanity on the
   fixed server (build, texture, shading, refract, terrain): score 1791,
   clean exit.
+
+## 2026-10-06 — test runner (quality step 2)
+
+- `tools/test/run-tests.sh` on the Haiku machine (copied to `~/gpu/test`,
+  with `gpumem` built from `gpumem.c`); results in
+  `~/gpu/test-results/<date-time>/`. Suites:
+  - unit: `meson test` of the RadeonGfx host unit tests.
+  - selftest: `RadeonGfx garttest`, `ihtest`, `sdmatest`, `gfxtest` with
+    the server stopped.
+  - smoke: vkinfo, vkfill, vktri, vkbench, glwl (300 frames, windowed),
+    glmark2 off-screen (5 scenes) and windowed (2 scenes).
+  - leak: vkbench, glwl and glmark2 killed with SIGKILL after 1.5-6 s.
+  Every client case has a time limit; on a hang the runner saves the
+  client's thread states (`ps -as`), its gdb backtraces and the register
+  dump (`RadeonGfx info`), kills it and restarts the server. After each
+  client, `gpumem` (amdgpu VRAM/GTT usage queries) must show the memory
+  in use before it, else LEAK. New `[!]` lines in the server log mark a
+  case WARN. `GDB=1` runs the server under gdb, `CASES="..."` selects
+  cases.
+- Final run: 16 of 16 passed (glmark2 off-screen 1765, windowed 66,
+  vkbench copy 13.5 GB/s, glwl 65 fps).
+- Found and fixed:
+  - **Server crash when a client is killed with submissions in flight**
+    (glmark2 killed in the refract scene, reproduced at once under gdb):
+    the team state was deleted while its submissions were on the GPU; the
+    fence handler then scheduled the retire request on the deleted domain
+    (SADomains "assert failed", or SIGSEGV in Domain::Schedule() with a
+    NULL domain). The GPU could also still use the client's freed
+    buffers. The team state's last reference now waits up to 5 s for its
+    submissions to be done and retired ("team N: waiting for 2
+    submission(s)" ... "done after 3359 us"), and keeps the memory if the
+    GPU doesn't finish them.
+  - garttest failed with every PTE "bad": the test still expected the
+    PTE flags from before the GART pages became executable (ee780a8).
+  - The box ran an old vktri build without the ±1 tolerance on the clear
+    color (25 instead of 26).
+  - glwl hung after its last frame in about 1 of 4 runs (GPU idle; 5
+    threads left after EGL/Zink teardown, waiting). It's in the Wayland
+    teardown, as glmark2's crash before; the same workaround (a roundtrip
+    and 200 ms before wl_display_disconnect()) made 20 of 20 runs pass.
+    gdb can't attach to the hung team ("haiku_nat::attach: Invalid
+    Argument"), and Debugger's `--save-report` wrote no stacks; the root
+    cause in Haiku's in-process Wayland server is still open.
+- No leaks: VRAM and GTT use is back to the level before each client,
+  also after SIGKILL.

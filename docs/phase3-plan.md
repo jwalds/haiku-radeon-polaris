@@ -116,7 +116,12 @@ Order:
 
 1. Unit test harness; Sync and allocator tests. (done 2026-10-06: 29
    tests, two new bugs fixed, see test-log)
-2. Runner with watchdog; `selftest`; leak check.
+2. Runner with watchdog; `selftest`; leak check. (done 2026-10-06:
+   `tools/test/run-tests.sh` with unit, selftest, smoke and leak suites,
+   16 cases in about 2.5 minutes; the self-test is the runner's selftest
+   suite of the existing bring-up commands rather than a new RadeonGfx
+   command. Not done: recovery from a deliberately hung ring, as a hung CP
+   has needed a reboot before.)
 3. Image comparisons for vkfill, vktri and glwl; glmark2 score floors.
 4. VK-GL-CTS built for Haiku, must-pass lists.
 5. PowerPlay/DPM golden files; stress and soak suite.
