@@ -1,0 +1,81 @@
+wl_ips_client_connected
+display: 0x12b0e230e0
+client: 0x12b0e2f6c0
+drmGetDevices2()
+drmGetDevices2()
++ThreadLink(), thread: 422
+/boot/home/gpu/install/data/libdrm/amdgpu.ids version: 1.0.0
+drmGetDevice2()
+drmFreeDevice()
+[!] ../radeon_gfx.accelerant/RadeonGfxAccelerant.cpp:428: error 0x80007009 (Function not implemented)
+[!] ../radeon_gfx.accelerant/RadeonGfxAccelerant.cpp:428: error 0x80007009 (Function not implemented)
+RadeonGfxAccelerant::AmdgpuQueryInfo: unknown info->query: 34
+[!] ../radeon_gfx.accelerant/RadeonGfxAccelerant.cpp:421: error 0x80007009 (Function not implemented)
+drmFreeDevices()
+drmFreeDevice()
+signature: "radeon_gfx.accelerant"
+path: "/boot/home/config/non-packaged/add-ons/accelerants/radeon_gfx.accelerant"
+Accelerant::LastReferenceReleased()
+signature: "radeon_gfx.accelerant"
+path: "/boot/home/config/non-packaged/add-ons/accelerants/radeon_gfx.accelerant"
+Accelerant::LastReferenceReleased()
+signature: "radeon_gfx.accelerant"
+path: "/boot/home/config/non-packaged/add-ons/accelerants/radeon_gfx.accelerant"
+=======================================================
+    glmark2 2023.01
+=======================================================
+Mesa: error: GL_INVALID_FRAMEBUFFER_OPERATION in glClear(incomplete framebuffer)
+    OpenGL Information
+    GL_VENDOR:      Mesa
+    GL_RENDERER:    zink Vulkan 1.3(AMD Radeon RX 460 Graphics (RADV POLARIS11) (MESA_RADV))
+    GL_VERSION:     OpenGL ES 3.2 Mesa 23.3.6 (git-863338275d)
+    Surface Config: buf=32 r=8 g=8 b=8 a=8 depth=24 stencil=0 samples=0
+    Surface Size:   800x600 windowed
+=======================================================
++ThreadLink(), thread: 428
+[build] use-vbo=false: FPS: 2185 FrameTime: 0.458 ms
+[build] use-vbo=true: FPS: 2772 FrameTime: 0.361 ms
+[texture] texture-filter=nearest: FPS: 2760 FrameTime: 0.362 ms
+[texture] texture-filter=linear: FPS: 2757 FrameTime: 0.363 ms
+[texture] texture-filter=mipmap: FPS: 2759 FrameTime: 0.362 ms
+[shading] shading=gouraud: FPS: 2764 FrameTime: 0.362 ms
+[shading] shading=blinn-phong-inf: FPS: 2764 FrameTime: 0.362 ms
+[shading] shading=phong: FPS: 2771 FrameTime: 0.361 ms
+[shading] shading=cel: FPS: 2765 FrameTime: 0.362 ms
+[bump] bump-render=high-poly: FPS: 2785 FrameTime: 0.359 ms
+[bump] bump-render=normals: FPS: 2754 FrameTime: 0.363 ms
+[bump] bump-render=height: FPS: 2768 FrameTime: 0.361 ms
+[effect2d] kernel=0,1,0;1,-4,1;0,1,0;: FPS: 3056 FrameTime: 0.327 ms
+[effect2d] kernel=1,1,1,1,1;1,1,1,1,1;1,1,1,1,1;: FPS: 3067 FrameTime: 0.326 ms
+[pulsar] light=false:quads=5:texture=false: FPS: 2359 FrameTime: 0.424 ms
+[desktop] blur-radius=5:effect=blur:passes=1:separable=true:windows=4: FPS: 1355 FrameTime: 0.739 ms
+[desktop] effect=shadow:windows=4: FPS: 1492 FrameTime: 0.670 ms
+[buffer] columns=200:interleave=false:update-dispersion=0.9:update-fraction=0.5:update-method=map: FPS: 139 FrameTime: 7.225 ms
+[buffer] columns=200:interleave=false:update-dispersion=0.9:update-fraction=0.5:update-method=subdata: FPS: 127 FrameTime: 7.883 ms
+[buffer] columns=200:interleave=true:update-dispersion=0.9:update-fraction=0.5:update-method=map: FPS: 221 FrameTime: 4.538 ms
+[ideas] speed=duration:+ThreadLink(), thread: 488
++ThreadLink(), thread: 487
+ FPS: 946 FrameTime: 1.058 ms
+-ThreadLink(), thread: 488
+-ThreadLink(), thread: 487
+[jellyfish] <default>: FPS: 2338 FrameTime: 0.428 ms
+[terrain] <default>:+ThreadLink(), thread: 494
+ FPS: 786 FrameTime: 1.274 ms
+-ThreadLink(), thread: 494
+[shadow] <default>: FPS: 2153 FrameTime: 0.465 ms
+[refract] <default>: FPS: 1151 FrameTime: 0.869 ms
+[conditionals] fragment-steps=0:vertex-steps=0: FPS: 2840 FrameTime: 0.352 ms
+[conditionals] fragment-steps=5:vertex-steps=0: FPS: 2854 FrameTime: 0.350 ms
+[conditionals] fragment-steps=0:vertex-steps=5: FPS: 2880 FrameTime: 0.347 ms
+[function] fragment-complexity=low:fragment-steps=5: FPS: 2847 FrameTime: 0.351 ms
+[function] fragment-complexity=medium:fragment-steps=5: FPS: 2846 FrameTime: 0.351 ms
+[loop] fragment-loop=false:fragment-steps=5:vertex-steps=5: FPS: 2864 FrameTime: 0.349 ms
+[loop] fragment-steps=5:fragment-uniform=false:vertex-steps=5: FPS: 2830 FrameTime: 0.353 ms
+[loop] fragment-steps=5:fragment-uniform=true:vertex-steps=5: FPS: 2837 FrameTime: 0.353 ms
+=======================================================
+                                  glmark2 Score: 2259 
+=======================================================
+-ThreadLink(), thread: 428
+-ThreadLink(), thread: 422
+Accelerant::LastReferenceReleased()
+done

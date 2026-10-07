@@ -896,3 +896,18 @@ amdgpu_device_gpu_recover().
 - Next: the system memory growth; then glmark2 on Linux on the same
   machine (tools/linux-bench.sh: radeonsi and Zink on RADV) for a
   performance comparison.
+
+## 2026-10-07 — memory bandwidth 3.2x: MC arbiter timings
+
+- Compared with Linux on the same machine (docs/perf/comparison.md):
+  memory bandwidth on Haiku was a third of Linux'. A register dump of both
+  under load (`RadeonGfx regs`) showed the MC arbiter DRAM timings far
+  off; the arbiter table in SMC RAM held garbage, computed by the VBIOS
+  with our AtomBIOS interpreter, whose table work space wasn't zeroed
+  (malloc instead of Linux' kcalloc). Fixed in RadeonGfx 6d1b1ab.
+- After a reboot (the SMC keeps the table while DPM runs): DPM voltages
+  unchanged; vkbench fill 25.8 -> 82.6 GB/s, copy 13.5 -> 39.8 GB/s (96%
+  of Linux); glmark2 refract 404 -> 1152, terrain 365 -> 821 FPS (faster
+  than Linux' Zink and radeonsi), full score 2206 -> 2259 (most scenes are
+  limited by per-frame overhead). Performance floors raised. Full runner:
+  34 of 34 passed, rendered images unchanged.
