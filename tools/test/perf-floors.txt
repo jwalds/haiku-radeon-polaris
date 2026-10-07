@@ -3,11 +3,15 @@
 # Mesa 23.3.6); run-to-run spread was below 1%. Raised on 2026-10-07 after
 # the MC arbiter timing fix (memory bandwidth 3.2x): 95% of that run. After a change that makes
 # things faster for good, raise them; never lower one to make a run pass.
+# Raised again on 2026-10-07 after the per-frame overhead work (optimized
+# builds, published syncobj points): build/texture/shading are bound by
+# CPU overhead now and vary about 5% from run to run, floors at about 90%
+# of the lower of two runs.
 #
 # case               metric    floor     median then
-glmark2-offscreen    build      2640    # 2777 fps
-glmark2-offscreen    texture    2610    # 2748 fps
-glmark2-offscreen    shading    2680    # 2825 fps
+glmark2-offscreen    build      4800    # 5305, 5348 fps
+glmark2-offscreen    texture    4600    # 5101, 5439 fps
+glmark2-offscreen    shading    4600    # 5128, 5257 fps
 glmark2-offscreen    refract    1095    # 1152 fps
 glmark2-offscreen    terrain     780    # 821 fps
 glmark2-windowed     score       60    # 66 (vsync)

@@ -128,6 +128,40 @@ index 7e85dd6..2365ea0 100644
  }
  
  static const __DRIkopperLoaderExtension kopper_loader_extension = {
+diff --git a/src/gallium/drivers/zink/zink_bo.c b/src/gallium/drivers/zink/zink_bo.c
+index eea3584..bc56d89 100644
+--- a/src/gallium/drivers/zink/zink_bo.c
++++ b/src/gallium/drivers/zink/zink_bo.c
+@@ -152,12 +152,28 @@ bo_destroy(struct zink_screen *screen, struct pb_buffer *pbuf)
+    FREE(bo);
+ }
+ 
++/* A batch state's submit_count goes up when it is submitted and again when it
++ * is reset after completion: two or more since the use means the use is done,
++ * and u now describes a later batch of the recycled state (unflushed while it
++ * records). Without this, a freed slab entry whose batch state is the current
++ * one again whenever the allocator looks never counts as idle, and
++ * pb_slabs_reclaim() gives up after two such entries: no slab entry is reused
++ * any more and every allocation takes a new slab.
++ */
++static bool
++bo_usage_check_completion(struct zink_screen *screen, const struct zink_bo_usage *usage)
++{
++   if (usage->u && usage->u->submit_count - usage->submit_count >= 2)
++      return true;
++   return zink_screen_usage_check_completion(screen, usage->u);
++}
++
+ static bool
+ bo_can_reclaim(struct zink_screen *screen, struct pb_buffer *pbuf)
+ {
+    struct zink_bo *bo = zink_bo(pbuf);
+ 
+-   return zink_screen_usage_check_completion(screen, bo->reads.u) && zink_screen_usage_check_completion(screen, bo->writes.u);
++   return bo_usage_check_completion(screen, &bo->reads) && bo_usage_check_completion(screen, &bo->writes);
+ }
+ 
+ static bool
 diff --git a/src/gallium/drivers/zink/zink_fence.c b/src/gallium/drivers/zink/zink_fence.c
 index 33ea9d7..9164132 100644
 --- a/src/gallium/drivers/zink/zink_fence.c

@@ -52,7 +52,10 @@ build_package() {
 	rm -rf "$buildDir"
 	mkdir "$buildDir"
 	echo "=== $name"
-	(cd "$buildDir" && meson setup .. -Dprefix="$INSTALL" "$@" && ninja install)
+	# optimized with symbols: the -O0 default costs about a third of the
+	# per-frame CPU time of the fast glmark2 scenes
+	(cd "$buildDir" && meson setup .. -Dprefix="$INSTALL" \
+		--buildtype debugoptimized "$@" && ninja install)
 }
 
 clone Locks https://github.com/X547/Locks.git

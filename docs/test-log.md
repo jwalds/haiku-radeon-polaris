@@ -911,3 +911,26 @@ amdgpu_device_gpu_recover().
   than Linux' Zink and radeonsi), full score 2206 -> 2259 (most scenes are
   limited by per-frame overhead). Performance floors raised. Full runner:
   34 of 34 passed, rendered images unchanged.
+
+## 2026-10-07 — per-frame overhead: glmark2 score 2259 -> 4221
+
+- Measured where a frame's time goes (`RADEONGFX_STATS`,
+  `tools/test/overhead.sh`): per frame one submission (87 us for the
+  client), one timeline wait (45 us) and one syncobj transfer (36 us).
+- RadeonGfx 7c3a903..073712d: one-way SYNCOBJ_TRANSFER; one domain switch
+  per ioctl in the CS and syncobj paths; optimized builds (everything was
+  -O0, libdrm2, accelerant2 and glmark2 too); page table updates without
+  VRAM reads; timeline waits for reached points answered in the client
+  from points the server publishes; `AMDGPU_INFO_MEMORY` with the real
+  sizes (it reported a 3 GB GTT).
+- The faster frames made a Zink 23.3 bug visible: freed slab entries were
+  never reclaimed once its batch state was reused every frame, every
+  allocation took a new 2 MB slab and the full benchmark ran out of GTT in
+  the buffer scenes. Fixed in `patches/gpu-stack/mesa.patch` (zink_bo.c,
+  the reclaim check uses the batch state's submit counter). GTT through
+  the full benchmark: 10-16 MB (was growing to 512 MB).
+- glmark2 build 2777 -> 5368 FPS (Linux Zink 4986), full score 2259 ->
+  4221 (Linux Zink 3314, radeonsi 4991). Details in
+  docs/perf/comparison.md. Performance floors raised.
+- Unit tests: new Syncobj suite (published points), 8 suites pass under
+  the guarded heap.

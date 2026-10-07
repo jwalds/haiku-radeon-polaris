@@ -19,7 +19,8 @@ cd glmark2
 if git apply --check "$PATCHES/glmark2.patch" 2>/dev/null; then
 	git apply "$PATCHES/glmark2.patch"
 fi
+# optimized: at -O0 glmark2's own CPU time per frame shows in the fast scenes
 [ -d build.x86_64 ] || meson setup build.x86_64 --prefix "$INSTALL" \
-	-Dflavors=wayland-glesv2,wayland-gl
+	--buildtype debugoptimized -Dflavors=wayland-glesv2,wayland-gl
 ninja -C build.x86_64
 ninja -C build.x86_64 install
