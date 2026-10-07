@@ -1,0 +1,15 @@
+=======================================================
+    glmark2 2023.01
+=======================================================
+    OpenGL Information
+    GL_VENDOR:      Mesa
+    GL_RENDERER:    zink Vulkan 1.4(AMD Radeon RX 460 Graphics (RADV POLARIS11) (MESA_RADV))
+    GL_VERSION:     OpenGL ES 3.2 Mesa 26.0.3-1ubuntu1
+    Surface Config: buf=32 r=8 g=8 b=8 a=8 depth=24 stencil=0 samples=0
+    Surface Size:   800x600 windowed
+=======================================================
+[build] duration=3: FPS: 5372 FrameTime: 0.186 ms
+[texture] duration=3: FPS: 5491 FrameTime: 0.182 ms
+=======================================================
+                                  glmark2 Score: 5430 
+=======================================================

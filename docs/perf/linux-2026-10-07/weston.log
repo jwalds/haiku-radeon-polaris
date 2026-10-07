@@ -1,0 +1,63 @@
+Date: 2026-10-07 UTC
+[16:33:57.560] weston 14.0.2
+               https://wayland.freedesktop.org
+               Bug reports to: https://gitlab.freedesktop.org/wayland/weston/issues/
+               Build: 14.0.2
+[16:33:57.560] Command line: weston --backend=headless --renderer=gl --socket=bench --width=1024 --height=768
+[16:33:57.560] OS: Linux, 7.0.0-14-generic, #14-Ubuntu SMP PREEMPT_DYNAMIC Mon Apr 13 11:09:53 UTC 2026, x86_64
+[16:33:57.560] Flight recorder: enabled
+[16:33:57.560] Starting with no config file.
+[16:33:57.560] Output repaint window is 7 ms maximum.
+[16:33:57.560] Loading module '/usr/lib/x86_64-linux-gnu/libweston-14/headless-backend.so'
+[16:33:57.564] Loading module '/usr/lib/x86_64-linux-gnu/libweston-14/gl-renderer.so'
+[16:33:57.601] Using rendering device: /dev/dri/renderD128
+[16:33:57.609] EGL version: 1.5
+[16:33:57.609] EGL vendor: Mesa Project
+[16:33:57.609] EGL client APIs: OpenGL OpenGL_ES 
+[16:33:57.609] EGL features:
+               EGL Wayland extension: no
+               context priority: yes
+               buffer age: no
+               partial update: no
+               swap buffers with damage: no
+               configless context: yes
+               surfaceless context: yes
+               dmabuf support: modifiers
+[16:33:57.612] GL version: OpenGL ES 3.2 Mesa 26.0.3-1ubuntu1
+[16:33:57.612] GLSL version: OpenGL ES GLSL ES 3.20
+[16:33:57.612] GL vendor: AMD
+[16:33:57.612] GL renderer: AMD Radeon RX 460 Graphics (radeonsi, polaris11, ACO, DRM 3.64, 7.0.0-14-generic)
+[16:33:57.622] GL ES 3.2 - renderer features:
+               read-back format: ARGB8888
+               glReadPixels supports y-flip: yes
+               glReadPixels supports PBO: yes
+               wl_shm 10 bpc formats: yes
+               wl_shm 16 bpc formats: yes
+               wl_shm half-float formats: yes
+               internal R and RG formats: yes
+               OES_EGL_image_external: yes
+[16:33:57.622] Using GL renderer
+[16:33:57.622] Registered plugin API 'weston_windowed_output_api_headless_v2' of size 16
+[16:33:57.622] Color manager: no-op
+                 protocol support: no
+[16:33:57.622] Output 'headless' attempts EOTF mode SDR and colorimetry mode default.
+[16:33:57.622] Output 'headless' using color profile: stock sRGB color profile
+[16:33:57.624] Output 'headless' enabled with head(s) headless
+[16:33:57.624] Compositor capabilities:
+               arbitrary surface rotation: yes
+               screen capture uses y-flip: yes
+               cursor planes: no
+               arbitrary resolutions: no
+               view mask clipping: yes
+               explicit sync: yes
+               color operations: yes
+               presentation clock: CLOCK_MONOTONIC_RAW, id 4
+               presentation clock resolution: 0.000000001 s
+[16:33:57.624] Loading module '/usr/lib/x86_64-linux-gnu/weston/desktop-shell.so'
+[16:33:57.625] launching '/usr/libexec/weston-keyboard'
+[16:33:57.626] launching '/usr/libexec/weston-desktop-shell'
+could not load cursor 'dnd-copy'
+could not load cursor 'dnd-none'
+could not load cursor 'dnd-copy'
+could not load cursor 'dnd-none'
+[16:35:12.221] libwayland: failed to read client connection (pid 12652)
