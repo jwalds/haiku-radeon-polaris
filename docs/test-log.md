@@ -934,3 +934,15 @@ amdgpu_device_gpu_recover().
   docs/perf/comparison.md. Performance floors raised.
 - Unit tests: new Syncobj suite (published points), 8 suites pass under
   the guarded heap.
+
+## 2026-10-07 — buffer scenes: maps 28x faster, CPU clock found
+
+- CPU map of a VRAM buffer 5.6 -> 0.2 ms (one VRAM clone per process,
+  libdrm2.patch), GTT buffer allocation 1.4 -> 0.96 ms (page table entries
+  stored at once: bit field writes read uncached VRAM back; GART lookups
+  per physical run).
+- Profile: the buffer scenes are glmark2's own CPU work (our stack < 5%),
+  with the CPU at 1.8-2.1 GHz under load (Haiku's intel_pstates on Sandy
+  Bridge) against ~3.3 GHz turbo on Linux. docs/perf/comparison.md.
+- tools/test/overhead.sh: results directory and scenes with options fixed.
+- Full runner: 34 of 34 passed.

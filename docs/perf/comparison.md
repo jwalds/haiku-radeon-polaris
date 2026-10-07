@@ -175,3 +175,31 @@ What's left:
   sequence number and errors handled in the client.
 - Polaris has no interrupts here: the server polls the IH ring every 250
   us. Waits for points not yet reached see that latency.
+
+## 2026-10-07: buffer scenes, maps and allocation
+
+Profile of the buffer scenes (`profile -a -k`, the system-wide sampler):
+glmark2's own thread is busy ~84% of the time, and our stack (Zink, RADV,
+accelerant, libdrm) is under 5% of it: `WaveMesh::update` 49%, `memcpy`
+26%, `Mesh::update_single_array` 11%, `memmove` 5%. The scenes are bound
+by the application's CPU time. The busy core runs at 1.8-2.1 GHz on Haiku
+(`sysinfo -cpu` under load) where Linux turbos it to ~3.3 GHz: Haiku's
+intel_pstates driver without HWP (Sandy Bridge) recomputes the P-state from
+the average frequency since the last update and stays low. That, not the
+driver, is most of the gap to Linux in these scenes.
+
+Fixed on the way (RadeonGfx):
+- A CPU map of a VRAM buffer cloned the whole 256 MB CPU visible VRAM
+  (every page mapped, 5.6 ms) and libdrm's unmap deleted the clone. The
+  accelerant now clones it once per process (libdrm2.patch keeps it on
+  unmap): 5.6 ms -> 0.2 ms per map.
+- Page table entries were written as bit fields straight into VRAM: gcc
+  reads the entry back twice to merge the fields, uncached reads of ~1 us.
+  Entries are now built in a register and stored at once. GART mapping
+  looks up physical addresses per contiguous run instead of per page.
+  A 2 MB GTT buffer: 1.17 -> 0.78 ms in the server, 1.4 -> 0.96 ms for the
+  client. buffer subdata 471 -> 493 FPS.
+
+What's left in allocation is the kernel's work (zeroing new pages, page
+allocation, one lookup per physical run): a pool of freed GTT buffers in
+the server would avoid it.

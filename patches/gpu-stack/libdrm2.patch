@@ -1,5 +1,5 @@
 diff --git a/amdgpu/amdgpu_bo.c b/amdgpu/amdgpu_bo.c
-index a0ff8f0..4e346a5 100644
+index a0ff8f0..520367a 100644
 --- a/amdgpu/amdgpu_bo.c
 +++ b/amdgpu/amdgpu_bo.c
 @@ -32,6 +32,9 @@
@@ -12,7 +12,7 @@ index a0ff8f0..4e346a5 100644
  
  #include <inttypes.h>
  
-@@ -336,7 +339,17 @@ drm_public int amdgpu_bo_cpu_unmap(amdgpu_bo_handle bo)
+@@ -336,7 +339,26 @@ drm_public int amdgpu_bo_cpu_unmap(amdgpu_bo_handle bo)
  		return 0;
  	}
  
@@ -22,7 +22,16 @@ index a0ff8f0..4e346a5 100644
 +	 * device memory area panics the kernel (VMCache::Commit()). */
 +	{
 +		area_id area = area_for(bo->cpu_ptr);
-+		r = (area >= 0 && delete_area(area) == B_OK) ? 0 : -EINVAL;
++		area_info info;
++		if (area < 0 || get_area_info(area, &info) != B_OK)
++			r = -EINVAL;
++		else if (strcmp(info.name, "radeon_gfx vram clone") == 0) {
++			/* the accelerant's clone of the whole CPU visible VRAM, kept for
++			 * the process (RADEON_GFX_VRAM_CLONE_NAME): cloning it costs
++			 * milliseconds */
++			r = 0;
++		} else
++			r = delete_area(area) == B_OK ? 0 : -EINVAL;
 +	}
 +#else
  	r = drm_munmap(bo->cpu_ptr, bo->alloc_size) == 0 ? 0 : -errno;
