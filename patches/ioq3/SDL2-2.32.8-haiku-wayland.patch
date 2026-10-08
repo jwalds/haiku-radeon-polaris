@@ -16,19 +16,6 @@
    endif()
  
    if(SDL_FILESYSTEM)
-diff -ru pristine/SDL2-2.32.8/src/misc/haiku/SDL_sysurl.cc SDL2-2.32.8/src/misc/haiku/SDL_sysurl.cc
---- a/src/misc/haiku/SDL_sysurl.cc	2025-01-01 16:47:53.000000000 +0100
-+++ b/src/misc/haiku/SDL_sysurl.cc	2026-10-08 16:13:28.112197632 +0200
-@@ -24,7 +24,7 @@
- 
- int SDL_SYS_OpenURL(const char *url)
- {
--    BUrl burl(url);
-+    BUrl burl(url, true);
-     const status_t rc = burl.OpenWithPreferredApplication(false);
-     return (rc == B_NO_ERROR) ? 0 : SDL_SetError("URL open failed (err=%d)", (int) rc);
- }
-diff -ru pristine/SDL2-2.32.8/src/video/haiku/SDL_bvideo.cc SDL2-2.32.8/src/video/haiku/SDL_bvideo.cc
 --- a/src/video/haiku/SDL_bvideo.cc	2025-01-01 16:47:53.000000000 +0100
 +++ b/src/video/haiku/SDL_bvideo.cc	2026-10-08 16:13:28.100139008 +0200
 @@ -305,7 +305,7 @@
@@ -40,3 +27,30 @@ diff -ru pristine/SDL2-2.32.8/src/video/haiku/SDL_bvideo.cc SDL2-2.32.8/src/vide
      const status_t rc = burl.OpenWithPreferredApplication(false);
      return (rc == B_NO_ERROR) ? 0 : SDL_SetError("URL open failed (err=%d)", (int)rc);
  }
+--- a/src/misc/haiku/SDL_sysurl.cc	2025-01-01 16:47:53.000000000 +0100
++++ b/src/misc/haiku/SDL_sysurl.cc	2026-10-08 16:13:28.112197632 +0200
+@@ -24,7 +24,7 @@
+ 
+ int SDL_SYS_OpenURL(const char *url)
+ {
+-    BUrl burl(url);
++    BUrl burl(url, true);
+     const status_t rc = burl.OpenWithPreferredApplication(false);
+     return (rc == B_NO_ERROR) ? 0 : SDL_SetError("URL open failed (err=%d)", (int) rc);
+ }
+--- a/src/video/wayland/SDL_waylandvideo.c	2025-05-19 23:24:41.000000000 +0200
++++ b/src/video/wayland/SDL_waylandvideo.c	2026-10-08 17:00:33.108527616 +0200
+@@ -160,6 +160,13 @@
+     SDL_VideoData *data = (SDL_VideoData *)device->driverdata;
+     if (data->display) {
+         WAYLAND_wl_display_flush(data->display);
++#ifdef __HAIKU__
++        /* Haiku's in-process Wayland server closes the window of a destroyed
++           surface asynchronously; disconnecting meanwhile crashes the client
++           in wl_display_disconnect(). */
++        WAYLAND_wl_display_roundtrip(data->display);
++        SDL_Delay(200);
++#endif
+         WAYLAND_wl_display_disconnect(data->display);
+     }
+     SDL_free(data);

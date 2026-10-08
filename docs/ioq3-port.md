@@ -40,30 +40,53 @@ and then the game against it. Needs `libxkbcommon_devel`, `wayland_devel`,
 
 ## Running
 
-As for the other GL clients (see `tools/test/common.sh`): the RadeonGfx
-server must run, with the Zink environment set, and
-`LIBRARY_PATH` must start with the SDL prefix and the stack's lib directory,
-so `libEGL`/`libGLESv2` are the stack's. `tools/vktest/sdlgl.c` is the
-minimal SDL check (window, desktop GL context, fixed-function triangle,
-input events).
+The scripts take the game data from `$IOQ3PORT/data/baseq3` (retail
+`pak0.pk3`..`pak8.pk3`) and the SDL prefix from `$IOQ3PORT` (default
+`~/ioq3port`):
 
-## Status
+- `tools/ioq3-run.sh <opengl1|opengl2> [arguments]` starts the RadeonGfx
+  server if needed, sets the Zink environment (as `tools/test/common.sh`),
+  puts the SDL prefix and the stack's lib directory first in
+  `LIBRARY_PATH` (so `libEGL` is the stack's) and runs `ioquake3` with
+  `SDL_VIDEODRIVER=wayland`. The renderer is the cvar `cl_renderer`.
+- `tools/ioq3-gdb.sh` the same under gdb, with a backtrace of a crash.
+- `tools/ioq3-fps.sh` frame rate of the first frames on q3dm1.
+- `tools/vktest/sdlgl.c` (`tools/sdlgl-run.sh`) is the minimal SDL check.
 
-- SDL2 Wayland on the stack: works. `sdlgl` gets `GL_RENDERER: zink Vulkan
-  1.3(AMD Radeon RX 460 Graphics (RADV POLARIS11))`, `GL_VERSION: 4.6
-  (Compatibility Profile) Mesa 23.3.6` and runs 300 frames at 66 fps with
-  no errors apart from the known unimplemented ioctl messages.
-- ioq3 builds. It has not run yet: no game data (`baseq3/pak0.pk3`) on the
-  machine.
+Example, a screenshot of q3dm1 and quit:
+`ioq3-run.sh opengl2 +devmap q3dm1 +wait 600 +screenshot shot +wait 50 +quit`.
+
+## Status (2026-10-08)
+
+- Both renderers run on the stack and draw q3dm1 correctly
+  (`docs/images/ioq3-gl1-q3dm1.png`, `ioq3-gl2-q3dm1.png`): `GL_RENDERER:
+  zink Vulkan 1.3 (AMD Radeon RX 460 Graphics (RADV POLARIS11))`; GL1 gets a
+  4.6 compatibility context, GL2 a 4.6 core context.
+- Frame rate standing at the spawn point of q3dm1, 640x480 windowed, swap
+  interval 0, no sound: GL1 about 136 fps, GL2 about 143 fps (CPU at
+  1.8-2.1 GHz, timed to the second, so rough).
+- Shutdown: `wl_display_disconnect` crashed in libwayland-client right after
+  the window surface was destroyed (Haiku's in-process Wayland server quits
+  the window asynchronously, as in glwl and glmark2). Fixed in the SDL patch:
+  a roundtrip and 200 ms before disconnecting. Both renderers now quit
+  cleanly and leave no process behind.
+- The bot match, sound and input have not been tried. A listing of the
+  globals Haiku's Wayland server advertises (`WAYLAND_DEBUG=1`): `wl_shm`,
+  `wl_compositor`, `wl_subcompositor`, `wp_viewporter`, `wl_output`,
+  `wl_data_device_manager`, `wl_seat` (pointer and keyboard), `xdg_wm_base`,
+  `zwp_text_input_manager_v3`, and KDE's server decoration manager. No
+  `zwp_relative_pointer_manager_v1` and no `zwp_pointer_constraints_v1`.
 
 ## Open points
 
-- Game data, then the first run with `+set r_renderer opengl1` and
-  `opengl2` (`SDL_VIDEODRIVER=wayland`).
-- Input: check that Haiku's Wayland server offers `wl_seat` keyboard and
-  pointer, and that relative mouse (pointer constraints) works for mouse
-  look.
+- Mouse look: SDL's relative mouse mode on Wayland needs the relative
+  pointer and pointer constraints protocols, which the server lacks. Test
+  with a real mouse; the fix is either those protocols in the server or a
+  warp-based fallback in SDL.
+- Keyboard and menu input with the real keyboard (the Compose file
+  message `xkbcommon: couldn't find a Compose file` is harmless).
 - Audio: SDL's Haiku audio driver (`SDL_AUDIODRIVER=haiku`) or OpenAL.
 - Fullscreen and mode switching under Haiku's Wayland server.
-- Possible hits of unimplemented DRM calls (`DrmSyncobjSignal`,
-  `TimelineSignal`, `Query`, sync files) once real frames are rendered.
+- A bot match for a few minutes and the unimplemented DRM calls
+  (`DrmSyncobjSignal`, `TimelineSignal`, `Query`, sync files), a leak check
+  of GTT/VRAM over several map changes, the full stack test runner.

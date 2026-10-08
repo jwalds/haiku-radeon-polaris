@@ -955,4 +955,11 @@ amdgpu_device_gpu_recover().
   branch). `tools/vktest/sdlgl.c`: SDL window + desktop GL 4.6
   compatibility context on Zink/RADV, fixed-function triangle, 300 frames
   at 66 fps, clean exit.
-- Not run yet: the game itself (no game data on the machine).
+- (Game run: see below.)
+
+- ioq3 runs: `q3dm1` loads and renders with both renderers on the stack
+  (GL1 about 136 fps, GL2 about 143 fps at 640x480, rough), screenshots in
+  docs/images. Shutdown crashed in `wl_display_disconnect` (the known
+  Haiku Wayland teardown race); worked around in the SDL patch. Haiku's
+  Wayland server has no relative pointer / pointer constraints protocol,
+  which mouse look will need. Details in docs/ioq3-port.md.
