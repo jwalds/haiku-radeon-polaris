@@ -5,7 +5,9 @@ display engine DCE 11.2) to Haiku's `radeon_hd` driver.
 
 **Status:** native mode setting, DPMS and a hardware cursor work — tested
 on a Radeon RX 560 (`1002:67ef`, rev `0xcf`) over HDMI at 2560x1440@60 and
-@75 on Haiku R1/beta6+ (hrev60147). There is no 2D/3D acceleration yet.
+@75 on Haiku R1/beta6+ (hrev60147). 3D acceleration works in userland:
+Vulkan through Mesa RADV, OpenGL and OpenGL ES through Zink, on the
+RadeonGfx GPU server (Phase 3, below).
 
 > These patches were developed with AI assistance. Haiku does not accept
 > AI-generated contributions (see `AGENTS.md` in the Haiku tree), so they
@@ -36,6 +38,35 @@ EDID extension blocks yet.
 
 See `docs/test-log.md` for test results and `docs/findings-linux-capture.md`
 for register findings.
+
+## How 3D acceleration works
+
+![3D acceleration on Haiku with RadeonGfx](docs/architecture.svg)
+
+The GPU driver runs in userland. The kernel driver `radeon_hd` keeps its
+job of driving the screen: app_server sets modes and the cursor through
+`radeon_hd.accelerant`. Next to the display device, `radeon_hd` publishes a
+render device that hands the GPU's register, ROM and frame buffer areas to
+the RadeonGfx server once, at start. From then on the server drives the GPU
+directly through those mappings, without a system call per operation.
+
+The RadeonGfx server is shared by all applications. It manages GPU memory
+(VRAM and GTT, the GART and a GPU page table per process), queues command
+buffers on the graphics ring and tracks their fences, handles power
+management (SMU7 DPM, AtomBIOS), and detects and recovers from GPU hangs.
+It offers the interface of Linux' amdgpu DRM driver, so Mesa runs on it
+almost unchanged.
+
+An application uses Mesa as on Linux: RADV for Vulkan, and Zink for OpenGL
+and OpenGL ES on top of RADV. libdrm_amdgpu calls `radeon_gfx.accelerant`,
+which turns the DRM calls into messages to the server (over ports, one link
+per thread). Buffers are shared memory between the application and the
+server; the server also publishes which sync points have signaled, so the
+most frequent waits don't need a round trip. Windows reach the desktop
+through Haiku's Wayland compatibility layer and app_server.
+
+Polaris has no interrupt delivery to userland here: the server polls the
+GPU's interrupt ring.
 
 ## Patches
 
