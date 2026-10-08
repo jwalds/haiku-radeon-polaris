@@ -1,0 +1,42 @@
+--- a/CMakeLists.txt	2025-06-03 01:00:39.000000000 +0200
++++ b/CMakeLists.txt	2026-10-08 16:07:07.278659072 +0200
+@@ -2424,6 +2424,15 @@
+       list(APPEND EXTRA_LIBS GL)
+       set(HAVE_OPENGL TRUE)
+     endif()
++
++    # Also build the Wayland video driver (selected with
++    # SDL_VIDEODRIVER=wayland) to render through EGL and Mesa's Zink.
++    if(SDL_WAYLAND)
++      CheckEGL()
++      CheckWayland()
++      file(GLOB CORE_UNIX_SOURCES ${SDL2_SOURCE_DIR}/src/core/unix/*.c)
++      list(APPEND SOURCE_FILES ${CORE_UNIX_SOURCES})
++    endif()
+   endif()
+ 
+   if(SDL_FILESYSTEM)
+diff -ru pristine/SDL2-2.32.8/src/misc/haiku/SDL_sysurl.cc SDL2-2.32.8/src/misc/haiku/SDL_sysurl.cc
+--- a/src/misc/haiku/SDL_sysurl.cc	2025-01-01 16:47:53.000000000 +0100
++++ b/src/misc/haiku/SDL_sysurl.cc	2026-10-08 16:13:28.112197632 +0200
+@@ -24,7 +24,7 @@
+ 
+ int SDL_SYS_OpenURL(const char *url)
+ {
+-    BUrl burl(url);
++    BUrl burl(url, true);
+     const status_t rc = burl.OpenWithPreferredApplication(false);
+     return (rc == B_NO_ERROR) ? 0 : SDL_SetError("URL open failed (err=%d)", (int) rc);
+ }
+diff -ru pristine/SDL2-2.32.8/src/video/haiku/SDL_bvideo.cc SDL2-2.32.8/src/video/haiku/SDL_bvideo.cc
+--- a/src/video/haiku/SDL_bvideo.cc	2025-01-01 16:47:53.000000000 +0100
++++ b/src/video/haiku/SDL_bvideo.cc	2026-10-08 16:13:28.100139008 +0200
+@@ -305,7 +305,7 @@
+ extern "C" { int HAIKU_OpenURL(const char *url); }
+ int HAIKU_OpenURL(const char *url)
+ {
+-    BUrl burl(url);
++    BUrl burl(url, true);
+     const status_t rc = burl.OpenWithPreferredApplication(false);
+     return (rc == B_NO_ERROR) ? 0 : SDL_SetError("URL open failed (err=%d)", (int)rc);
+ }

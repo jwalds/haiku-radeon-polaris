@@ -946,3 +946,13 @@ amdgpu_device_gpu_recover().
   Bridge) against ~3.3 GHz turbo on Linux. docs/perf/comparison.md.
 - tools/test/overhead.sh: results directory and scenes with options fixed.
 - Full runner: 34 of 34 passed.
+
+## 2026-10-08 — ioquake3 port started
+
+- The ioq3 fork now builds on Haiku (see docs/ioq3-port.md): a Haiku block
+  in `q_platform.h`, `libnetwork` linked, one name clash in lcc fixed.
+- SDL2 2.32.8 built with its Wayland video driver (CMake patch, Haiku
+  branch). `tools/vktest/sdlgl.c`: SDL window + desktop GL 4.6
+  compatibility context on Zink/RADV, fixed-function triangle, 300 frames
+  at 66 fps, clean exit.
+- Not run yet: the game itself (no game data on the machine).

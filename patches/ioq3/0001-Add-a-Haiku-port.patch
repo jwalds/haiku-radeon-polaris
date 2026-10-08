@@ -1,0 +1,123 @@
+From 749824eba4ed0ee20c108bb6b56f702399beac91 Mon Sep 17 00:00:00 2001
+From: Jonathan Waldsjo <jonathan.waldsjo@gmail.com>
+Date: Thu, 8 Oct 2026 16:25:32 +0200
+Subject: [PATCH] Add a Haiku port
+
+Define the Haiku platform in q_platform.h, link libnetwork for sockets
+and getaddrinfo, and rename lcc's kill() so it no longer clashes with the
+declaration in <signal.h>.
+
+Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01YTD44PkcGrTikPHs76Ky1p
+---
+ cmake/platforms/all.cmake   |  1 +
+ cmake/platforms/haiku.cmake |  8 ++++++++
+ code/qcommon/q_platform.h   | 35 +++++++++++++++++++++++++++++++++++
+ code/tools/lcc/src/dag.c    |  6 +++---
+ 4 files changed, 47 insertions(+), 3 deletions(-)
+ create mode 100644 cmake/platforms/haiku.cmake
+
+diff --git a/cmake/platforms/all.cmake b/cmake/platforms/all.cmake
+index f5cae409..31c8cc59 100644
+--- a/cmake/platforms/all.cmake
++++ b/cmake/platforms/all.cmake
+@@ -1,4 +1,5 @@
+ include(platforms/emscripten)
++include(platforms/haiku)
+ include(platforms/linux)
+ include(platforms/macos)
+ include(platforms/unix)
+diff --git a/cmake/platforms/haiku.cmake b/cmake/platforms/haiku.cmake
+new file mode 100644
+index 00000000..426f8347
+--- /dev/null
++++ b/cmake/platforms/haiku.cmake
+@@ -0,0 +1,8 @@
++# Haiku specific settings
++
++if(NOT HAIKU)
++    return()
++endif()
++
++# Sockets and getaddrinfo live in libnetwork rather than in libc.
++list(APPEND COMMON_LIBRARIES network)
+diff --git a/code/qcommon/q_platform.h b/code/qcommon/q_platform.h
+index 960f844e..211e3f58 100644
+--- a/code/qcommon/q_platform.h
++++ b/code/qcommon/q_platform.h
+@@ -221,6 +221,41 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ 
+ #endif
+ 
++//================================================================= HAIKU ===
++
++#if defined(__HAIKU__)
++
++#include <endian.h>
++
++#define OS_STRING "haiku"
++
++#define ID_INLINE inline
++
++#define PATH_SEP '/'
++
++#if defined(__x86_64__)
++# define ARCH_STRING "x86_64"
++# define HAVE_VM_COMPILED
++#elif defined(__i386__)
++# define ARCH_STRING "x86"
++# define HAVE_VM_COMPILED
++#endif
++
++#if defined __x86_64__
++#undef idx64
++#define idx64 1
++#endif
++
++#if BYTE_ORDER == BIG_ENDIAN
++#define Q3_BIG_ENDIAN
++#else
++#define Q3_LITTLE_ENDIAN
++#endif
++
++#define DLL_EXT ".so"
++
++#endif
++
+ //=================================================================== BSD ===
+ 
+ #if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__)
+diff --git a/code/tools/lcc/src/dag.c b/code/tools/lcc/src/dag.c
+index 459f569a..243c8d4d 100644
+--- a/code/tools/lcc/src/dag.c
++++ b/code/tools/lcc/src/dag.c
+@@ -25,7 +25,7 @@ static Symbol equated(Symbol);
+ static void fixup(Node);
+ static void labelnode(int);
+ static void list(Node);
+-static void kill(Symbol);
++static void lcc_kill(Symbol);
+ static Node node(int, Node, Node, Symbol);
+ static void printdag1(Node, int, int);
+ static void printnode(Node, int, int);
+@@ -79,7 +79,7 @@ static struct dag *dagnode(int op, Node l, Node r, Symbol sym) {
+ Node newnode(int op, Node l, Node r, Symbol sym) {
+ 	return &dagnode(op, l, r, sym)->node;
+ }
+-static void kill(Symbol p) {
++static void lcc_kill(Symbol p) {
+ 	int i;
+ 	struct dag **q;
+ 
+@@ -306,7 +306,7 @@ Node listnodes(Tree tp, int tlab, int flab) {
+ 		      forest->syms[1] = intconst(tp->kids[1]->type->align);
+ 		      if (isaddrop(tp->kids[0]->op)
+ 		      && !tp->kids[0]->u.sym->computed)
+-		      	kill(tp->kids[0]->u.sym);
++		      	lcc_kill(tp->kids[0]->u.sym);
+ 		      else
+ 		      	reset();
+ 		      p = listnodes(tp->kids[1], 0, 0); } break;
+-- 
+2.54.0
+
